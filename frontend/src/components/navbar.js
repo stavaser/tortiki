@@ -6,8 +6,8 @@ const Container = styled.div`
   justify-content: space-around;
   background-color: #bdadff;
   padding: 20px 30px;
-  margin: 10px;
-  border-radius: 20px;
+  margin: 8px;
+  border-radius: 10px;
   color: white;
   font-weight: 900;
 `;
@@ -15,11 +15,10 @@ const Container = styled.div`
 const Navbar = () => {
   return (
     <Container>
-      <div>item</div>
-      <div>item</div>
-      <div>item</div>
-      <div>item</div>
-      <div>Вход</div>
+      <div>*Локация*</div>
+      <div>Магазины</div>
+      <div>Профиль</div>
+      <div>Корзина</div>
     </Container>
   );
 };
