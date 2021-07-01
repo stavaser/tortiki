@@ -26,13 +26,13 @@ import {
 import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import '@vkontakte/vkui/dist/vkui.css';
 
-import Home from './panels/home';
 import Login from './panels/login';
 import Catalog from './panels/catalog';
 import Cart from './panels/cart';
 import Profile from './panels/profile';
 import Product from './panels/product';
-
+import HomeView from './views/homeView';
+import ProfileView from './views/profileView';
 const App = () => {
   const { viewWidth } = useAdaptivity();
   const platform = usePlatform();
@@ -45,6 +45,7 @@ const App = () => {
   const hasHeader = platform !== ViewWidth.VKCOM;
 
   const [activeView, setActiveView] = useState('view1');
+  const [catalogActivePanel, setCatalogActivePanel] = useState('home');
   return (
     <ConfigProvider>
       <AdaptivityProvider>
@@ -101,19 +102,21 @@ const App = () => {
                   )
                 }
               >
+                <HomeView id="home" />
+                <ProfileView id="profile" />
+                {/* <View id="home" activePanel="home">
+                  <Home id="home" />
+                  <Product id="product" />
+                </View> */}
                 <View id="catalog" activePanel="catalog">
                   <Catalog id="catalog" />
-                  <Product id="product" />
-                </View>
-                <View id="home" activePanel="home">
-                  <Home id="home" />
                 </View>
                 <View id="cart" activePanel="cart">
                   <Cart id="cart" />
                 </View>
-                <View id="profile" activePanel="profile">
+                {/* <View id="profile" activePanel="profile">
                   <Profile id="profile" />
-                </View>
+                </View> */}
               </Epic>
             </SplitCol>
           </SplitLayout>

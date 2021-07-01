@@ -11,8 +11,8 @@ import {
 
 const Product = () => (
   <Panel>
-    <PanelHeader left={<PanelHeaderBack />}>Каталог</PanelHeader>
-    <Group style={{ height: '1000px' }}>Каталог</Group>
+    <PanelHeader left={<PanelHeaderBack />}>Подробнее</PanelHeader>
+    <Group style={{ height: '1000px' }}>Подробнее</Group>
   </Panel>
 );
 export default Product;

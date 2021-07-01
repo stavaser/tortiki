@@ -17,8 +17,9 @@ import {
   ContentCard,
 } from '@vkontakte/vkui';
 
-const Home = () => (
-  <Panel>
+const Home = ({ id }) => (
+  <Panel id={id}>
+    {console.log('iddd', id)}
     <PanelHeader>Главная</PanelHeader>
     <Group mode="plain" header={<Header>Популярное</Header>}>
       <CardScroll size="s">
