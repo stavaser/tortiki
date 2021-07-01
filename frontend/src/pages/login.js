@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-const Main = () => {
+
+const Login = () => {
   return 0;
 };
-export default Main;
+export default Login;
