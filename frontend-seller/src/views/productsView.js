@@ -212,6 +212,7 @@ const ProductsView = ({ id }) => {
             <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
           </SimpleCell>
         </Group>
+        {/* TODO: doesnt shrink on smaller screens */}
         <Div style={{ display: 'flex' }}>
           <Button
             size="l"
