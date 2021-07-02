@@ -27,6 +27,7 @@ import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import ProfileView from './views/profileView';
+import ProductsView from './views/productsView';
 const App = () => {
   const { viewWidth } = useAdaptivity();
   const platform = usePlatform();
@@ -58,26 +59,26 @@ const App = () => {
                     <Tabbar>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'home'}
-                        data-story="home"
-                        text="Главная"
+                        selected={activeStory === 'products'}
+                        data-story="products"
+                        text="Продукты"
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'catalog'}
-                        data-story="catalog"
-                        text="Каталог"
+                        selected={activeStory === 'auction'}
+                        data-story="auction"
+                        text="Розыгрыши"
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'cart'}
-                        data-story="cart"
+                        selected={activeStory === 'gallery'}
+                        data-story="gallery"
                         label="12"
-                        text="Корзина"
+                        text="Галерея"
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
@@ -93,6 +94,7 @@ const App = () => {
                   )
                 }
               >
+                <ProductsView id="products" />
                 <ProfileView id="profile" />
               </Epic>
             </SplitCol>
