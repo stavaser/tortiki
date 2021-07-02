@@ -7,11 +7,13 @@ import {
   View,
   Panel,
   PanelHeader,
+  PanelHeaderEdit,
   Header,
   Group,
   Button,
   SimpleCell,
   PanelHeaderBack,
+  PanelHeaderButton,
   Div,
   CardGrid,
   Card,
@@ -36,7 +38,14 @@ import {
   HorizontalScroll,
   Avatar,
 } from '@vkontakte/vkui';
-import { Icon24Add, Icon24Camera } from '@vkontakte/icons';
+import {
+  Icon24Add,
+  Icon24Camera,
+  Icon28SettingsOutline,
+  Icon28ArchiveOutline,
+  Icon28EditOutline,
+  Icon28UnarchiveOutline,
+} from '@vkontakte/icons';
 
 const ProductsView = ({ id }) => {
   const [activePanel, setActivePanel] = useState('main');
@@ -78,7 +87,7 @@ const ProductsView = ({ id }) => {
   return (
     <View id="home" activePanel={activePanel}>
       <Panel id="main">
-        <PanelHeader>Главная</PanelHeader>
+        <PanelHeader>Продукты</PanelHeader>
         <Group>
           <CellButton
             centered
@@ -123,10 +132,10 @@ const ProductsView = ({ id }) => {
           <CardGrid size="m">
             <ContentCard
               id="1"
-              onClick={() => setActivePanel('auction')}
-              image={cake2}
+              onClick={() => setActivePanel('detail')}
+              image={cake}
               subtitle="Торт 'красный бархат'"
-              header="Ставка 100 руб"
+              header="1200 руб"
               caption="1200 гр"
               maxHeight={100}
             />
@@ -136,6 +145,11 @@ const ProductsView = ({ id }) => {
       <Panel id="detail">
         <PanelHeader
           left={<PanelHeaderBack onClick={() => setActivePanel('main')} />}
+          // right={
+          //   <PanelHeaderButton>
+          //     <Icon28SettingsOutline />
+          //   </PanelHeaderButton>
+          // }
         >
           Подробнее
         </PanelHeader>
@@ -146,6 +160,7 @@ const ProductsView = ({ id }) => {
             bullets="dark"
             showArrows
           >
+            <img src={cake} style={{ objectFit: 'cover' }} />
             <div style={{ backgroundColor: 'var(--destructive)' }} />
             <div
               style={{ backgroundColor: 'var(--button_commerce_background)' }}
@@ -197,59 +212,27 @@ const ProductsView = ({ id }) => {
             <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
           </SimpleCell>
         </Group>
-        <Div>
-          <Button size="l" stretched mode="commerce">
-            Написать в What's App
+        <Div style={{ display: 'flex' }}>
+          <Button
+            size="l"
+            stretched
+            style={{ marginRight: 8 }}
+            before={<Icon28ArchiveOutline />}
+          >
+            Архивировать
+          </Button>
+          <Button
+            size="l"
+            stretched
+            mode="secondary"
+            before={<Icon28EditOutline />}
+            onClick={() => setActivePanel('edit')}
+          >
+            Редактировать
           </Button>
         </Div>
       </Panel>
-      <Panel id="auction">
-        <PanelHeader
-          left={<PanelHeaderBack onClick={() => setActivePanel('main')} />}
-        >
-          Розыгрыш
-        </PanelHeader>
-        <Group>
-          <Gallery
-            slideWidth="90%"
-            style={{ height: 150 }}
-            bullets="dark"
-            showArrows
-          >
-            <div style={{ backgroundColor: 'var(--destructive)' }} />
-            <div
-              style={{ backgroundColor: 'var(--button_commerce_background)' }}
-            />
-            <div style={{ backgroundColor: 'var(--accent)' }} />
-          </Gallery>
 
-          <Header
-            multiline
-            level="1"
-            weight="semibold"
-            style={{ marginTop: 16 }}
-            aside={
-              <Title level="1" weight="bold">
-                1200 руб
-              </Title>
-            }
-            subtitle={
-              <Title level="3" weight="regular">
-                1200 гр
-              </Title>
-            }
-          >
-            <Title level="1" weight="semibold">
-              Торт 'красный бархат'
-            </Title>
-          </Header>
-          <Div>
-            <Button size="l" stretched mode="commerce">
-              Участвовать
-            </Button>
-          </Div>
-        </Group>
-      </Panel>
       <Panel id="add">
         <PanelHeader
           left={<PanelHeaderBack onClick={() => setActivePanel('main')} />}
@@ -351,6 +334,111 @@ const ProductsView = ({ id }) => {
           <Div>
             <Button size="l" stretched mode="commerce">
               Отправить
+            </Button>
+          </Div>
+        </Group>
+      </Panel>
+      <Panel id="edit">
+        <PanelHeader
+          left={<PanelHeaderBack onClick={() => setActivePanel('detail')} />}
+        >
+          Редактировать продукт
+        </PanelHeader>
+        <Group>
+          <Group>
+            <FormItem top="Название продукта">
+              <Input placeholder="Название продукта" />
+            </FormItem>
+            <FormItem top="Тип">
+              <Select
+                placeholder="Не выбран"
+                options={products.map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+                renderOption={({ option, ...restProps }) => (
+                  <CustomSelectOption {...restProps} />
+                )}
+              />
+            </FormItem>
+            <FormLayoutGroup mode="horizontal">
+              <FormItem top="Цена">
+                <Input type="number" />
+              </FormItem>
+              <FormItem top="Вес" bottom="(Необязательно)">
+                <Input type="number" />
+              </FormItem>
+            </FormLayoutGroup>
+
+            <FormItem top="Описание">
+              <Textarea />
+            </FormItem>
+            <FormItem top="Состав">
+              <Textarea />
+            </FormItem>
+          </Group>
+          <Group
+            header={<Header aside={`(${fileList.length})`}>Фотографии</Header>}
+          >
+            <FormItem top="Загрузите фото">
+              <File
+                before={<Icon24Camera />}
+                controlSize="m"
+                stretched
+                mode="commerce"
+                multiple
+                onChange={(e) => handleChange(e)}
+              >
+                Открыть галерею
+              </File>
+            </FormItem>
+            <HorizontalScroll>
+              <div style={{ display: 'flex' }}>
+                {fileList &&
+                  fileList.map((file) => (
+                    <HorizontalCell size="l">
+                      <Avatar
+                        size={128}
+                        mode="image"
+                        src={file}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </HorizontalCell>
+                  ))}
+              </div>
+            </HorizontalScroll>
+          </Group>
+          <Group>
+            <Cell
+              disabled
+              after={
+                <Switch defaultChecked onChange={() => setHidden(!hidden)} />
+              }
+            >
+              Доставка на дом
+            </Cell>
+            {!hidden && (
+              <FormItem top="Цена" bottom="(Введите 0 если бесплатно)">
+                <Input type="number" />
+              </FormItem>
+            )}
+            <Cell
+              disabled
+              after={
+                <Switch onChange={() => setHiddenSecondary(!hiddenSecondary)} />
+              }
+            >
+              Доставка в другие регионы
+            </Cell>
+            {!hiddenSecondary && (
+              <FormItem top="Цена" bottom="(Введите 0 если бесплатно)">
+                <Input type="number" />
+              </FormItem>
+            )}
+          </Group>
+          <Div>
+            <Button size="l" stretched mode="commerce">
+              Сохранить
             </Button>
           </Div>
         </Group>
