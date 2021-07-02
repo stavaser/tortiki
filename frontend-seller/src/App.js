@@ -28,6 +28,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import ProfileView from './views/profileView';
 import ProductsView from './views/productsView';
+import AuctionView from './views/auctionView';
 const App = () => {
   const { viewWidth } = useAdaptivity();
   const platform = usePlatform();
@@ -95,6 +96,7 @@ const App = () => {
                 }
               >
                 <ProductsView id="products" />
+                <AuctionView id="auction" />
                 <ProfileView id="profile" />
               </Epic>
             </SplitCol>
