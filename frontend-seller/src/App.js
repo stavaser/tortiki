@@ -25,15 +25,28 @@ import {
 } from '@vkontakte/vkui';
 import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import '@vkontakte/vkui/dist/vkui.css';
+import { useScreenSpinner } from './hooks/useScreenSpinner';
 
 import ProfileView from './views/profileView';
 import ProductsView from './views/productsView';
 import AuctionView from './views/auctionView';
 import GalleryView from './views/galleryView';
+import TestView from './views/testView';
+import ProductsMain from './panels/products/productsMain';
+import ProductsDetail from './panels/products/productsDetail';
 const App = () => {
   const { viewWidth } = useAdaptivity();
   const platform = usePlatform();
   const [activeStory, setActiveStory] = useState('profile');
+  const [activePanel, setActivePanel] = useState('products_main');
+  const [popout, hidePopout] = useScreenSpinner();
+  useEffect(() => hidePopout(), []);
+  const go = (e) => {
+    console.log(e.target.attributes[0].nodeValue);
+    setActivePanel(e.target.attributes[0].nodeValue);
+    // setActivePanel(e.currentTarget.dataset.to);
+  };
+
   const onStoryChange = (e) => {
     console.log(e.currentTarget.dataset.story);
     setActiveStory(e.currentTarget.dataset.story);
@@ -98,8 +111,21 @@ const App = () => {
               >
                 <ProductsView id="products" />
                 <AuctionView id="auction" />
-                <ProfileView id="profile" />
+                {/* <ProfileView id="profile" /> */}
+                <TestView id="profile" />
                 <GalleryView id="gallery" />
+                {/* <View id="profile" activePanel={activePanel} popout={popout}>
+                  <ProductsMain
+                    id="products_main"
+                    go={go}
+                    className="App__panel"
+                  />
+                  <ProductsDetail
+                    id="products_detail"
+                    go={go}
+                    className="App__panel"
+                  />
+                </View> */}
               </Epic>
             </SplitCol>
           </SplitLayout>
