@@ -1,26 +1,12 @@
-import {
-  Icon24Add,
-  Icon28DeleteOutline,
-  Icon28EditOutline,
-} from '@vkontakte/icons';
-import {
-  Button,
-  Card,
-  CardGrid,
-  Div,
-  File,
-  Group,
-  ModalCard,
-  ModalRoot,
-  Panel,
-  PanelHeader,
-  View,
-} from '@vkontakte/vkui';
+import { Icon28DeleteOutline, Icon28EditOutline } from '@vkontakte/icons';
+import { Button, Div, ModalCard, ModalRoot, View } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import GalleryMain from '../panels/gallery/GalleryMain';
+
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 
 const GalleryView = ({ id }) => {
-  const [activePanel, setActivePanel] = useState('main');
+  const [activePanel, setActivePanel] = useState('gallery_main');
   const [activeModal, setActiveModal] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [previewImage, setPreviewImage] = useState('');
@@ -32,6 +18,23 @@ const GalleryView = ({ id }) => {
       images.push(URL.createObjectURL(e.target.files[i]));
     }
     setFileList([...images, ...fileList]);
+  };
+  const go = (e) => {
+    const target = e.target.dataset.to;
+    const currentTarget = e.currentTarget.dataset.to;
+    if (target || currentTarget) {
+      setActivePanel(target || currentTarget);
+    }
+  };
+  const modal_action = (e) => {
+    const currentTarget = e.currentTarget.dataset.to;
+    const file = e.currentTarget.dataset.image;
+    setActiveModal(currentTarget);
+    setPreviewImage(file);
+  };
+
+  const set_preview_image = (file) => {
+    setPreviewImage(file);
   };
   const modal = (
     <ModalRoot activeModal={activeModal} onClose={() => setActiveModal(null)}>
@@ -65,55 +68,7 @@ const GalleryView = ({ id }) => {
   );
   return (
     <View id={id} activePanel={activePanel} modal={modal}>
-      <Panel id="main">
-        <PanelHeader>Галлерея</PanelHeader>
-        <Group>
-          <Div>
-            <File
-              before={<Icon24Add />}
-              mode="outline"
-              controlSize="l"
-              size="l"
-              stretched
-              multiple
-              onChange={(e) => handleChange(e)}
-            >
-              Загрузить фотографии
-            </File>
-          </Div>
-        </Group>
-
-        <Group>
-          <CardGrid size="m">
-            {fileList &&
-              fileList.map((file) => (
-                <Card
-                  onClick={() => {
-                    setPreviewImage(file);
-                    setActiveModal(MODAL_CARD_PHOTO_PREVIEW);
-                  }}
-                >
-                  <img
-                    style={{ objectFit: 'cover', width: '100%' }}
-                    src={file}
-                  />
-                </Card>
-              ))}
-            <Card>
-              <div style={{ paddingBottom: '82%' }} />
-            </Card>
-            <Card>
-              <div style={{ paddingBottom: '62%' }} />
-            </Card>
-            <Card>
-              <div style={{ paddingBottom: '62%' }} />
-            </Card>
-            <Card>
-              <div style={{ paddingBottom: '62%' }} />
-            </Card>
-          </CardGrid>
-        </Group>
-      </Panel>
+      <GalleryMain id="gallery_main" go={go} modal_action={modal_action} />
     </View>
   );
 };
