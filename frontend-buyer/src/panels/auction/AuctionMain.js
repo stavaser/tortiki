@@ -1,4 +1,4 @@
-import { Icon24Add } from '@vkontakte/icons';
+import { Icon24Add, Icon24Filter } from '@vkontakte/icons';
 import {
   CardGrid,
   CellButton,
@@ -7,73 +7,87 @@ import {
   Header,
   Panel,
   PanelHeader,
+  Banner,
+  Avatar,
+  Button,
+  CardScroll,
+  Card,
+  HorizontalScroll,
+  HorizontalCell,
+  SubnavigationBar,
+  SubnavigationButton,
+  Counter,
 } from '@vkontakte/vkui';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-scroll';
+
 import cake2 from '../../assets/cake2.jpeg';
 import * as to from '../../navigation/auction';
 
-const AuctionMain = ({ id, go }) => {
+const categories = ['Торты', 'Капкейки', 'Пицца', 'Суши'];
+
+const AuctionMain = ({ id, go, openModal, filtersCount }) => {
+  const [category, setCategory] = useState(false);
+
+  const selectCategory = (category) => {
+    setCategory(category);
+  };
   return (
     <Panel id={id}>
       <PanelHeader>Розыгрыши</PanelHeader>
       <Group>
-        <CellButton
-          centered
-          before={<Icon24Add />}
-          onClick={go}
-          data-nav={to.AUCTION_ADD}
-        >
-          Создать розыгрыш
-        </CellButton>
+        <SubnavigationBar>
+          <SubnavigationButton
+            before={<Icon24Filter />}
+            style={{ marginRight: '10px' }}
+            selected={filtersCount > 0}
+            expandable
+            after={
+              filtersCount > 0 && (
+                <Counter mode="primary" size="s">
+                  {filtersCount}
+                </Counter>
+              )
+            }
+            onClick={openModal}
+          >
+            Фильтры
+          </SubnavigationButton>
+          {categories.map((item) => (
+            <Link
+              to={item}
+              spy={true}
+              smooth={true}
+              offset={-50}
+              style={{ marginRight: '10px' }}
+            >
+              <SubnavigationButton
+                selected={item === category}
+                onClick={() => selectCategory(item)}
+              >
+                {item}
+              </SubnavigationButton>
+            </Link>
+          ))}
+        </SubnavigationBar>
       </Group>
-      <Group mode="plain" header={<Header>Активные (3)</Header>}>
-        <CardGrid size="m">
-          <ContentCard
-            id="1"
-            onClick={go}
-            data-nav={to.AUCTION_DETAIL}
-            image={cake2}
-            subtitle="Торт 'красный бархат'"
-            header="Ставка 100 руб"
-            caption="(4 из 10 мест свободно)"
-            maxHeight={100}
-          />
-          <ContentCard
-            id="1"
-            onClick={go}
-            data-nav={to.AUCTION_DETAIL}
-            image={cake2}
-            subtitle="Торт 'красный бархат'"
-            header="Ставка 100 руб"
-            caption="4 из 10 мест свободно"
-            maxHeight={100}
-          />
-          <ContentCard
-            id="1"
-            onClick={go}
-            data-nav={to.AUCTION_DETAIL}
-            image={cake2}
-            subtitle="Торт 'красный бархат'"
-            header="Ставка 100 руб"
-            caption="4 из 10 мест свободно"
-            maxHeight={100}
-          />
-        </CardGrid>
-      </Group>
-      <Group mode="plain" header={<Header>Архив (1)</Header>}>
-        <CardGrid size="m">
-          <ContentCard
-            id="1"
-            onClick={go}
-            data-nav={to.AUCTION_DETAIL}
-            image={cake2}
-            subtitle="Торт 'красный бархат'"
-            header="Ставка 100 руб"
-            caption="(4 из 10 мест свободно)"
-            maxHeight={100}
-          />
-        </CardGrid>
-      </Group>
+      {categories.map((item) => (
+        <Group mode="plain" id={item} header={<Header>{item}</Header>}>
+          <CardGrid size="m">
+            {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
+              <ContentCard
+                onClick={go}
+                data-nav={to.AUCTION_DETAIL}
+                image={cake2}
+                subtitle="Торт 'красный бархат'"
+                header="Ставка 100 руб"
+                caption="(4 из 10 мест свободно)"
+                maxHeight={100}
+              />
+            ))}
+          </CardGrid>
+        </Group>
+      ))}
     </Panel>
   );
 };

@@ -19,22 +19,37 @@ import {
   ModalPageHeader,
   Gradient,
   RichCell,
+  Checkbox,
+  FormItem,
+  FormLayout,
+  Button,
+  ModalCard,
 } from '@vkontakte/vkui';
 import { Icon24Dismiss } from '@vkontakte/icons';
 
 import * as to from '../navigation/auction';
+import AuctionSignup from '../panels/auction/AuctionSignup';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
 const MODAL_PAGE_RESULTS = 'results';
+const MODAL_CARD_FILTERS = 'filters';
+
+const participants = [
+  { id: 0, name: 'valeria', number: 1, time: 'Вчера в 20:30' },
+  { id: 1, name: 'elena', number: 2, time: 'Вчера в 15:20' },
+];
 
 const AuctionView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.AUCTION_MAIN);
   const [activeModal, setActiveModal] = useState(null);
-  const participants = [
-    { id: 0, name: 'valeria', number: 1, time: 'Вчера в 20:30' },
-    { id: 1, name: 'elena', number: 2, time: 'Вчера в 15:20' },
-  ];
+
+  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+  const [filtersCount, setFiltersCount] = useState(0);
+
+  const [filterSizes, setFilterSizes] = useState([36]);
+  const [filterStyles, setFilterStyles] = useState(['Вечерний']);
+
   const go = (e) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
@@ -55,9 +70,29 @@ const AuctionView = ({ id }) => {
       setActiveModal(target || currentTarget);
     }
   };
+  const openModal = () => {
+    setFiltersModalOpened(true);
+  };
+
+  const closeModal = () => {
+    setFiltersModalOpened(false);
+  };
+  const applyFilters = () => {
+    let count = 0;
+
+    filterSizes.length && count++;
+    filterStyles.length && count++;
+
+    closeModal();
+    setFiltersCount(count);
+  };
+
   //   TODO: a better way to use modals
   const modal = (
-    <ModalRoot activeModal={activeModal} onClose={() => setActiveModal(null)}>
+    <ModalRoot
+      activeModal={filtersModalOpened ? MODAL_CARD_FILTERS : activeModal}
+      onClose={() => setActiveModal(null)}
+    >
       <ModalPage
         id={MODAL_PAGE_PARTICIPANTS}
         settlingHeight={100}
@@ -155,11 +190,33 @@ const AuctionView = ({ id }) => {
           </ModalPageHeader>
         }
       ></ModalPage>
+      <ModalCard
+        id={MODAL_CARD_FILTERS}
+        header={'Фильтры'}
+        actions={
+          <Button size="l" mode="primary" onClick={applyFilters}>
+            Показать результаты
+          </Button>
+        }
+      >
+        <FormLayout>
+          <FormItem>
+            <Checkbox>Есть доставка на дом</Checkbox>
+            <Checkbox>Есть доставка в другие регионы</Checkbox>
+            <Checkbox>Еще что-то...</Checkbox>
+          </FormItem>
+        </FormLayout>
+      </ModalCard>
     </ModalRoot>
   );
   return (
     <View id={id} activePanel={activePanel} modal={modal}>
-      <AuctionMain id={to.AUCTION_MAIN} go={go} />
+      <AuctionMain
+        id={to.AUCTION_MAIN}
+        go={go}
+        openModal={openModal}
+        filtersCount={filtersCount}
+      />
       <AuctionDetail
         id={to.AUCTION_DETAIL}
         go={go}
@@ -167,6 +224,7 @@ const AuctionView = ({ id }) => {
       />
       <AddAuction id={to.AUCTION_ADD} go={go} />
       <EditAuction id={to.AUCTION_EDIT} go={go} />
+      <AuctionSignup id={to.AUCTION_SIGNUP} go={go} />
     </View>
   );
 };

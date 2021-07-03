@@ -16,6 +16,7 @@ import {
   UsersStack,
 } from '@vkontakte/vkui';
 import React from 'react';
+import Countdown from '../../components/Countdown';
 import cake from '../../assets/cake.jpeg';
 import cake2 from '../../assets/cake2.jpeg';
 import conf2 from '../../assets/conf2.gif';
@@ -30,11 +31,6 @@ const AuctionDetail = ({ id, go, modal_action }) => {
     <Panel id={id}>
       <PanelHeader
         left={<PanelHeaderBack onClick={go} data-nav={to.AUCTION_MAIN} />}
-        // right={
-        //   <PanelHeaderButton>
-        //     <Icon28SettingsOutline />
-        //   </PanelHeaderButton>
-        // }
       >
         Подробнее
       </PanelHeader>
@@ -73,6 +69,14 @@ const AuctionDetail = ({ id, go, modal_action }) => {
             Торт 'красный бархат'
           </Title>
         </Header>
+      </Group>
+      <Group
+        header={<Header mode="secondary">До конца розыгрыша остается:</Header>}
+      >
+        <Div>
+          {/* TODO: adapt for iphone 5 screen */}
+          <Countdown />
+        </Div>
       </Group>
       <Group>
         <Banner
@@ -145,24 +149,15 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
         </SimpleCell>
       </Group>
-      <Div style={{ display: 'flex' }}>
+      <Div>
         <Button
           size="l"
           stretched
-          style={{ marginRight: 8 }}
-          before={<Icon28ArchiveOutline />}
-        >
-          Архивировать
-        </Button>
-        <Button
-          size="l"
-          stretched
-          mode="secondary"
-          before={<Icon28EditOutline />}
+          mode="commerce"
           onClick={go}
-          data-nav={to.AUCTION_EDIT}
+          data-nav={to.AUCTION_SIGNUP}
         >
-          Редактировать
+          Участвовать
         </Button>
       </Div>
     </Panel>

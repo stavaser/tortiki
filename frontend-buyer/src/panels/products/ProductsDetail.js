@@ -153,7 +153,6 @@ const ProductsDetail = ({ id, go }) => (
         </Card>
       </Div>
     </Group>
-    {/* TODO: doesnt shrink on smaller screens */}
     <Div>
       <Button size="l" stretched mode="commerce">
         Написать в What's App
