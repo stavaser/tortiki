@@ -18,6 +18,7 @@ import {
   SubnavigationButton,
   Counter,
 } from '@vkontakte/vkui';
+import { Link } from 'react-scroll';
 
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -61,6 +62,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount }) => {
         <SubnavigationBar>
           <SubnavigationButton
             before={<Icon24Filter />}
+            style={{ marginRight: '10px' }}
             selected={filtersCount > 0}
             expandable
             after={
@@ -75,62 +77,40 @@ const ProductsMain = ({ id, go, openModal, filtersCount }) => {
             Фильтры
           </SubnavigationButton>
           {categories.map((item) => (
-            <SubnavigationButton
-              selected={item === category}
-              onClick={() => selectCategory(item)}
+            <Link
+              to={item}
+              spy={true}
+              smooth={true}
+              offset={-50}
+              style={{ marginRight: '10px' }}
             >
-              {item}
-            </SubnavigationButton>
+              <SubnavigationButton
+                selected={item === category}
+                onClick={() => selectCategory(item)}
+              >
+                {item}
+              </SubnavigationButton>
+            </Link>
           ))}
         </SubnavigationBar>
       </Group>
-      <Group mode="plain" header={<Header>Продукты</Header>}>
-        <CardGrid size="m">
-          <ContentCard
-            id="0"
-            onClick={go}
-            data-nav={to.PRODUCTS_DETAIL}
-            image={cake}
-            subtitle="Торт 'красный бархат'"
-            header="1200 руб"
-            caption="1200 гр"
-            maxHeight={100}
-          />
-          <ContentCard
-            id="1"
-            onClick={go}
-            data-nav={to.PRODUCTS_DETAIL}
-            image={cake}
-            subtitle="Торт 'красный бархат'й бархат'й бархат'"
-            header="1200 руб"
-            caption="1200 гр"
-            maxHeight={100}
-          />
-          <ContentCard
-            id="2"
-            onClick={go}
-            data-nav={to.PRODUCTS_DETAIL}
-            image={cake}
-            subtitle="Торт 'красный бархат'й бархат'й бархат'"
-            header="1200 руб"
-            caption="1200 гр"
-            maxHeight={100}
-          />
-        </CardGrid>
-      </Group>
-      <Group mode="plain" header={<Header>Архив (1)</Header>}>
-        <CardGrid size="m">
-          <ContentCard
-            onClick={go}
-            data-nav={to.PRODUCTS_DETAIL}
-            image={cake}
-            subtitle="Торт 'красный бархат'"
-            header="1200 руб"
-            caption="1200 гр"
-            maxHeight={100}
-          />
-        </CardGrid>
-      </Group>
+      {categories.map((item) => (
+        <Group mode="plain" id={item} header={<Header>{item}</Header>}>
+          <CardGrid size="m">
+            {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
+              <ContentCard
+                onClick={go}
+                data-nav={to.PRODUCTS_DETAIL}
+                image={cake}
+                subtitle="Торт 'красный бархат'"
+                header="1200 руб"
+                caption="1200 гр"
+                maxHeight={100}
+              />
+            ))}
+          </CardGrid>
+        </Group>
+      ))}
     </Panel>
   );
 };
