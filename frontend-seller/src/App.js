@@ -33,6 +33,7 @@ import AuctionView from './views/auctionView';
 import GalleryView from './views/galleryView';
 import ProductsMain from './panels/products/productsMain';
 import ProductsDetail from './panels/products/productsDetail';
+import TestAuctionView from './views/testAuctionView';
 const App = () => {
   const { viewWidth } = useAdaptivity();
   const platform = usePlatform();
@@ -109,7 +110,8 @@ const App = () => {
                 }
               >
                 <ProductsView id="products" />
-                <AuctionView id="auction" />
+                {/* <AuctionView id="auction" /> */}
+                <TestAuctionView id="auction" />
                 <ProfileView id="profile" />
                 {/* <TestView id="profile" /> */}
                 <GalleryView id="gallery" />
