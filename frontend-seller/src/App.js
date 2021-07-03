@@ -27,10 +27,10 @@ import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import '@vkontakte/vkui/dist/vkui.css';
 import { useScreenSpinner } from './hooks/useScreenSpinner';
 
-import ProfileView from './views/profileView';
-import ProductsView from './views/productsView';
+import ProfileView from './views/ProfileView';
+import ProductsView from './views/ProductsView';
 import AuctionView from './views/AuctionView';
-import GalleryView from './views/galleryView';
+import GalleryView from './views/GalleryView';
 import ProductsMain from './panels/products/ProductsMain';
 import ProductsDetail from './panels/products/ProductsDetail';
 const App = () => {

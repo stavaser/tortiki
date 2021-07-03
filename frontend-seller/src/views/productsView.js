@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View } from '@vkontakte/vkui';
-import ProductsMain from '../panels/products/productsMain';
-import ProductsDetail from '../panels/products/productsDetail';
-import AddProduct from '../panels/products/addProduct';
-import EditProducts from '../panels/products/editProduct';
+import ProductsMain from '../panels/products/ProductsMain';
+import ProductsDetail from '../panels/products/ProductsDetail';
+import AddProduct from '../panels/products/AddProduct';
+import EditProducts from '../panels/products/EditProduct';
 
 const ProductsView = ({ id }) => {
   const [activePanel, setActivePanel] = useState('products_main');
