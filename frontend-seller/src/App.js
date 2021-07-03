@@ -10,12 +10,12 @@ import {
   Tabbar,
   TabbarItem,
   useAdaptivity,
-  usePlatform,
   ViewWidth,
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import React, { useEffect, useState } from 'react';
 import { useScreenSpinner } from './hooks/useScreenSpinner';
+import { AUCTION, GALLERY, PRODUCTS, PROFILE } from './navigation/epic';
 import AuctionView from './views/AuctionView';
 import GalleryView from './views/GalleryView';
 import ProductsView from './views/ProductsView';
@@ -23,7 +23,7 @@ import ProfileView from './views/ProfileView';
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
-  const [activeStory, setActiveStory] = useState('profile');
+  const [activeStory, setActiveStory] = useState(PROFILE);
   const [popout, hidePopout] = useScreenSpinner();
   useEffect(() => hidePopout(), []);
 
@@ -54,34 +54,34 @@ const App = () => {
                     <Tabbar>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'products'}
-                        data-story="products"
-                        text="Продукты"
+                        selected={activeStory === PRODUCTS}
+                        data-story={PRODUCTS}
+                        text={PRODUCTS}
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'auction'}
-                        data-story="auction"
-                        text="Розыгрыши"
+                        selected={activeStory === AUCTION}
+                        data-story={AUCTION}
+                        text={AUCTION}
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'gallery'}
-                        data-story="gallery"
+                        selected={activeStory === GALLERY}
+                        data-story={GALLERY}
                         label="12"
-                        text="Галерея"
+                        text={GALLERY}
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
                       <TabbarItem
                         onClick={onStoryChange}
-                        selected={activeStory === 'profile'}
-                        data-story="profile"
-                        text="Профиль"
+                        selected={activeStory === PROFILE}
+                        data-story={PROFILE}
+                        text={PROFILE}
                       >
                         <Icon28NewsfeedOutline />
                       </TabbarItem>
@@ -89,10 +89,10 @@ const App = () => {
                   )
                 }
               >
-                <ProductsView id="products" />
-                <AuctionView id="auction" />
-                <ProfileView id="profile" />
-                <GalleryView id="gallery" />
+                <ProductsView id={PRODUCTS} />
+                <AuctionView id={AUCTION} />
+                <ProfileView id={PROFILE} />
+                <GalleryView id={GALLERY} />
               </Epic>
             </SplitCol>
           </SplitLayout>
