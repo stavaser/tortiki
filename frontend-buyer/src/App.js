@@ -23,7 +23,7 @@ import ProfileView from './views/ProfileView';
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
-  const [activeStory, setActiveStory] = useState(PROFILE);
+  const [activeStory, setActiveStory] = useState(PRODUCTS);
   const [popout, hidePopout] = useScreenSpinner();
   useEffect(() => hidePopout(), []);
 
