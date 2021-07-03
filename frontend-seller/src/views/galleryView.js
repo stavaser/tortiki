@@ -1,41 +1,22 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
 import {
-  View,
+  Icon24Add,
+  Icon28DeleteOutline,
+  Icon28EditOutline,
+} from '@vkontakte/icons';
+import {
+  Button,
+  Card,
+  CardGrid,
+  Div,
+  File,
+  Group,
+  ModalCard,
+  ModalRoot,
   Panel,
   PanelHeader,
-  Header,
-  Group,
-  SimpleCell,
-  PanelHeaderBack,
-  PanelHeaderButton,
-  Div,
-  Button,
-  FormItem,
-  SliderSwitch,
-  Select,
-  CustomSelectOption,
-  Input,
-  Title,
-  Link,
-  CellButton,
-  File,
-  CardGrid,
-  Card,
-  ModalRoot,
-  ModalCard,
-  ModalPageHeader,
+  View,
 } from '@vkontakte/vkui';
-import { VKCOM, IOS, platform } from '@vkontakte/vkui';
-import {
-  Icon28UserOutline,
-  Icon28EditOutline,
-  Icon24Add,
-  Icon24Dismiss,
-  Icon28DeleteOutline,
-} from '@vkontakte/icons';
-import cake from '../assets/cake.jpeg';
+import React, { useState } from 'react';
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 
 const GalleryView = ({ id }) => {
@@ -86,7 +67,6 @@ const GalleryView = ({ id }) => {
     <View id={id} activePanel={activePanel} modal={modal}>
       <Panel id="main">
         <PanelHeader>Галлерея</PanelHeader>
-
         <Group>
           <Div>
             <File
