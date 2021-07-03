@@ -1,4 +1,4 @@
-export const PRODUCTS = 'PRODUCTS';
-export const AUCTION = 'AUCTION';
-export const GALLERY = 'GALLERY';
-export const PROFILE = 'PROFILE';
+export const PRODUCTS = 'Продукты';
+export const AUCTION = 'Розыгрыши';
+export const FAVORITES = 'Избранные';
+export const PROFILE = 'Профиль';
