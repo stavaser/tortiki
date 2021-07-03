@@ -1,4 +1,9 @@
-import { Icon28ArchiveOutline, Icon28EditOutline } from '@vkontakte/icons';
+import {
+  Icon28ArchiveOutline,
+  Icon28EditOutline,
+  Icon16StarCircleFillYellow,
+} from '@vkontakte/icons';
+import { Card } from '@vkontakte/vkui';
 import {
   Button,
   Div,
@@ -11,21 +16,21 @@ import {
   PanelHeaderBack,
   SimpleCell,
   Title,
+  Banner,
+  Avatar,
+  RichCell,
+  Spacing,
 } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
 import React from 'react';
 import cake from '../../assets/cake.jpeg';
+import pfp from '../../assets/pfp.jpeg';
 import * as to from '../../navigation/products';
 
 const ProductsDetail = ({ id, go }) => (
   <Panel id={id}>
     <PanelHeader
       left={<PanelHeaderBack onClick={go} data-nav={to.PRODUCTS_MAIN} />}
-      // right={
-      //   <PanelHeaderButton>
-      //     <Icon28SettingsOutline />
-      //   </PanelHeaderButton>
-      // }
     >
       Подробнее
     </PanelHeader>
@@ -62,6 +67,37 @@ const ProductsDetail = ({ id, go }) => (
           Торт 'красный бархат'
         </Title>
       </Header>
+      {/* </Group>
+    <Group> */}
+      <Div>
+        <Card mode="outline">
+          <RichCell
+            multiline
+            before={
+              <Avatar size={72} src={pfp} style={{ objectFit: 'cover' }} />
+            }
+            text={
+              <>
+                89841138757
+                <Spacing />
+              </>
+            }
+            after="Продавец"
+            caption={
+              <div style={{ display: 'flex' }}>
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <span style={{ marginLeft: '5px' }}>(12)</span>
+              </div>
+            }
+          >
+            Имя Фамилия
+          </RichCell>
+        </Card>
+      </Div>
     </Group>
     <Group>
       <Header mode="secondary">Информация о продукте</Header>
@@ -86,25 +122,41 @@ const ProductsDetail = ({ id, go }) => (
         <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
       </SimpleCell>
     </Group>
+    <Group>
+      <Div>
+        <Card mode="outline">
+          <RichCell
+            multiline
+            before={
+              <Avatar size={72} src={pfp} style={{ objectFit: 'cover' }} />
+            }
+            text={
+              <>
+                89841138757
+                <Spacing />
+              </>
+            }
+            after="Продавец"
+            caption={
+              <div style={{ display: 'flex' }}>
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <Icon16StarCircleFillYellow />
+                <span style={{ marginLeft: '5px' }}>(12)</span>
+              </div>
+            }
+          >
+            Имя Фамилия
+          </RichCell>
+        </Card>
+      </Div>
+    </Group>
     {/* TODO: doesnt shrink on smaller screens */}
-    <Div style={{ display: 'flex' }}>
-      <Button
-        size="l"
-        stretched
-        style={{ marginRight: 8 }}
-        before={<Icon28ArchiveOutline />}
-      >
-        Архивировать
-      </Button>
-      <Button
-        size="l"
-        stretched
-        mode="secondary"
-        before={<Icon28EditOutline />}
-        onClick={go}
-        data-nav={to.PRODUCTS_EDIT}
-      >
-        Редактировать
+    <Div>
+      <Button size="l" stretched mode="commerce">
+        Написать в What's App
       </Button>
     </Div>
   </Panel>
