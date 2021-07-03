@@ -22,13 +22,14 @@ import {
 import { VKCOM, IOS, platform } from '@vkontakte/vkui';
 import { Icon28UserOutline, Icon28EditOutline } from '@vkontakte/icons';
 import ProfileMain from '../panels/profile/ProfileMain';
+import * as to from '../navigation/profile';
 
 const ProfileView = ({ id }) => {
-  const [activePanel, setActivePanel] = useState('profile_main');
+  const [activePanel, setActivePanel] = useState(to.PROFILE_MAIN);
 
   const go = (e) => {
-    const target = e.target.dataset.to;
-    const currentTarget = e.currentTarget.dataset.to;
+    const target = e.target.dataset.nav;
+    const currentTarget = e.currentTarget.dataset.nav;
     if (target || currentTarget) {
       setActivePanel(target || currentTarget);
     }
@@ -36,7 +37,7 @@ const ProfileView = ({ id }) => {
 
   return (
     <View id={id} activePanel={activePanel}>
-      <ProfileMain id="profile_main" go={go} />
+      <ProfileMain id={to.PROFILE_MAIN} go={go} />
     </View>
   );
 };

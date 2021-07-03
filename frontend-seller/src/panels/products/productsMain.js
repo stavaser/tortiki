@@ -1,57 +1,18 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-
-import styled from 'styled-components';
-
-import cake from '../../assets/cake.jpeg';
-import cake2 from '../../assets/cake2.jpeg';
-
+import { Icon24Add } from '@vkontakte/icons';
 import {
-  View,
+  CardGrid,
+  CellButton,
+  ContentCard,
+  Group,
+  Header,
   Panel,
   PanelHeader,
-  PanelHeaderEdit,
-  Header,
-  Group,
-  Button,
-  SimpleCell,
-  PanelHeaderBack,
-  PanelHeaderButton,
-  Div,
-  CardGrid,
-  Card,
-  CardScroll,
-  ContentCard,
-  Gallery,
-  InfoRow,
-  Title,
-  CellButton,
-  FormItem,
-  Input,
-  SliderSwitch,
-  CustomSelectOption,
-  Select,
-  Textarea,
-  FormLayoutGroup,
-  Switch,
-  Checkbox,
-  Cell,
-  File,
-  HorizontalCell,
-  HorizontalScroll,
-  Avatar,
 } from '@vkontakte/vkui';
-import {
-  Icon24Add,
-  Icon24Camera,
-  Icon28SettingsOutline,
-  Icon28ArchiveOutline,
-  Icon28EditOutline,
-  Icon28UnarchiveOutline,
-} from '@vkontakte/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
+import cake from '../../assets/cake.jpeg';
 
-import { VKCOM, IOS, platform } from '@vkontakte/vkui';
+import * as to from '../../navigation/products';
 
 const ProductsMain = ({ id, go }) => (
   <Panel id={id}>
@@ -61,7 +22,7 @@ const ProductsMain = ({ id, go }) => (
         centered
         before={<Icon24Add />}
         onClick={go}
-        data-to="add_product"
+        data-nav={to.PRODUCTS_ADD}
       >
         Добавить продукт
       </CellButton>
@@ -71,7 +32,7 @@ const ProductsMain = ({ id, go }) => (
         <ContentCard
           id="0"
           onClick={go}
-          data-to="products_detail"
+          data-nav={to.PRODUCTS_DETAIL}
           image={cake}
           subtitle="Торт 'красный бархат'"
           header="1200 руб"
@@ -81,7 +42,7 @@ const ProductsMain = ({ id, go }) => (
         <ContentCard
           id="1"
           onClick={go}
-          data-to="products_detail"
+          data-nav={to.PRODUCTS_DETAIL}
           image={cake}
           subtitle="Торт 'красный бархат'й бархат'й бархат'"
           header="1200 руб"
@@ -91,7 +52,7 @@ const ProductsMain = ({ id, go }) => (
         <ContentCard
           id="2"
           onClick={go}
-          data-to="products_detail"
+          data-nav={to.PRODUCTS_DETAIL}
           image={cake}
           subtitle="Торт 'красный бархат'й бархат'й бархат'"
           header="1200 руб"
@@ -104,7 +65,7 @@ const ProductsMain = ({ id, go }) => (
       <CardGrid size="m">
         <ContentCard
           onClick={go}
-          data-to="products_detail"
+          data-nav={to.PRODUCTS_DETAIL}
           image={cake}
           subtitle="Торт 'красный бархат'"
           header="1200 руб"

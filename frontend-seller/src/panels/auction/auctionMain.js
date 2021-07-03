@@ -10,6 +10,7 @@ import {
 } from '@vkontakte/vkui';
 import React from 'react';
 import cake2 from '../../assets/cake2.jpeg';
+import * as to from '../../navigation/auction';
 
 const AuctionMain = ({ id, go }) => {
   return (
@@ -20,7 +21,7 @@ const AuctionMain = ({ id, go }) => {
           centered
           before={<Icon24Add />}
           onClick={go}
-          data-to="add_auction"
+          data-nav={to.AUCTION_ADD}
         >
           Создать розыгрыш
         </CellButton>
@@ -30,7 +31,7 @@ const AuctionMain = ({ id, go }) => {
           <ContentCard
             id="1"
             onClick={go}
-            data-to="auction_detail"
+            data-nav={to.AUCTION_DETAIL}
             image={cake2}
             subtitle="Торт 'красный бархат'"
             header="Ставка 100 руб"
@@ -40,7 +41,7 @@ const AuctionMain = ({ id, go }) => {
           <ContentCard
             id="1"
             onClick={go}
-            data-to="auction_detail"
+            data-nav={to.AUCTION_DETAIL}
             image={cake2}
             subtitle="Торт 'красный бархат'"
             header="Ставка 100 руб"
@@ -50,7 +51,7 @@ const AuctionMain = ({ id, go }) => {
           <ContentCard
             id="1"
             onClick={go}
-            data-to="auction_detail"
+            data-nav={to.AUCTION_DETAIL}
             image={cake2}
             subtitle="Торт 'красный бархат'"
             header="Ставка 100 руб"
@@ -64,7 +65,7 @@ const AuctionMain = ({ id, go }) => {
           <ContentCard
             id="1"
             onClick={go}
-            data-to="auction_detail"
+            data-nav={to.AUCTION_DETAIL}
             image={cake2}
             subtitle="Торт 'красный бархат'"
             header="Ставка 100 руб"

@@ -22,20 +22,22 @@ import {
 } from '@vkontakte/vkui';
 import { Icon24Dismiss } from '@vkontakte/icons';
 
+import * as to from '../navigation/auction';
+
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
 const MODAL_PAGE_RESULTS = 'results';
 
 const AuctionView = ({ id }) => {
-  const [activePanel, setActivePanel] = useState('auction_main');
+  const [activePanel, setActivePanel] = useState(to.AUCTION_MAIN);
   const [activeModal, setActiveModal] = useState(null);
   const participants = [
     { id: 0, name: 'valeria', number: 1, time: 'Вчера в 20:30' },
     { id: 1, name: 'elena', number: 2, time: 'Вчера в 15:20' },
   ];
   const go = (e) => {
-    const target = e.target.dataset.to;
-    const currentTarget = e.currentTarget.dataset.to;
+    const target = e.target.dataset.nav;
+    const currentTarget = e.currentTarget.dataset.nav;
     console.log('target:', target);
     console.log('currentTarget:', currentTarget);
     console.log(e);
@@ -44,8 +46,8 @@ const AuctionView = ({ id }) => {
     }
   };
   const modal_action = (e) => {
-    const target = e.target.dataset.to;
-    const currentTarget = e.currentTarget.dataset.to;
+    const target = e.target.dataset.nav;
+    const currentTarget = e.currentTarget.dataset.nav;
     console.log('target modal:', target);
     console.log('currentTarget modal:', currentTarget);
     console.log(e);
@@ -157,10 +159,14 @@ const AuctionView = ({ id }) => {
   );
   return (
     <View id={id} activePanel={activePanel} modal={modal}>
-      <AuctionMain id="auction_main" go={go} />
-      <AuctionDetail id="auction_detail" go={go} modal_action={modal_action} />
-      <AddAuction id="add_auction" go={go} />
-      <EditAuction id="edit_auction" go={go} />
+      <AuctionMain id={to.AUCTION_MAIN} go={go} />
+      <AuctionDetail
+        id={to.AUCTION_DETAIL}
+        go={go}
+        modal_action={modal_action}
+      />
+      <AddAuction id={to.AUCTION_ADD} go={go} />
+      <EditAuction id={to.AUCTION_EDIT} go={go} />
     </View>
   );
 };

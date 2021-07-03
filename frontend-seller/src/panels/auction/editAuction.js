@@ -41,7 +41,7 @@ const EditAuction = ({ id, go }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-to="auction_detail" />}
+        left={<PanelHeaderBack onClick={go} data-nav="auction_detail" />}
       >
         Редактировать продукт
       </PanelHeader>

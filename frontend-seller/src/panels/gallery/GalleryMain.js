@@ -17,6 +17,8 @@ import {
   View,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import * as to from '../../navigation/gallery';
+
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 
 const GalleryMain = ({ id, go, modal_action, set_preview_image }) => {
@@ -59,7 +61,7 @@ const GalleryMain = ({ id, go, modal_action, set_preview_image }) => {
             fileList.map((file) => (
               <Card
                 onClick={modal_action}
-                data-to={MODAL_CARD_PHOTO_PREVIEW}
+                data-nav={MODAL_CARD_PHOTO_PREVIEW}
                 data-image={file}
               >
                 <img style={{ objectFit: 'cover', width: '100%' }} src={file} />

@@ -21,6 +21,7 @@ import {
   Textarea,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import * as to from '../../navigation/auction';
 
 const AddAuction = ({ id, go }) => {
   const [hidden, setHidden] = useState(false);
@@ -41,7 +42,7 @@ const AddAuction = ({ id, go }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-to="auction_main" />}
+        left={<PanelHeaderBack onClick={go} data-nav={to.AUCTION_MAIN} />}
       >
         Создать розыгрыш
       </PanelHeader>

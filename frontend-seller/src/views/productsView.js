@@ -4,13 +4,19 @@ import ProductsMain from '../panels/products/ProductsMain';
 import ProductsDetail from '../panels/products/ProductsDetail';
 import AddProduct from '../panels/products/AddProduct';
 import EditProducts from '../panels/products/EditProduct';
-
+// import {
+//   PRODUCTS_ADD,
+//   PRODUCTS_EDIT,
+//   PRODUCTS_DETAIL,
+//   PRODUCTS_MAIN,
+// } from '../navigation/products';
+import * as to from '../navigation/products';
 const ProductsView = ({ id }) => {
-  const [activePanel, setActivePanel] = useState('products_main');
+  const [activePanel, setActivePanel] = useState(to.PRODUCTS_MAIN);
 
   const go = (e) => {
-    const target = e.target.dataset.to;
-    const currentTarget = e.currentTarget.dataset.to;
+    const target = e.target.dataset.nav;
+    const currentTarget = e.currentTarget.dataset.nav;
     console.log('target:', target);
     console.log('currentTarget:', currentTarget);
     console.log(e);
@@ -21,10 +27,10 @@ const ProductsView = ({ id }) => {
 
   return (
     <View activePanel={activePanel} id={id}>
-      <ProductsMain id="products_main" go={go} />
-      <ProductsDetail id="products_detail" go={go} />
-      <AddProduct id="add_product" go={go} />
-      <EditProducts id="edit_product" go={go} />
+      <ProductsMain id={to.PRODUCTS_MAIN} go={go} />
+      <ProductsDetail id={to.PRODUCTS_DETAIL} go={go} />
+      <AddProduct id={to.PRODUCTS_ADD} go={go} />
+      <EditProducts id={to.PRODUCTS_EDIT} go={go} />
     </View>
   );
 };

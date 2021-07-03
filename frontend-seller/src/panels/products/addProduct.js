@@ -1,52 +1,27 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-
+import { Icon24Camera } from '@vkontakte/icons';
 import {
-  View,
-  Panel,
-  PanelHeader,
-  PanelHeaderEdit,
-  Header,
-  Group,
+  Avatar,
   Button,
-  SimpleCell,
-  PanelHeaderBack,
-  PanelHeaderButton,
-  Div,
-  CardGrid,
-  Card,
-  CardScroll,
-  ContentCard,
-  Gallery,
-  InfoRow,
-  Title,
-  CellButton,
-  FormItem,
-  Input,
-  SliderSwitch,
-  CustomSelectOption,
-  Select,
-  Textarea,
-  FormLayoutGroup,
-  Switch,
-  Checkbox,
   Cell,
+  CustomSelectOption,
+  Div,
   File,
+  FormItem,
+  FormLayoutGroup,
+  Group,
+  Header,
   HorizontalCell,
   HorizontalScroll,
-  Avatar,
+  Input,
+  Panel,
+  PanelHeader,
+  PanelHeaderBack,
+  Select,
+  Switch,
+  Textarea,
 } from '@vkontakte/vkui';
-import {
-  Icon24Add,
-  Icon24Camera,
-  Icon28SettingsOutline,
-  Icon28ArchiveOutline,
-  Icon28EditOutline,
-  Icon28UnarchiveOutline,
-} from '@vkontakte/icons';
-import cake from '../../assets/cake.jpeg';
-import cake2 from '../../assets/cake2.jpeg';
+import React, { useState } from 'react';
+import * as to from '../../navigation/products';
 
 const AddProduct = ({ id, go }) => {
   const [hidden, setHidden] = useState(false);
@@ -67,7 +42,7 @@ const AddProduct = ({ id, go }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-to="products_main" />}
+        left={<PanelHeaderBack onClick={go} data-nav={to.PRODUCTS_MAIN} />}
       >
         Добавить продукт
       </PanelHeader>

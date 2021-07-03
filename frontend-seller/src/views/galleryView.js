@@ -2,11 +2,12 @@ import { Icon28DeleteOutline, Icon28EditOutline } from '@vkontakte/icons';
 import { Button, Div, ModalCard, ModalRoot, View } from '@vkontakte/vkui';
 import React, { useState } from 'react';
 import GalleryMain from '../panels/gallery/GalleryMain';
+import * as to from '../navigation/gallery';
 
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 
 const GalleryView = ({ id }) => {
-  const [activePanel, setActivePanel] = useState('gallery_main');
+  const [activePanel, setActivePanel] = useState(to.GALLERY_MAIN);
   const [activeModal, setActiveModal] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [previewImage, setPreviewImage] = useState('');
@@ -20,14 +21,14 @@ const GalleryView = ({ id }) => {
     setFileList([...images, ...fileList]);
   };
   const go = (e) => {
-    const target = e.target.dataset.to;
-    const currentTarget = e.currentTarget.dataset.to;
+    const target = e.target.dataset.nav;
+    const currentTarget = e.currentTarget.dataset.nav;
     if (target || currentTarget) {
       setActivePanel(target || currentTarget);
     }
   };
   const modal_action = (e) => {
-    const currentTarget = e.currentTarget.dataset.to;
+    const currentTarget = e.currentTarget.dataset.nav;
     const file = e.currentTarget.dataset.image;
     setActiveModal(currentTarget);
     setPreviewImage(file);
@@ -68,7 +69,7 @@ const GalleryView = ({ id }) => {
   );
   return (
     <View id={id} activePanel={activePanel} modal={modal}>
-      <GalleryMain id="gallery_main" go={go} modal_action={modal_action} />
+      <GalleryMain id={to.GALLERY_MAIN} go={go} modal_action={modal_action} />
     </View>
   );
 };

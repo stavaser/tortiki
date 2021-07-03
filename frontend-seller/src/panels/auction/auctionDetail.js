@@ -19,6 +19,7 @@ import React from 'react';
 import cake from '../../assets/cake.jpeg';
 import cake2 from '../../assets/cake2.jpeg';
 import conf2 from '../../assets/conf2.gif';
+import * as to from '../../navigation/auction';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
@@ -28,7 +29,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-to="auction_main" />}
+        left={<PanelHeaderBack onClick={go} data-nav={to.AUCTION_MAIN} />}
         // right={
         //   <PanelHeaderButton>
         //     <Icon28SettingsOutline />
@@ -100,7 +101,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           <Header
             mode="secondary"
             aside={
-              <Link onClick={modal_action} data-to={MODAL_PAGE_PARTICIPANTS}>
+              <Link onClick={modal_action} data-nav={MODAL_PAGE_PARTICIPANTS}>
                 Показать всех
               </Link>
             }
@@ -159,7 +160,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           mode="secondary"
           before={<Icon28EditOutline />}
           onClick={go}
-          data-to="edit_auction"
+          data-nav={to.AUCTION_EDIT}
         >
           Редактировать
         </Button>

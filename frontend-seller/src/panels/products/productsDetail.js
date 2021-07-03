@@ -1,38 +1,26 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
+import { Icon28ArchiveOutline, Icon28EditOutline } from '@vkontakte/icons';
 import {
-  View,
+  Button,
+  Div,
+  Gallery,
+  Group,
+  Header,
+  InfoRow,
   Panel,
   PanelHeader,
-  Header,
-  Group,
-  SimpleCell,
   PanelHeaderBack,
-  Div,
-  Button,
-  FormItem,
-  SliderSwitch,
-  Select,
-  CustomSelectOption,
-  Input,
+  SimpleCell,
   Title,
-  Link,
-  InfoRow,
-  Gallery,
 } from '@vkontakte/vkui';
-import { VKCOM, IOS, platform } from '@vkontakte/vkui';
-import {
-  Icon28UserOutline,
-  Icon28EditOutline,
-  Icon28ArchiveOutline,
-} from '@vkontakte/icons';
+import PropTypes from 'prop-types';
+import React from 'react';
 import cake from '../../assets/cake.jpeg';
-const ProductsDetail = ({ id, go, className }) => (
+import * as to from '../../navigation/products';
+
+const ProductsDetail = ({ id, go }) => (
   <Panel id={id}>
     <PanelHeader
-      left={<PanelHeaderBack onClick={go} data-to="products_main" />}
+      left={<PanelHeaderBack onClick={go} data-nav={to.PRODUCTS_MAIN} />}
       // right={
       //   <PanelHeaderButton>
       //     <Icon28SettingsOutline />
@@ -114,7 +102,7 @@ const ProductsDetail = ({ id, go, className }) => (
         mode="secondary"
         before={<Icon28EditOutline />}
         onClick={go}
-        data-to="edit_product"
+        data-nav={to.PRODUCTS_EDIT}
       >
         Редактировать
       </Button>
