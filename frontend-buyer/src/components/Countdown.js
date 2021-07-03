@@ -37,6 +37,16 @@ const Countdown = () => {
   const days = Math.ceil(remainingTime / daySeconds);
   const daysDuration = days * daySeconds;
 
+  const getDeclinedWord = (number, list) => {
+    if (number === 1) {
+      return list[0];
+    } else if (number >= 5 || number === 0) {
+      return list[2];
+    } else {
+      return list[1];
+    }
+  };
+
   return (
     <div className="App">
       <CountdownCircleTimer
@@ -47,14 +57,10 @@ const Countdown = () => {
       >
         {({ elapsedTime }) =>
           renderTime(
-            (getTimeDays(daysDuration - elapsedTime) === 1 &&
-              dayDeclensions[0]) ||
-              ((getTimeDays(daysDuration - elapsedTime) >= 5 ||
-                getTimeDays(daysDuration - elapsedTime) === 0) &&
-                dayDeclensions[2]) ||
-              (getTimeDays(daysDuration - elapsedTime) <= 4 &&
-                dayDeclensions[1]),
-
+            getDeclinedWord(
+              getTimeDays(daysDuration - elapsedTime),
+              dayDeclensions
+            ),
             getTimeDays(daysDuration - elapsedTime)
           )
         }
@@ -70,13 +76,10 @@ const Countdown = () => {
       >
         {({ elapsedTime }) =>
           renderTime(
-            (getTimeHours(daySeconds - elapsedTime) === 1 &&
-              hourDeclensions[0]) ||
-              ((getTimeHours(daySeconds - elapsedTime) >= 5 ||
-                getTimeHours(daySeconds - elapsedTime) === 0) &&
-                hourDeclensions[2]) ||
-              (getTimeHours(daySeconds - elapsedTime) <= 4 &&
-                hourDeclensions[1]),
+            getDeclinedWord(
+              getTimeHours(daySeconds - elapsedTime),
+              hourDeclensions
+            ),
             getTimeHours(daySeconds - elapsedTime)
           )
         }
