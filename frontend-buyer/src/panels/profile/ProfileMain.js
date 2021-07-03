@@ -23,6 +23,7 @@ import {
 import React, { useState } from 'react';
 import pfp from '../../assets/pfp.jpeg';
 import { Icon16StarCircleFillYellow } from '@vkontakte/icons';
+import * as to from '../../navigation/profile';
 
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 const ProfileMain = ({ id, go }) => {

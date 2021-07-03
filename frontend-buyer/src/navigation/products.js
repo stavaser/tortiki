@@ -1,0 +1,4 @@
+export const PRODUCTS_ADD = 'PRODUCTS/ADD';
+export const PRODUCTS_EDIT = 'PRODUCTS/EDIT';
+export const PRODUCTS_DETAIL = 'PRODUCTS/DETAIL';
+export const PRODUCTS_MAIN = 'PRODUCTS/MAIN';
