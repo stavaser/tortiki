@@ -1,50 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import bridge from '@vkontakte/vk-bridge';
-import View from '@vkontakte/vkui/dist/components/View/View';
-import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
+import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import {
+  AdaptivityProvider,
+  AppRoot,
+  ConfigProvider,
+  Epic,
+  PanelHeader,
+  SplitCol,
+  SplitLayout,
+  Tabbar,
+  TabbarItem,
   useAdaptivity,
   usePlatform,
   ViewWidth,
-  AdaptivityProvider,
-  AppRoot,
-  Root,
-  ConfigProvider,
-  Panel,
-  PanelHeader,
-  Group,
-  CellButton,
-  Cell,
-  SplitLayout,
-  SplitCol,
-  Epic,
-  Tabbar,
-  TabbarItem,
-  PanelHeaderBack,
-  Placeholder,
 } from '@vkontakte/vkui';
-import { Icon28NewsfeedOutline } from '@vkontakte/icons';
 import '@vkontakte/vkui/dist/vkui.css';
+import React, { useEffect, useState } from 'react';
 import { useScreenSpinner } from './hooks/useScreenSpinner';
-
-import ProfileView from './views/ProfileView';
-import ProductsView from './views/ProductsView';
 import AuctionView from './views/AuctionView';
 import GalleryView from './views/GalleryView';
-import ProductsMain from './panels/products/ProductsMain';
-import ProductsDetail from './panels/products/ProductsDetail';
+import ProductsView from './views/ProductsView';
+import ProfileView from './views/ProfileView';
+
 const App = () => {
   const { viewWidth } = useAdaptivity();
-  const platform = usePlatform();
   const [activeStory, setActiveStory] = useState('profile');
-  const [activePanel, setActivePanel] = useState('products_main');
   const [popout, hidePopout] = useScreenSpinner();
   useEffect(() => hidePopout(), []);
-  const go = (e) => {
-    console.log(e.target.attributes[0].nodeValue);
-    setActivePanel(e.target.attributes[0].nodeValue);
-    // setActivePanel(e.currentTarget.dataset.to);
-  };
 
   const onStoryChange = (e) => {
     console.log(e.currentTarget.dataset.story);
@@ -111,20 +92,7 @@ const App = () => {
                 <ProductsView id="products" />
                 <AuctionView id="auction" />
                 <ProfileView id="profile" />
-                {/* <TestView id="profile" /> */}
                 <GalleryView id="gallery" />
-                {/* <View id="profile" activePanel={activePanel} popout={popout}>
-                  <ProductsMain
-                    id="products_main"
-                    go={go}
-                    className="App__panel"
-                  />
-                  <ProductsDetail
-                    id="products_detail"
-                    go={go}
-                    className="App__panel"
-                  />
-                </View> */}
               </Epic>
             </SplitCol>
           </SplitLayout>
