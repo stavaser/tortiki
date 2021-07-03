@@ -31,7 +31,6 @@ import ProfileView from './views/profileView';
 import ProductsView from './views/productsView';
 import AuctionView from './views/auctionView';
 import GalleryView from './views/galleryView';
-import TestView from './views/testView';
 import ProductsMain from './panels/products/productsMain';
 import ProductsDetail from './panels/products/productsDetail';
 const App = () => {
@@ -111,8 +110,8 @@ const App = () => {
               >
                 <ProductsView id="products" />
                 <AuctionView id="auction" />
-                {/* <ProfileView id="profile" /> */}
-                <TestView id="profile" />
+                <ProfileView id="profile" />
+                {/* <TestView id="profile" /> */}
                 <GalleryView id="gallery" />
                 {/* <View id="profile" activePanel={activePanel} popout={popout}>
                   <ProductsMain
