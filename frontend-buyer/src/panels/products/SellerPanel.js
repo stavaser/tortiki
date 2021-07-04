@@ -40,6 +40,7 @@ import * as to from '../../navigation/products';
 import Gallery from '../../components/products/Gallery';
 import SellerCard from '../../components/products/SellerCard';
 import ProductCard from '../../components/products/ProductCard';
+import Reviews from '../../components/products/Reviews';
 const fileList = [cake, cake2, cake, cake2];
 
 const TAB_GALLERY = 'Галлерея';
@@ -57,7 +58,7 @@ const SellerPanel = ({ id, go, from, modal_action }) => {
       </PanelHeader>
       <Group>
         <Div>
-          <SellerCard from={to.SELLER_PANEL} />
+          <SellerCard from={to.SELLER_PANEL} disabled />
         </Div>
 
         <Tabs>
@@ -100,6 +101,7 @@ const SellerPanel = ({ id, go, from, modal_action }) => {
           </CardGrid>
         </Group>
       )}
+      {activeTab === TAB_REVIEWS && <Reviews />}
     </Panel>
   );
 };
