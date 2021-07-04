@@ -1,0 +1,30 @@
+.lottery-number {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  flex-grow: 1;
+}
+
+.crossed {
+  background-color: rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(
+      to top left,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) calc(50% - 0.8px),
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) calc(50% + 0.8px),
+      rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(
+      to top right,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) calc(50% - 0.8px),
+      rgba(0, 0, 0, 1) 50%,
+      rgba(0, 0, 0, 0) calc(50% + 0.8px),
+      rgba(0, 0, 0, 0) 100%
+    );
+}
+.selected {
+  background-color: var(--accent);
+  color: white;
+  transition: none;
+}

@@ -1,4 +1,11 @@
-import { Icon24Camera } from '@vkontakte/icons';
+import {
+  Icon24Camera,
+  Icon28PaymentCardOutline,
+  Icon28PhoneOutline,
+  Icon28NameTagOutline,
+  Icon28CopyOutline,
+  Icon16Done,
+} from '@vkontakte/icons';
 import {
   Avatar,
   Button,
@@ -21,9 +28,14 @@ import {
   Textarea,
   SubnavigationButton,
   SubnavigationBar,
+  SimpleCell,
+  InfoRow,
+  IconButton,
+  Snackbar,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
 import * as to from '../../navigation/auction';
+import './style.css';
 
 const crossed = {
   backgroundColor: 'rgba(0,0,0,0.1)',
@@ -37,9 +49,12 @@ const buttonStyles = {
 };
 const AuctionSignup = ({ id, go }) => {
   const [hidden, setHidden] = useState(false);
+  const [finished, setFinished] = useState(false);
   const [hiddenSecondary, setHiddenSecondary] = useState(true);
   const [fileList, setFileList] = useState([]);
-  const [lotteryNumber, setLotteryNumber] = useState(null);
+  const [lotteryNumbers, setLotteryNumbers] = useState([]);
+  const [isTaken, setIsTaken] = useState(true);
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
 
   const products = ['торт', 'пицца'];
 
@@ -50,8 +65,34 @@ const AuctionSignup = ({ id, go }) => {
       images.push(URL.createObjectURL(e.target.files[i]));
     }
     setFileList([...images, ...fileList]);
-  };
 
+    if (lotteryNumbers) {
+      setFinished(true);
+    }
+  };
+  const select = (number) => {
+    if (lotteryNumbers.includes(number)) {
+      setLotteryNumbers(lotteryNumbers.filter((e) => e !== number));
+    } else {
+      setLotteryNumbers([...lotteryNumbers, number]);
+    }
+  };
+  console.log(finished);
+  console.log(lotteryNumbers);
+
+  const snackBar = (
+    <Snackbar
+      duration={800}
+      onClose={() => setSnackBarVisible(false)}
+      before={
+        <Avatar size={24} style={{ background: 'var(--accent)' }}>
+          <Icon16Done fill="#fff" width={14} height={14} />
+        </Avatar>
+      }
+    >
+      Текст скопирован!
+    </Snackbar>
+  );
   return (
     <Panel id={id}>
       <PanelHeader
@@ -60,6 +101,7 @@ const AuctionSignup = ({ id, go }) => {
         Участвовать
       </PanelHeader>
       <Group>
+        <Header mode="secondary">Выберите номер</Header>
         <Div
           style={{
             display: 'flex',
@@ -69,66 +111,78 @@ const AuctionSignup = ({ id, go }) => {
             alignContent: 'space-between',
           }}
         >
-          {[...Array.from({ length: 12 }, (v, i) => i)].map((i) => (
+          {/* TODO: add a check of taken numbers in backend */}
+          {[...Array.from({ length: 12 }, (v, i) => i + 1)].map((i) => (
             <Button
-              style={{ ...buttonStyles }}
-              // style={Object.assign(
-              //   buttonStyles,
-              //   lotteryNumber === 6 ? crossed : null
-              // )}
+              className={`lottery-number ${i === 6 && 'crossed'} ${
+                lotteryNumbers.includes(i) && 'selected'
+              }`}
               size="l"
               mode="outline"
-              selected={i === lotteryNumber}
-              onClick={() => setLotteryNumber(i)}
+              selected={lotteryNumbers.includes(i)}
+              onClick={() => select(i)}
             >
-              {i + 1}
+              {i}
             </Button>
           ))}
         </Div>
+        <Header>Итого к оплате: {lotteryNumbers.length * 100} ₽</Header>
       </Group>
       <Group>
         <Group>
-          <FormItem top="Название продукта">
-            <Input placeholder="Название продукта" />
-          </FormItem>
-          <FormItem top="Тип">
-            <Select
-              placeholder="Не выбран"
-              options={products.map((item) => ({
-                label: item,
-                value: item,
-              }))}
-              renderOption={({ option, ...restProps }) => (
-                <CustomSelectOption {...restProps} />
-              )}
-            />
-          </FormItem>
-          <FormLayoutGroup mode="horizontal">
-            <FormItem top="Ставка">
-              <Input type="number" />
-            </FormItem>
-            <FormItem top="Кол-во участников">
-              <Input type="number" />
-            </FormItem>
-          </FormLayoutGroup>
+          <Header mode="secondary">Реквизиты</Header>
+          <SimpleCell
+            before={<Icon28PaymentCardOutline />}
+            after={
+              <IconButton
+                onClick={() => {
+                  setSnackBarVisible(true);
+                  navigator.clipboard.writeText('5555 5555 5555 5555');
+                }}
+              >
+                <Icon28CopyOutline />
+              </IconButton>
+            }
+          >
+            <InfoRow header="Номер карты">5555 5555 5555 5555</InfoRow>
+          </SimpleCell>
+          <SimpleCell
+            before={<Icon28PhoneOutline />}
+            after={
+              <IconButton
+                onClick={() => {
+                  setSnackBarVisible(true);
+                  navigator.clipboard.writeText('89841138757');
+                }}
+              >
+                <Icon28CopyOutline />
+              </IconButton>
+            }
+          >
+            <InfoRow header="Номер мобильного банка">89841138757</InfoRow>
+          </SimpleCell>
+          <SimpleCell
+            before={<Icon28NameTagOutline />}
+            after={
+              <IconButton
+                onClick={() => {
+                  setSnackBarVisible(true);
+                  navigator.clipboard.writeText('Фамилия Имя Отчество');
+                }}
+              >
+                <Icon28CopyOutline />
+              </IconButton>
+            }
+          >
+            <InfoRow header="ФИО получателя">Фамилия Имя Отчество</InfoRow>
+          </SimpleCell>
 
-          <FormItem top="Описание">
-            <Textarea />
-          </FormItem>
-          <FormItem top="Состав">
-            <Textarea />
-          </FormItem>
-        </Group>
-        <Group
-          header={<Header aside={`(${fileList.length})`}>Фотографии</Header>}
-        >
-          <FormItem top="Загрузите фото">
+          <FormItem top="Загрузите чек">
             <File
               before={<Icon24Camera />}
               controlSize="m"
               stretched
               mode="commerce"
-              multiple
               onChange={(e) => handleChange(e)}
             >
               Открыть галерею
@@ -150,40 +204,25 @@ const AuctionSignup = ({ id, go }) => {
             </div>
           </HorizontalScroll>
         </Group>
-        <Group>
-          <Cell
-            disabled
-            after={
-              <Switch defaultChecked onChange={() => setHidden(!hidden)} />
-            }
-          >
-            Доставка на дом
-          </Cell>
-          {!hidden && (
-            <FormItem top="Цена" bottom="(Введите 0 если бесплатно)">
-              <Input type="number" />
-            </FormItem>
-          )}
-          <Cell
-            disabled
-            after={
-              <Switch onChange={() => setHiddenSecondary(!hiddenSecondary)} />
-            }
-          >
-            Доставка в другие регионы
-          </Cell>
-          {!hiddenSecondary && (
-            <FormItem top="Цена" bottom="(Введите 0 если бесплатно)">
-              <Input type="number" />
-            </FormItem>
-          )}
-        </Group>
         <Div>
-          <Button size="l" stretched mode="commerce">
+          <Button
+            size="l"
+            stretched
+            mode="commerce"
+            // TODO: ля а как
+            // disabled={
+            //   (lotteryNumbers || !fileList) &&
+            //   (!lotteryNumbers || fileList) &&
+            //   (!lotteryNumbers || !fileList)
+            // }
+            // хуй
+            // disabled={lotteryNumbers.length === 0 || fileList.length === 0}
+          >
             Отправить
           </Button>
         </Div>
       </Group>
+      {snackBarVisible && snackBar}
     </Panel>
   );
 };

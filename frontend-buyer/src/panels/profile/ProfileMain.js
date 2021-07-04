@@ -62,15 +62,9 @@ const ProfileMain = ({ id, go }) => {
 
       <Group>
         <Header mode="secondary">Меню</Header>
-        <SimpleCell expandable before={<Icon28UserOutline />}>
-          Мои продукты
-        </SimpleCell>
-        <SimpleCell expandable before={<Icon28UserOutline />}>
-          Мои розыгрыши
-        </SimpleCell>
-        <SimpleCell expandable before={<Icon28UserOutline />}>
-          Моя фото-выставка
-        </SimpleCell>
+        <SimpleCell expandable>Мои продукты</SimpleCell>
+        <SimpleCell expandable>Мои розыгрыши</SimpleCell>
+        <SimpleCell expandable>Моя фото-выставка</SimpleCell>
       </Group>
     </Panel>
   );
