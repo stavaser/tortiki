@@ -18,21 +18,9 @@ import AddProduct from '../panels/products/AddProduct';
 import EditProducts from '../panels/products/EditProduct';
 
 import * as to from '../navigation/products';
+import SellerPanel from '../panels/products/SellerPanel';
 const MODAL_NAME = 'filters';
 
-const FILTERS_SIZE = [
-  { value: 36, label: 36 },
-  { value: 37, label: 37 },
-  { value: 38, label: 38 },
-  { value: 39, label: 39 },
-];
-
-const FILTERS_STYLE = [
-  { value: 'Вечерний', label: 'Вечерний' },
-  { value: 'Деловой', label: 'Деловой' },
-  { value: 'Повседневный', label: 'Повседневный' },
-  { value: 'Спортивный', label: 'Спортивный' },
-];
 const ProductsView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.PRODUCTS_MAIN);
 
@@ -41,6 +29,9 @@ const ProductsView = ({ id }) => {
 
   const [filterSizes, setFilterSizes] = useState([36]);
   const [filterStyles, setFilterStyles] = useState(['Вечерний']);
+
+  const [previewImage, setPreviewImage] = useState('');
+  const [activeModal, setActiveModal] = useState(null);
 
   const go = (e) => {
     const target = e.target.dataset.nav;
@@ -52,12 +43,12 @@ const ProductsView = ({ id }) => {
       setActivePanel(target || currentTarget);
     }
   };
-  const openModal = () => {
-    setFiltersModalOpened(true);
+  const openModal = (name) => {
+    setActiveModal(name);
   };
 
   const closeModal = () => {
-    setFiltersModalOpened(false);
+    setActiveModal(null);
   };
 
   const onChangeFilterSize = (e) => {
@@ -89,12 +80,9 @@ const ProductsView = ({ id }) => {
   };
 
   const modal = (
-    <ModalRoot
-      activeModal={filtersModalOpened ? MODAL_NAME : null}
-      onClose={closeModal}
-    >
+    <ModalRoot activeModal={activeModal} onClose={closeModal}>
       <ModalCard
-        id={MODAL_NAME}
+        id={to.MODAL_CARD_FILTERS}
         header={'Фильтры'}
         actions={
           <Button size="l" mode="primary" onClick={applyFilters}>
@@ -116,8 +104,24 @@ const ProductsView = ({ id }) => {
           </FormItem> */}
         </FormLayout>
       </ModalCard>
+      <ModalCard
+        id={to.MODAL_CARD_PHOTO_PREVIEW}
+        onClose={() => setActiveModal(null)}
+        header={'Фотография'}
+        style={{ marginBottom: '200px' }}
+      >
+        <img src={previewImage} style={{ width: '100%', marginTop: '10px' }} />
+      </ModalCard>
     </ModalRoot>
   );
+
+  const modal_action = (e) => {
+    const currentTarget = e.currentTarget.dataset.nav;
+    const file = e.currentTarget.dataset.image;
+    setActiveModal(currentTarget);
+    setPreviewImage(file);
+  };
+
   return (
     <View activePanel={activePanel} id={id} modal={modal}>
       <ProductsMain
@@ -129,6 +133,7 @@ const ProductsView = ({ id }) => {
       <ProductsDetail id={to.PRODUCTS_DETAIL} go={go} />
       <AddProduct id={to.PRODUCTS_ADD} go={go} />
       <EditProducts id={to.PRODUCTS_EDIT} go={go} />
+      <SellerPanel id={to.SELLER_PANEL} go={go} modal_action={modal_action} />
     </View>
   );
 };

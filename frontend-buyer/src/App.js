@@ -34,7 +34,7 @@ const App = () => {
   const isDesktop = viewWidth >= ViewWidth.TABLET;
 
   return (
-    <ConfigProvider>
+    <ConfigProvider webviewType="internal">
       <AdaptivityProvider>
         <AppRoot>
           <SplitLayout
