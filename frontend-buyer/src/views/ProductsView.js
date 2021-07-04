@@ -19,9 +19,11 @@ import EditProducts from '../panels/products/EditProduct';
 
 import * as to from '../navigation/products';
 import SellerPanel from '../panels/products/SellerPanel';
+import FavoritesMain from '../panels/favorites/FavoritesMain';
+import { FAVORITES_MAIN } from '../navigation/favorites';
 const MODAL_NAME = 'filters';
 
-const ProductsView = ({ id }) => {
+const ProductsView = ({ id, _activePanel }) => {
   const [activePanel, setActivePanel] = useState(to.PRODUCTS_MAIN);
   const [panelStack, setPanelStack] = useState([to.PRODUCTS_MAIN]);
 
@@ -151,6 +153,8 @@ const ProductsView = ({ id }) => {
       <AddProduct id={to.PRODUCTS_ADD} go={go} />
       <EditProducts id={to.PRODUCTS_EDIT} go={go} />
       <SellerPanel id={to.SELLER_PANEL} go={go} modal_action={modal_action} />
+
+      <FavoritesMain id={FAVORITES_MAIN} go={go} />
     </View>
   );
 };

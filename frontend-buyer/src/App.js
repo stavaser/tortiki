@@ -17,13 +17,14 @@ import React, { useEffect, useState } from 'react';
 import { useScreenSpinner } from './hooks/useScreenSpinner';
 import { AUCTION, FAVORITES, PRODUCTS, PROFILE } from './navigation/epic';
 import AuctionView from './views/AuctionView';
+import FavoritesView from './views/FavortiesView';
 import GalleryView from './views/GalleryView';
 import ProductsView from './views/ProductsView';
 import ProfileView from './views/ProfileView';
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
-  const [activeStory, setActiveStory] = useState(PRODUCTS);
+  const [activeStory, setActiveStory] = useState(FAVORITES);
   const [popout, hidePopout] = useScreenSpinner();
   useEffect(() => hidePopout(), []);
 
@@ -92,7 +93,7 @@ const App = () => {
                 <ProductsView id={PRODUCTS} />
                 <AuctionView id={AUCTION} />
                 <ProfileView id={PROFILE} />
-                <GalleryView id={FAVORITES} />
+                <FavoritesView id={FAVORITES} />
               </Epic>
             </SplitCol>
           </SplitLayout>
