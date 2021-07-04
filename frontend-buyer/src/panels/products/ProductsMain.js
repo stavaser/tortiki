@@ -25,14 +25,8 @@ import React, { useState } from 'react';
 import cake from '../../assets/cake.jpeg';
 
 import * as to from '../../navigation/products';
+import ProductCard from '../../components/products/ProductCard';
 
-const largeImageStyles = {
-  width: 220,
-  height: 124,
-  borderRadius: 8,
-  border: '1px solid var(--placeholder_icon_background)',
-  objectFit: 'cover',
-};
 const categories = ['Торты', 'Капкейки', 'Пицца', 'Суши'];
 const ProductsMain = ({ id, go, openModal, filtersCount }) => {
   const [category, setCategory] = useState(false);
@@ -98,14 +92,15 @@ const ProductsMain = ({ id, go, openModal, filtersCount }) => {
         <Group mode="plain" id={item} header={<Header>{item}</Header>}>
           <CardGrid size="m">
             {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
-              <ContentCard
-                onClick={go}
-                data-nav={to.PRODUCTS_DETAIL}
-                image={cake}
-                subtitle="Торт 'красный бархат'"
-                header="1200 руб"
-                caption="1200 гр"
-                maxHeight={100}
+              <ProductCard
+                go={go}
+                to={to.PRODUCTS_DETAIL}
+                data={{
+                  image: cake,
+                  title: "Торт 'красный бархат'",
+                  price: '1200 ₽',
+                  weight: '1200 гр',
+                }}
               />
             ))}
           </CardGrid>
