@@ -37,7 +37,7 @@ import pfp from '../../assets/pfp.jpeg';
 import SellerCard from '../../components/products/SellerCard';
 import * as to from '../../navigation/products';
 
-const ProductsDetail = ({ id, go, back }) => {
+const ProductsDetail = ({ id, go, back, from }) => {
   const [liked, setLiked] = useState(false);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
 
@@ -66,7 +66,12 @@ const ProductsDetail = ({ id, go, back }) => {
       <PanelHeader
         separator={false}
         // TODO: need a stack-like behavior ig?
-        left={<PanelHeaderBack onClick={go} data-nav={to.PRODUCTS_MAIN} />}
+        left={
+          <PanelHeaderBack
+            onClick={go}
+            data-nav={from ? from : to.PRODUCTS_MAIN}
+          />
+        }
         right={
           <PanelHeaderButton
             onClick={() => {

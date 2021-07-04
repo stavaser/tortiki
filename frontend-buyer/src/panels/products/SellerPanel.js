@@ -60,7 +60,6 @@ const SellerPanel = ({ id, go, from, modal_action }) => {
         <Div>
           <SellerCard from={to.SELLER_PANEL} disabled />
         </Div>
-
         <Tabs>
           <TabsItem
             onClick={() => setActiveTab(TAB_GALLERY)}
