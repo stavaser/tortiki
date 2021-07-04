@@ -36,7 +36,7 @@ import cake from '../../assets/cake.jpeg';
 import pfp from '../../assets/pfp.jpeg';
 import SellerCard from '../../components/products/SellerCard';
 import * as to from '../../navigation/products';
-
+// test
 const ProductsDetail = ({ id, go, back, from }) => {
   const [liked, setLiked] = useState(false);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
@@ -111,7 +111,7 @@ const ProductsDetail = ({ id, go, back, from }) => {
           style={{ marginTop: 16 }}
           aside={
             <Title level="1" weight="bold">
-              1200 руб
+              1200 ₽
             </Title>
           }
           subtitle={
