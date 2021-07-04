@@ -23,6 +23,7 @@ const MODAL_NAME = 'filters';
 
 const ProductsView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.PRODUCTS_MAIN);
+  const [panelStack, setPanelStack] = useState([to.PRODUCTS_MAIN]);
 
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
   const [filtersCount, setFiltersCount] = useState(0);
@@ -36,13 +37,29 @@ const ProductsView = ({ id }) => {
   const go = (e) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
-    console.log('target:', target);
-    console.log('currentTarget:', currentTarget);
-    console.log(e);
+    // const stack = e.target.dataset.nav || e.currentTarget.dataset.nav;
+    // // if (target) {
+    // //   panelStack.push(target);
+    // // } else if (currentTarget) {
+    // //   panelStack.pop();
+    // // }
+    // panelStack.push(stack);
+    // setPanelStack(panelStack);
+    // setActivePanel(stack);
+
+    // console.log('STACK:', panelStack);
+
+    // console.log('target:', target);
+    // console.log('currentTarget:', currentTarget);
+    // console.log(e);
     if (target || currentTarget) {
       setActivePanel(target || currentTarget);
     }
   };
+  // const back = () => {
+  //   // setPanelStack(panelStack.pop());
+  //   setActivePanel(panelStack.pop());
+  // };
   const openModal = (name) => {
     setActiveModal(name);
   };
@@ -128,7 +145,7 @@ const ProductsView = ({ id }) => {
         id={to.PRODUCTS_MAIN}
         go={go}
         filtersCount={filtersCount}
-        openModal={openModal}
+        openModal={() => openModal(to.MODAL_CARD_FILTERS)}
       />
       <ProductsDetail id={to.PRODUCTS_DETAIL} go={go} />
       <AddProduct id={to.PRODUCTS_ADD} go={go} />

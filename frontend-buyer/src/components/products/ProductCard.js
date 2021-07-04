@@ -3,7 +3,9 @@ import { Icon16StarCircleFillYellow } from '@vkontakte/icons';
 import React from 'react';
 import cake from '../../assets/cake.jpeg';
 import PropTypes from 'prop-types';
-const ProductCard = ({ from, go, to, data }) => {
+import * as to from '../../navigation/products';
+
+const ProductCard = ({ go, to, data }) => {
   return (
     <ContentCard
       onClick={go}
@@ -18,7 +20,7 @@ const ProductCard = ({ from, go, to, data }) => {
 };
 ProductCard.propTypes = {
   go: PropTypes.func.isRequired,
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
   data: PropTypes.shape({
     title: PropTypes.string,
     price: PropTypes.number,

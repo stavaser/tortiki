@@ -39,6 +39,7 @@ import pfp from '../../assets/pfp.jpeg';
 import * as to from '../../navigation/products';
 import Gallery from '../../components/products/Gallery';
 import SellerCard from '../../components/products/SellerCard';
+import ProductCard from '../../components/products/ProductCard';
 const fileList = [cake, cake2, cake, cake2];
 
 const TAB_GALLERY = 'Галлерея';
@@ -58,8 +59,7 @@ const SellerPanel = ({ id, go, from, modal_action }) => {
         <Div>
           <SellerCard from={to.SELLER_PANEL} />
         </Div>
-      </Group>
-      <Group>
+
         <Tabs>
           <TabsItem
             onClick={() => setActiveTab(TAB_GALLERY)}
@@ -81,7 +81,25 @@ const SellerPanel = ({ id, go, from, modal_action }) => {
           </TabsItem>
         </Tabs>
       </Group>
-      <Gallery modal_action={modal_action} />
+      {activeTab === TAB_GALLERY && <Gallery modal_action={modal_action} />}
+      {activeTab === TAB_PRODUCTS && (
+        <Group mode="plain">
+          <CardGrid size="m">
+            {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
+              <ProductCard
+                go={go}
+                to={to.PRODUCTS_DETAIL}
+                data={{
+                  image: cake,
+                  title: "Торт 'красный бархат'",
+                  price: '1200 ₽',
+                  weight: '1200 гр',
+                }}
+              />
+            ))}
+          </CardGrid>
+        </Group>
+      )}
     </Panel>
   );
 };
