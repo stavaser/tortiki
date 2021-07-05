@@ -36,9 +36,9 @@ import cake from '../../assets/cake.jpeg';
 import pfp from '../../assets/pfp.jpeg';
 import SellerCard from '../../components/products/SellerCard';
 import * as to from '../../navigation/products';
-// test
+
 const ProductsDetail = ({ id, go, back, from }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(from);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
 
   const snackBar = (
@@ -124,10 +124,11 @@ const ProductsDetail = ({ id, go, back, from }) => {
             Торт 'красный бархат'
           </Title>
         </Header>
-
-        <Div>
-          <SellerCard go={go} to={to.SELLER_PANEL} />
-        </Div>
+        {!from && (
+          <Div>
+            <SellerCard go={go} to={to.SELLER_PANEL} />
+          </Div>
+        )}
       </Group>
       <Group>
         <Header mode="secondary">Информация о продукте</Header>
@@ -152,11 +153,13 @@ const ProductsDetail = ({ id, go, back, from }) => {
           <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
         </SimpleCell>
       </Group>
-      <Group>
-        <Div>
-          <SellerCard go={go} to={to.SELLER_PANEL} />
-        </Div>
-      </Group>
+      {!from && (
+        <Group>
+          <Div>
+            <SellerCard go={go} to={to.SELLER_PANEL} />
+          </Div>
+        </Group>
+      )}
       <Div>
         <Button size="l" stretched mode="commerce">
           Написать в What's App
