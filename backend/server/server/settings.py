@@ -135,16 +135,24 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : (
             'rest_framework.authentication.TokenAuthentication',
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
+            # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         ),
     'DEFAULT_FILTER_BACKENDS' : (
             'django_filters.rest_framework.DjangoFilterBackend',
         ), 
+    'DEFAULT_PERMISSIONS_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated'
+    )
 }
 
 # configure Djoser
 DJOSER = {
-    "USER_ID_FIELD": "username"
+    "LOGIN_FIELD": "phone",
+    # "USER_CREATE_PASSWORD_RETYPE": True,
+    "SERIALIZERS": {
+        "user_create": "customUser.serializers.UserCreateSerializer",
+        "user": "customUser.serializers.UserCreateSerializer",
+    }
 }
 
 
