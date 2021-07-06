@@ -1,10 +1,15 @@
 from pathlib import Path
 import requests
+import random
+
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 
 from django.http import HttpRequest
 from django.contrib.auth import login
+
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.models import User
 
 from rest_framework import (
     generics, 
@@ -20,19 +25,17 @@ from rest_framework.permissions import (
 )
 from rest_framework.views import APIView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from django.http import HttpResponse, JsonResponse
+from rest_framework.decorators import api_view, permission_classes
 
 from .models import *
 from customUser.models import CustomUser
 from customUser.serializers import *
 from .serializers import *
-from django.contrib.auth.models import User
 
-import random
 
+@permission_classes([IsAuthenticated])
 class UserProfileViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [IsAuthenticated,]
         # /user/?user_id=1
         if request.GET.get('user_id'):                                  
             user_id = request.GET.get('user_id')
@@ -64,9 +67,9 @@ class UserProfileViewSet(viewsets.ViewSet):
 #         return Response(serializer.data)
 
 
+@permission_classes([IsAuthenticated])
 class ProductsViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [IsAuthenticated,]
         # /products/?product_id=1
         if request.GET.get('product_id'):                                  
             product_id = request.GET.get('product_id')
@@ -89,7 +92,6 @@ class ProductsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        self.permission_classes = [IsAuthenticated,]
         new_product = ProductsCreateSerializer(data=request.data)
         if not new_product.is_valid():
             return Response(status=400)
@@ -108,9 +110,9 @@ class ProductsViewSet(viewsets.ViewSet):
         return Response(status=201) # Response({"product_id": new_product.data['id']}, status=201)
 
 
+@permission_classes([IsAuthenticated])
 class LotteryViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [IsAuthenticated,]
         # /lottery/?lottery_id=1
         if request.GET.get('lottery_id'):                                  
             lottery_id = request.GET.get('lottery_id')
@@ -121,7 +123,6 @@ class LotteryViewSet(viewsets.ViewSet):
         return Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):
-        self.permission_classes = [IsAuthenticated,]
         products = ProductsViewSet()
         new_product = products.create(request)
         new_lottery = ProductsLotteryCreateSerializer(data=request.data)
@@ -135,9 +136,9 @@ class LotteryViewSet(viewsets.ViewSet):
             return Response(status=400)
 
 
+@permission_classes([IsAuthenticated])
 class LotteryParticipantsViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [IsAuthenticated,]
         # /lottery/participants/?lottery_id=1
         if request.GET.get('lottery_id'):                                  
             lottery_id = request.GET.get('lottery_id')
@@ -152,7 +153,6 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
         return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):
-        self.permission_classes = [IsAuthenticated,]
         new_participant = LotteryParticipantsCreateSerializer(data=request.data)
         new_screenshot = LotteryScreenshotsSerializer(data=request.data)
         if new_participant.is_valid() and new_screenshot.is_valid():
@@ -166,10 +166,9 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
             print(new_participant.errors)
             return Response(status=400)
 
-
+@permission_classes([IsAuthenticated])
 class LotteryWinnerViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [IsAuthenticated,]
         # /lottery/participants/?lottery_id=1
         if request.GET.get('lottery_id'):                                  
             lottery_id = request.GET.get('lottery_id')
@@ -180,7 +179,6 @@ class LotteryWinnerViewSet(viewsets.ViewSet):
         return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):
-        self.permission_classes = [IsAuthenticated,]
         lottery_id = int(request.data['lottery_id'])
         lottery = get_object_or_404(ProductsLottery, id=lottery_id)
         winning_number = random.randint(1, lottery.participants)
@@ -199,6 +197,31 @@ class LotteryWinnerViewSet(viewsets.ViewSet):
         return Response(status=201)
     
 
+@permission_classes([IsAuthenticated])
+class ProductFavoriteViewSet(viewsets.ViewSet):
+    def list(self, request):
+        # /products/favorites/?product_id=1
+        if request.GET.get('product_id'):                                  
+            product_id = request.GET.get('product_id')
+            queryset = ProductFavorite.objects.filter(product__id=product_id)
+        else:
+            queryset = ProductFavorite.objects.all()
+        serializer = ProductFavoriteSerializer(queryset, many=True)
+        return Response(serializer.data) #Response(serializer.to_representation(queryset.order_by('-date_end')))
+
+    def create(self, request):
+        product_id = int(request.data['product_id'])
+        try:
+            product = Products.objects.get(id=product_id)
+        except Products.DoesNotExist:
+            return Response(status=400)
+
+        new_favorite = ProductFavorite()
+        new_favorite.product = product
+        new_favorite.user = request.user
+        new_favorite.save()
+        return Response(status=201)
+    
 # @api_view(['GET', 'POST'])
 # def get_lottery_participants(request):
 #     if request.method == 'POST':

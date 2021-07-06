@@ -76,6 +76,9 @@ class LotteryParticipants(models.Model):
         # ]
         # error_messages = {
         #     NON_FIELD_ERRORS: {
+        #         'unique_together': "Номер %(number)% уже забронирован. Пожалуйста, выберите другой.",
+        #     }
+        # }
     
     def clean(self):
         if self.number > self.lottery.participants:
@@ -84,9 +87,6 @@ class LotteryParticipants(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super(LotteryParticipants, self).save(*args, **kwargs)
-        #         'unique_together': "Номер %(number)% уже забронирован. Пожалуйста, выберите другой.",
-        #     }
-        # }
         
 class LotteryScreenshots(models.Model):
     lottery_participant = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
@@ -95,3 +95,7 @@ class LotteryScreenshots(models.Model):
 class LotteryWinner(models.Model):
     winner = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
     lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
+
+class ProductFavorite(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

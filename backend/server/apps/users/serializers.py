@@ -81,3 +81,9 @@ class ProductsTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
         fields = ['product_type']
+
+class ProductFavoriteSerializer(serializers.ModelSerializer):
+    product = ProductsSerializer()
+    class Meta:
+        model = ProductFavorite
+        fields = '__all__'
