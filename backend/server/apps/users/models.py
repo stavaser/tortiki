@@ -1,5 +1,7 @@
 from django.db import models
 from customUser.models import CustomUser
+from datetime import datetime    
+from django.utils.timezone import now
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -29,7 +31,8 @@ class Products(models.Model):
     delivery_general = models.BooleanField(default=False)
     local_price = models.PositiveSmallIntegerField(blank=True)
     general_price = models.PositiveSmallIntegerField(blank=True)
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanField(default=False)
 
 def user_directory_path(instance, filename):
 
@@ -50,3 +53,8 @@ class ProductsLottery(models.Model):
 class SellerGallery(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)
+
+class LotteryParticipants(models.Model):
+    lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
+    participant = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField()

@@ -19,9 +19,10 @@ urlpatterns = [
             # 'put': 'partial_update',
             # 'delete': 'destroy'
         })),
-    # path("profile_photo/", UploadViewSet.as_view(
-    #     {
-    #         'post': 'create',
-    #     })),
+    path("lottery/", LotteryViewSet.as_view(
+        {
+            'get': 'list',
+            'post': 'create',
+        })),
     # path("activate/<uid>/<token>/", ActivateUser.as_view()),
 ]

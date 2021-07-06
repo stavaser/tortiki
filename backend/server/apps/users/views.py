@@ -82,7 +82,7 @@ class ProductsViewSet(viewsets.ViewSet):
             queryset = Products.objects.filter(delivery_general=delivery_general)
         else:
             queryset = Products.objects.all()
-        serializer = ProductsSerializer(queryset, many=True)
+        serializer = ProductsSerializer(queryset.order_by("-date_added"), many=True)
         return Response(serializer.data)
 
     def create(self, request):
@@ -93,35 +93,34 @@ class ProductsViewSet(viewsets.ViewSet):
         if new_product.is_valid():
             seller = get_object_or_404(SellerProfile, id=int(request.data["seller"]))
             new_product.save(seller=seller)
-            return Response(status=201)
+            return Response({"product_id": new_product.data['id']}, status=201)
         else:
             return Response(status=400)
-    # def post(self, request):
-    #     return Response()
-    # def retrieve(self, request, pk=None):
-    #     self.permission_classes = [AllowAny,]
-    #     post = get_object_or_404(Post, id=int(pk))
-    #     serializer = PostSerializer(post)
-    #     return Response(serializer.data)
 
-    # def partial_update(self, request):
-    #     self.permission_classes = [IsAuthenticated,]
-    #     post = get_object_or_404(Post, id=int(request.data["id"]))
-    #     if request.user == post.user:
-    #         post.content = request.data["content"]
-    #         post.save()
-    #         return Response(status=200)
-    #     else:
-    #         return Response(status=403)
 
-    # def destroy(self, request):
-    #     # destroy by
-    #         # id
-    #         # user
-    #     self.permission_classes = [IsAuthenticated,]
-    #     post = get_object_or_404(Post, id=int(request.data["id"]))
-    #     if request.user == post.user:
-    #         post.delete()
-    #         return Response(status=200)
-    #     else:
-    #         return Response(status=403)
+class LotteryViewSet(viewsets.ViewSet):
+    def list(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        # /lottery/?lottery_id=1
+        if request.GET.get('lottery_id'):                                  
+            lottery_id = request.GET.get('lottery_id')
+            queryset = ProductsLottery.objects.filter(id=lottery_id)
+        else:
+            queryset = ProductsLottery.objects.all()
+        serializer = ProductsLotterySerializer(queryset, many=True)
+        return Response(serializer.to_representation(queryset.order_by('-date_end')))
+
+    def create(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        products = ProductsViewSet()
+        new_product = products.create(request)
+        new_lottery = ProductsLotteryCreateSerializer(data=request.data)
+        print(new_product)
+        if new_lottery.is_valid():
+            product = get_object_or_404(Products, id=new_product.data['product_id'])
+            new_lottery.save(product=product)
+            return Response(status=201)
+        else:
+            print(new_lottery.errors)
+            return Response(status=400)
+
