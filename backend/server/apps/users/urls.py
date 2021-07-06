@@ -27,7 +27,7 @@ urlpatterns = [
     path("lottery/participants/", LotteryParticipantsViewSet.as_view(
         {
             'get': 'list',
-            # 'post': 'create',
+            'post': 'create',
         })),
     # path("activate/<uid>/<token>/", ActivateUser.as_view()),
 ]

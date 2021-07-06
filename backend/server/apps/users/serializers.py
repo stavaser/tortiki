@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from customUser.serializers import UserSerializer
 from rest_framework.validators import UniqueTogetherValidator
+from django.core.exceptions import ValidationError
 
 class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,9 +51,17 @@ class LotteryParticipantsSerializer(serializers.ModelSerializer):
     #     return representation
     
 class LotteryParticipantsCreateSerializer(serializers.ModelSerializer):
+    # def validate(self, data):
+    #     instance = LotteryParticipants(**data)
+    #     try:
+    #         instance.clean()
+    #     except ValidationError as e:
+    #         raise serializers.ValidationError(e.args[0])
+
     class Meta:
         model = LotteryParticipants
         fields = ['number']
+    
 
 class ProductsTypeSerializer(serializers.ModelSerializer):
     class Meta:

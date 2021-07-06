@@ -67,6 +67,10 @@ class LotteryParticipants(models.Model):
         if self.number >= self.lottery.participants:
             raise ValidationError(_('Number exceed number of participants!'))
     
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(LotteryParticipants, self).save(*args, **kwargs)
+
     class Meta:
         unique_together = (('lottery', 'number'),)
         # constraints = [

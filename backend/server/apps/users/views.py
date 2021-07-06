@@ -1,6 +1,7 @@
 from pathlib import Path
 import requests
 from django.shortcuts import render, get_object_or_404
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 
 from django.http import HttpRequest
 from django.contrib.auth import login
@@ -148,10 +149,10 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
         new_participant = LotteryParticipantsCreateSerializer(data=request.data)
         if new_participant.is_valid():
             lottery = get_object_or_404(ProductsLottery, id=int(request.data["lottery_id"]))
-            new_lottery.save(lottery=lottery)
+            new_participant.save(participant=request.user, lottery=lottery)
             return Response(status=201)
         else:
-            print(new_lottery.errors)
+            print(new_participant.errors)
             return Response(status=400)
 
 
