@@ -37,7 +37,7 @@ const GalleryMain = ({ id, go, modal_action, set_preview_image }) => {
   };
 
   return (
-    <Panel id="main">
+    <Panel id={id}>
       <PanelHeader>Галлерея</PanelHeader>
       <Group>
         <Div>
