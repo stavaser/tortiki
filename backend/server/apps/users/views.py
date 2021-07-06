@@ -141,19 +141,16 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
         serializer = LotteryParticipantsSerializer(queryset, many=True)
         return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
 
-    # def create(self, request):
-    #     self.permission_classes = [IsAuthenticated,]
-    #     products = ProductsViewSet()
-    #     new_product = products.create(request)
-    #     new_lottery = ProductsLotteryCreateSerializer(data=request.data)
-    #     print(new_product)
-    #     if new_lottery.is_valid():
-    #         product = get_object_or_404(Products, id=new_product.data['product_id'])
-    #         new_lottery.save(product=product)
-    #         return Response(status=201)
-    #     else:
-    #         print(new_lottery.errors)
-    #         return Response(status=400)
+    def create(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        new_participant = LotteryParticipantsCreateSerializer(data=request.data)
+        if new_participant.is_valid():
+            lottery = get_object_or_404(ProductsLottery, id=int(request.data["lottery_id"]))
+            new_lottery.save(lottery=lottery)
+            return Response(status=201)
+        else:
+            print(new_lottery.errors)
+            return Response(status=400)
 
 
 # @api_view(['GET', 'POST'])

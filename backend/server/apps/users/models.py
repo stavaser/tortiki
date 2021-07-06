@@ -3,7 +3,8 @@ from customUser.models import CustomUser
 from datetime import datetime    
 from django.utils.timezone import now
 from rest_framework.validators import UniqueTogetherValidator
-from django.core.exceptions import NON_FIELD_ERRORS
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
+from django.utils.translation import gettext_lazy as _
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -52,12 +53,31 @@ class SellerGallery(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)
 
+
+# def validate_max_number(self, value):
+#     if value >= self.lottery.participants:
+#         raise ValidationError(
+#             _('Number exceed number of participants!'),
+#             params={'value': value},
+#         )
+
 class LotteryParticipants(models.Model):
     lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
-    participant = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    participant = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField()
+    
+    def clean(self):
+        if self.number >= self.lottery.participants:
+            raise ValidationError(_('Number exceed number of participants!'))
+    
     class Meta:
         unique_together = (('lottery', 'number'),)
+        # constraints = [
+        #     models.CheckConstraint(
+        #         check = models.Q(number__lte=models.F('lottery__participants')), 
+        #         name = 'number__lte_lottery__participants',
+        #     )
+        # ]
         # error_messages = {
         #     NON_FIELD_ERRORS: {
         #         'unique_together': "Номер %(number)% уже забронирован. Пожалуйста, выберите другой.",
