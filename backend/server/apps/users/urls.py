@@ -9,9 +9,6 @@ urlpatterns = [
             # 'put': 'partial_update',
             # 'delete': 'destroy'
         })),
-    # path("posts/<pk>", PostViewSet.as_view({
-    #         'get' : 'retrieve',
-    # })),
     path("products/", ProductsViewSet.as_view(
         {
             'get': 'list',
@@ -29,5 +26,9 @@ urlpatterns = [
             'get': 'list',
             'post': 'create',
         })),
-    # path("activate/<uid>/<token>/", ActivateUser.as_view()),
+    path("lottery/participants/winners/", LotteryWinnerViewSet.as_view(
+        {
+            'get': 'list',
+            'post': 'create',
+        })),
 ]

@@ -18,7 +18,7 @@ class ProductsCreateSerializer(serializers.ModelSerializer):
         #     'general_price'
         # ]
         exclude = ['date_added']
-        
+
 class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductsPictures
@@ -71,7 +71,12 @@ class LotteryScreenshotsSerializer(serializers.ModelSerializer):
         model = LotteryScreenshots
         fields = ['screenshot']
 
-
+class LotteryWinnerSerializer(serializers.ModelSerializer):
+    winner = LotteryParticipantsSerializer()
+    class Meta:
+        model = LotteryWinner
+        fields = '__all__'
+    
 class ProductsTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products

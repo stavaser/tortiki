@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 class SellerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-
+    
 class Products(models.Model):
     PRODUCT_TYPE_CHOICES = (
         ('Торт', 'Торт'),
@@ -54,7 +54,6 @@ class SellerGallery(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to=gallery_path, height_field=None, width_field=None, max_length=100)
 
-
 # def validate_max_number(self, value):
 #     if value >= self.lottery.participants:
 #         raise ValidationError(
@@ -66,14 +65,6 @@ class LotteryParticipants(models.Model):
     lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
     participant = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField()
-    
-    def clean(self):
-        if self.number >= self.lottery.participants:
-            raise ValidationError(_('Number exceed number of participants!'))
-    
-    def save(self, *args, **kwargs):
-        self.clean()
-        super(LotteryParticipants, self).save(*args, **kwargs)
 
     class Meta:
         unique_together = (('lottery', 'number'),)
@@ -85,6 +76,14 @@ class LotteryParticipants(models.Model):
         # ]
         # error_messages = {
         #     NON_FIELD_ERRORS: {
+    
+    def clean(self):
+        if self.number > self.lottery.participants:
+            raise ValidationError(_('Number exceed number of participants!'))
+    
+    def save(self, *args, **kwargs):
+        self.clean()
+        super(LotteryParticipants, self).save(*args, **kwargs)
         #         'unique_together': "Номер %(number)% уже забронирован. Пожалуйста, выберите другой.",
         #     }
         # }
@@ -92,3 +91,7 @@ class LotteryParticipants(models.Model):
 class LotteryScreenshots(models.Model):
     lottery_participant = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
     screenshot = models.ImageField(upload_to=screenshots_path, height_field=None, width_field=None, max_length=100)
+
+class LotteryWinner(models.Model):
+    winner = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
+    lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)

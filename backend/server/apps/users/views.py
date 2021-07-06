@@ -28,20 +28,11 @@ from customUser.serializers import *
 from .serializers import *
 from django.contrib.auth.models import User
 
-# class UserProfileViewSet(viewsets.ViewSet):
-#     def list(self, request):
-#         self.permission_classes = [AllowAny,]
-#         if request.method == 'GET':
-#             users = UserProfile.objects.all()
-#             serializer = UserProfileSerializer(users, many=True)
-#             return Response(serializer.data)
-
-#         # serializer = UserProfileSerializer(UserProfile.objects.all())
-#         # return Response(serializer.data)
+import random
 
 class UserProfileViewSet(viewsets.ViewSet):
     def list(self, request):
-        self.permission_classes = [AllowAny,]
+        self.permission_classes = [IsAuthenticated,]
         # /user/?user_id=1
         if request.GET.get('user_id'):                                  
             user_id = request.GET.get('user_id')
@@ -55,14 +46,23 @@ class UserProfileViewSet(viewsets.ViewSet):
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    # def create(self, request):
-    #     self.permission_classes = [IsAuthenticated,]
-    #     new_profile = UserProfileCreateSerializer(data=request.data)
-    #     if new_profile.is_valid():
-    #         new_profile.save(user=request.user)
-    #         return Response(status=201)
-    #     else:
-    #         return Response(status=400)
+
+# class SellerProfileViewSet(viewsets.ViewSet):
+#     def list(self, request):
+#         self.permission_classes = [IsAuthenticated,]
+#         # /seller/?user_id=1
+#         if request.GET.get('user_id'):                                  
+#             user_id = request.GET.get('user_id')
+#             queryset = CustomUser.objects.filter(id=user_id)
+#         # /seller/?phone=root
+#         elif request.GET.get('phone'):                               
+#             phone = request.GET.get('phone')            
+#             queryset = CustomUser.objects.filter(phone=phone)
+#         else:
+#             queryset = CustomUser.objects.all()
+#         serializer = UserSerializer(queryset, many=True)
+#         return Response(serializer.data)
+
 
 class ProductsViewSet(viewsets.ViewSet):
     def list(self, request):
@@ -166,6 +166,38 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
             print(new_participant.errors)
             return Response(status=400)
 
+
+class LotteryWinnerViewSet(viewsets.ViewSet):
+    def list(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        # /lottery/participants/?lottery_id=1
+        if request.GET.get('lottery_id'):                                  
+            lottery_id = request.GET.get('lottery_id')
+            queryset = LotteryWinner.objects.filter(winner__lottery__id=lottery_id)
+        else:
+            queryset = LotteryWinner.objects.all()
+        serializer = LotteryWinnerSerializer(queryset, many=True)
+        return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
+
+    def create(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        lottery_id = int(request.data['lottery_id'])
+        lottery = get_object_or_404(ProductsLottery, id=lottery_id)
+        winning_number = random.randint(1, lottery.participants)
+        new_winner = LotteryWinner()
+        print(winning_number)
+        try:
+            lottery_participant = LotteryParticipants.objects.get(id=lottery_id, number=winning_number) or "none"
+            print(lottery_participant.participant.first_name)
+            new_winner.winner = lottery_participant
+            new_winner.lottery = lottery
+            new_winner.save()
+        except LotteryParticipants.DoesNotExist:
+            lottery_participant = None
+            print(lottery_participant)
+
+        return Response(status=201)
+    
 
 # @api_view(['GET', 'POST'])
 # def get_lottery_participants(request):
