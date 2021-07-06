@@ -91,14 +91,21 @@ class ProductsViewSet(viewsets.ViewSet):
     def create(self, request):
         self.permission_classes = [IsAuthenticated,]
         new_product = ProductsCreateSerializer(data=request.data)
-        new_product.is_valid()
-        print(new_product.errors)
-        if new_product.is_valid():
-            seller = get_object_or_404(SellerProfile, id=int(request.data["seller"]))
-            new_product.save(seller=seller)
-            return Response({"product_id": new_product.data['id']}, status=201)
-        else:
+        if not new_product.is_valid():
             return Response(status=400)
+
+        seller = get_object_or_404(SellerProfile, id=int(request.data["seller"]))
+        new_product.save(seller=seller)
+
+        product = get_object_or_404(Products, id=new_product.data['id'])
+        picture = {}
+        for f in request.FILES.getlist('picture'):
+            picture['picture'] = f
+            new_picture = ProductsPicturesCreateSerializer(data=picture)
+            if new_picture.is_valid():
+                new_picture.save(product=product)
+
+        return Response(status=201) # Response({"product_id": new_product.data['id']}, status=201)
 
 
 class LotteryViewSet(viewsets.ViewSet):

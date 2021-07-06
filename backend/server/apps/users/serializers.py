@@ -12,8 +12,17 @@ class ProductsSerializer(serializers.ModelSerializer):
 class ProductsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        model.date_added = serializers.DateTimeField() 
+        # model.date_added = serializers.DateTimeField() 
+        # fields = ['seller', 'title', 'product_type', 'price', 'weight', 'description', 
+        #     'ingredients', 'delivery_local', 'delivery_general', 'local_price',
+        #     'general_price'
+        # ]
         exclude = ['date_added']
+        
+class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductsPictures
+        fields = ['picture']
 
 class ProductsLotterySerializer(serializers.ModelSerializer):
     product = ProductsSerializer()

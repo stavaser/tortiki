@@ -34,10 +34,10 @@ def screenshots_path(instance, filename):
     return 'media/screenshots/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
   
 def products_path(instance, filename):
-    return 'media/products/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
+    return 'media/products/seller_{0}/{1}'.format(instance.product.seller.id, filename)
 
 def gallery_path(instance, filename):
-    return 'media/gallery/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
+    return 'media/gallery/seller_{0}/{1}'.format(instance.seller.id, filename)
   
 
 class ProductsPictures(models.Model):
