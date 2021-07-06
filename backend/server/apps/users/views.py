@@ -22,6 +22,8 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.http import HttpResponse, JsonResponse
 
 from .models import *
+from customUser.models import CustomUser
+from customUser.serializers import *
 from .serializers import *
 from django.contrib.auth.models import User
 
@@ -42,24 +44,24 @@ class UserProfileViewSet(viewsets.ViewSet):
         # /user/?user_id=1
         if request.GET.get('user_id'):                                  
             user_id = request.GET.get('user_id')
-            queryset = UserProfile.objects.filter(user=user_id)
+            queryset = CustomUser.objects.filter(id=user_id)
         # /user/?phone=root
         elif request.GET.get('phone'):                               
             phone = request.GET.get('phone')            
-            queryset = UserProfile.objects.filter(user__phone=phone)
+            queryset = CustomUser.objects.filter(phone=phone)
         else:
-            queryset = UserProfile.objects.all()
-        serializer = UserProfileSerializer(queryset, many=True)
+            queryset = CustomUser.objects.all()
+        serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, request):
-        self.permission_classes = [IsAuthenticated,]
-        new_profile = UserProfileCreateSerializer(data=request.data)
-        if new_profile.is_valid():
-            new_profile.save(user=request.user)
-            return Response(status=201)
-        else:
-            return Response(status=400)
+    # def create(self, request):
+    #     self.permission_classes = [IsAuthenticated,]
+    #     new_profile = UserProfileCreateSerializer(data=request.data)
+    #     if new_profile.is_valid():
+    #         new_profile.save(user=request.user)
+    #         return Response(status=201)
+    #     else:
+    #         return Response(status=400)
 
 class ProductsViewSet(viewsets.ViewSet):
     def list(self, request):

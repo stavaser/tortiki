@@ -5,7 +5,7 @@ urlpatterns = [
     path("user/", UserProfileViewSet.as_view(
         {
             'get': 'list',
-            'post': 'create',
+            # 'post': 'create',
             # 'put': 'partial_update',
             # 'delete': 'destroy'
         })),
