@@ -147,9 +147,13 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
     def create(self, request):
         self.permission_classes = [IsAuthenticated,]
         new_participant = LotteryParticipantsCreateSerializer(data=request.data)
-        if new_participant.is_valid():
+        new_screenshot = LotteryScreenshotsSerializer(data=request.data)
+        if new_participant.is_valid() and new_screenshot.is_valid():
             lottery = get_object_or_404(ProductsLottery, id=int(request.data["lottery_id"]))
             new_participant.save(participant=request.user, lottery=lottery)
+            
+            lottery_participant = get_object_or_404(LotteryParticipants, id=new_participant.data['id'])
+            new_screenshot.save(lottery_participant=lottery_participant)
             return Response(status=201)
         else:
             print(new_participant.errors)

@@ -51,17 +51,17 @@ class LotteryParticipantsSerializer(serializers.ModelSerializer):
     #     return representation
     
 class LotteryParticipantsCreateSerializer(serializers.ModelSerializer):
-    # def validate(self, data):
-    #     instance = LotteryParticipants(**data)
-    #     try:
-    #         instance.clean()
-    #     except ValidationError as e:
-    #         raise serializers.ValidationError(e.args[0])
 
     class Meta:
         model = LotteryParticipants
-        fields = ['number']
+        fields = ['id', 'number']
     
+class LotteryScreenshotsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LotteryScreenshots
+        fields = ['screenshot']
+
 
 class ProductsTypeSerializer(serializers.ModelSerializer):
     class Meta:

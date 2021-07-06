@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             name='LotteryScreenshots',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('screenshot', models.ImageField(upload_to=apps.users.models.user_directory_path)),
+                ('screenshot', models.ImageField(upload_to=apps.users.models.screenshots_path)),
                 ('lottery_participant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.lotteryparticipants')),
             ],
         ),

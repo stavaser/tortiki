@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             name='SellerGallery',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('picture', models.ImageField(upload_to=apps.users.models.user_directory_path)),
+                ('picture', models.ImageField(upload_to=apps.users.models.gallery_path)),
                 ('seller', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.sellerprofile')),
             ],
         ),
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             name='ProductsPictures',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('picture', models.ImageField(upload_to=apps.users.models.user_directory_path)),
+                ('picture', models.ImageField(upload_to=apps.users.models.products_path)),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.products')),
             ],
         ),

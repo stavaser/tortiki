@@ -30,15 +30,19 @@ class Products(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     is_archived = models.BooleanField(default=False)
 
-def user_directory_path(instance, filename):
+def screenshots_path(instance, filename):
+    return 'media/screenshots/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
+  
+def products_path(instance, filename):
+    return 'media/products/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
 
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+def gallery_path(instance, filename):
+    return 'media/gallery/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)
   
 
 class ProductsPictures(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)
+    picture = models.ImageField(upload_to=products_path, height_field=None, width_field=None, max_length=100)
 
 
 class ProductsLottery(models.Model):
@@ -48,7 +52,7 @@ class ProductsLottery(models.Model):
 
 class SellerGallery(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)
+    picture = models.ImageField(upload_to=gallery_path, height_field=None, width_field=None, max_length=100)
 
 
 # def validate_max_number(self, value):
@@ -87,4 +91,4 @@ class LotteryParticipants(models.Model):
         
 class LotteryScreenshots(models.Model):
     lottery_participant = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
-    screenshot = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)
+    screenshot = models.ImageField(upload_to=screenshots_path, height_field=None, width_field=None, max_length=100)

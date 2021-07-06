@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lotteryparticipants',
             name='screenshot',
-            field=models.ImageField(default=True, upload_to=apps.users.models.user_directory_path),
+            field=models.ImageField(default=True, upload_to=apps.users.models.screenshots_path),
             preserve_default=False,
         ),
     ]
