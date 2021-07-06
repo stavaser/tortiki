@@ -124,3 +124,40 @@ class LotteryViewSet(viewsets.ViewSet):
             print(new_lottery.errors)
             return Response(status=400)
 
+
+class LotteryParticipantsViewSet(viewsets.ViewSet):
+    def list(self, request):
+        self.permission_classes = [IsAuthenticated,]
+        # /lottery/participants/?lottery_id=1
+        if request.GET.get('lottery_id'):                                  
+            lottery_id = request.GET.get('lottery_id')
+            queryset = LotteryParticipants.objects.filter(lottery__id=lottery_id)
+        # /lottery/participants/?user_id=1
+        elif request.GET.get('user_id'):                                  
+            user_id = request.GET.get('user_id')
+            queryset = LotteryParticipants.objects.filter(participant__id=user_id)
+        else:
+            queryset = LotteryParticipants.objects.all()
+        serializer = LotteryParticipantsSerializer(queryset, many=True)
+        return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
+
+    # def create(self, request):
+    #     self.permission_classes = [IsAuthenticated,]
+    #     products = ProductsViewSet()
+    #     new_product = products.create(request)
+    #     new_lottery = ProductsLotteryCreateSerializer(data=request.data)
+    #     print(new_product)
+    #     if new_lottery.is_valid():
+    #         product = get_object_or_404(Products, id=new_product.data['product_id'])
+    #         new_lottery.save(product=product)
+    #         return Response(status=201)
+    #     else:
+    #         print(new_lottery.errors)
+    #         return Response(status=400)
+
+
+# @api_view(['GET', 'POST'])
+# def get_lottery_participants(request):
+#     if request.method == 'POST':
+#         return Response({"message": "Got some data!", "data": request.data})
+#     return Response({"message": "Hello, world!"})

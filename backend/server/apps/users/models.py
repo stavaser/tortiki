@@ -2,16 +2,14 @@ from django.db import models
 from customUser.models import CustomUser
 from datetime import datetime    
 from django.utils.timezone import now
+from rest_framework.validators import UniqueTogetherValidator
+from django.core.exceptions import NON_FIELD_ERRORS
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    region = models.CharField(max_length=50)
-    village = models.CharField(max_length=50)
 
 class SellerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    region = models.CharField(max_length=50)
-    village = models.CharField(max_length=50)
 
 class Products(models.Model):
     PRODUCT_TYPE_CHOICES = (
@@ -58,3 +56,14 @@ class LotteryParticipants(models.Model):
     lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
     participant = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField()
+    class Meta:
+        unique_together = (('lottery', 'number'),)
+        # error_messages = {
+        #     NON_FIELD_ERRORS: {
+        #         'unique_together': "Номер %(number)% уже забронирован. Пожалуйста, выберите другой.",
+        #     }
+        # }
+        
+class LotteryScreenshots(models.Model):
+    lottery_participant = models.ForeignKey(LotteryParticipants, on_delete=models.CASCADE)
+    screenshot = models.ImageField(upload_to=user_directory_path, height_field=None, width_field=None, max_length=100)

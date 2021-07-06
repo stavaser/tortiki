@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from .models import *
+from customUser.serializers import UserSerializer
+from rest_framework.validators import UniqueTogetherValidator
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -43,7 +46,26 @@ class ProductsLotteryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductsLottery
         fields = ['date_end', 'participants']
+
+class LotteryParticipantsSerializer(serializers.ModelSerializer):
+    participant = UserProfileSerializer()
+    class Meta:
+        model = LotteryParticipants
+        fields = '__all__'
     
+    def to_representation(self, obj):
+        representation = super().to_representation(obj)
+        representation['user_profile_id'] = representation['participant']['id']
+        user_representation = representation.pop('participant')
+        for key in user_representation:
+            representation[key] = user_representation[key]
+
+        return representation
+    
+class LotteryParticipantsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LotteryParticipants
+        fields = ['number']
 
 class ProductsTypeSerializer(serializers.ModelSerializer):
     class Meta:
