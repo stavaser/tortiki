@@ -1,31 +1,18 @@
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import {
-  View,
-  Panel,
-  PanelHeader,
-  Header,
-  Group,
-  SimpleCell,
-  PanelHeaderBack,
-  Div,
-  Button,
-  FormItem,
-  SliderSwitch,
-  Select,
-  CustomSelectOption,
-  Input,
-  Title,
-  Link,
-} from '@vkontakte/vkui';
-import { VKCOM, IOS, platform } from '@vkontakte/vkui';
-import { Icon28UserOutline, Icon28EditOutline } from '@vkontakte/icons';
-import ProfileMain from '../panels/profile/ProfileMain';
+import { View } from '@vkontakte/vkui';
+import React, { useState, useEffect } from 'react';
 import * as to from '../navigation/profile';
+import ProfileMain from '../panels/profile/ProfileMain';
+import { getUser } from '../redux/actions/user.actions';
+import store from '../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
 
 const ProfileView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.PROFILE_MAIN);
+  const currentUser = useSelector((state) => state.users.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
 
   const go = (e) => {
     const target = e.target.dataset.nav;
@@ -37,7 +24,7 @@ const ProfileView = ({ id }) => {
 
   return (
     <View id={id} activePanel={activePanel}>
-      <ProfileMain id={to.PROFILE_MAIN} go={go} />
+      <ProfileMain id={to.PROFILE_MAIN} go={go} data={{ currentUser }} />
     </View>
   );
 };

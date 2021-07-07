@@ -93,9 +93,13 @@ const App = () => {
               >
                 <ProductsView id={PRODUCTS} />
                 <AuctionView id={AUCTION} />
-                {/* <ProfileView id={PROFILE} /> */}
+
                 <FavoritesView id={FAVORITES} />
-                <AuthView id={PROFILE} />
+                {localStorage.getItem('token') ? (
+                  <ProfileView id={PROFILE} />
+                ) : (
+                  <AuthView id={PROFILE} />
+                )}
               </Epic>
             </SplitCol>
           </SplitLayout>

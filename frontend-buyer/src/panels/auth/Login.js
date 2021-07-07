@@ -8,7 +8,7 @@ import {
   PanelHeader,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
-import userLogin from '../../redux/actions/user.actions';
+import { userLogin } from '../../redux/actions/user.actions';
 import store from '../../redux/store';
 
 const Login = ({ id, go }) => {
@@ -17,7 +17,6 @@ const Login = ({ id, go }) => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log('submitted');
     store.dispatch(userLogin(phone, password));
   };
 

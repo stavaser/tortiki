@@ -26,7 +26,8 @@ import { Icon16StarCircleFillYellow } from '@vkontakte/icons';
 import * as to from '../../navigation/profile';
 
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
-const ProfileMain = ({ id, go }) => {
+const ProfileMain = ({ id, go, data }) => {
+  const { first_name, last_name, phone, region, village } = data.currentUser;
   return (
     <Panel id={id}>
       <PanelHeader>Профиль</PanelHeader>
@@ -39,24 +40,8 @@ const ProfileMain = ({ id, go }) => {
             style={{ objectFit: 'cover' }}
           />
         }
-        header="Имя Фамилия"
-        subheader={
-          89841138757
-          //   <div
-          //     style={{
-          //       display: 'flex',
-          //       //   width: '100px',
-          //       //   justifyContent: 'space-between',
-          //     }}
-          //   >
-          //     <Icon16StarCircleFillYellow />
-          //     <Icon16StarCircleFillYellow />
-          //     <Icon16StarCircleFillYellow />
-          //     <Icon16StarCircleFillYellow />
-          //     <Icon16StarCircleFillYellow />
-          //     <span style={{ marginLeft: '5px' }}>(12)</span>
-          //   </div>
-        }
+        header={first_name + ' ' + last_name}
+        subheader={phone}
         actions={<Button>Настройки</Button>}
       />
 
