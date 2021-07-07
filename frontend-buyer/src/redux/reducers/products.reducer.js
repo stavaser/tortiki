@@ -27,8 +27,7 @@ const productsReducer = (state = initialState, action) => {
     case PRODUCTS_ALL_REQUESTED:
       return { ...state, list: payload };
     case PRODUCTS_INFO_REQUESTED:
-      console.log('info', payload);
-      return { ...state, info: payload };
+      return { ...state, info: payload[0].product };
     case PRODUCT_ID_SET:
       console.log('payload', payload);
       return { ...state, product_id: payload };

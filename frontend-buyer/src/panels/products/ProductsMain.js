@@ -71,58 +71,51 @@ const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
           >
             Фильтры
           </SubnavigationButton>
-          {categories.map((item) => (
-            <Link
-              to={item}
-              spy={true}
-              smooth={true}
-              offset={-50}
-              style={{ marginRight: '10px' }}
-            >
-              <SubnavigationButton
-                selected={item === category}
-                onClick={() => selectCategory(item)}
+          {products.length > 1 &&
+            products.map((item) => (
+              <Link
+                to={item.product_type}
+                spy={true}
+                smooth={true}
+                offset={-50}
+                style={{ marginRight: '10px' }}
               >
-                {item}
-              </SubnavigationButton>
-            </Link>
-          ))}
+                <SubnavigationButton
+                  selected={item.product_type === category}
+                  onClick={() => selectCategory(item.product_type)}
+                >
+                  {item.product_type}
+                </SubnavigationButton>
+              </Link>
+            ))}
         </SubnavigationBar>
       </Group>
-      {categories.map((item) => (
-        <Group mode="plain" id={item} header={<Header>{item}</Header>}>
-          <CardGrid size="m">
-            {products.length > 1 &&
-              products.map((product) => {
+      {products.length > 1 &&
+        products.map((category) => (
+          <Group
+            mode="plain"
+            id={category.product_type}
+            header={<Header>{category.product_type}</Header>}
+          >
+            <CardGrid size="m">
+              {[category.product].map((item) => {
                 return (
                   <ProductCard
                     go={go}
                     to={to.PRODUCTS_DETAIL}
-                    product_id={product.id}
+                    product_id={item.id}
                     data={{
                       image: cake,
-                      title: product.title,
-                      price: product.price,
-                      weight: product.weight,
+                      title: item.title,
+                      price: item.price,
+                      weight: item.weight,
                     }}
                   />
                 );
               })}
-            {/* {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
-              <ProductCard
-                go={go}
-                to={to.PRODUCTS_DETAIL}
-                data={{
-                  image: cake,
-                  title: "Торт 'красный бархат'",
-                  price: '1200 ₽',
-                  weight: '1200 гр',
-                }}
-              />
-            ))} */}
-          </CardGrid>
-        </Group>
-      ))}
+            </CardGrid>
+          </Group>
+        ))}
     </Panel>
   );
 };

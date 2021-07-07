@@ -30,11 +30,9 @@ import { getProductInfo } from '../../redux/actions/products.actions';
 const ProductsDetail = ({ id, go, back, from }) => {
   const [liked, setLiked] = useState(from);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
-  // const autor = useSelector((state) =>
-  //   state.autors.find((autor) => autor.id === donateRequest.autorId)
-  // );
+
   const product_id = useSelector((state) => state.products.product_id);
-  const product = useSelector((state) => state.products.info)[0] || [];
+  const product = useSelector((state) => state.products.info) || [];
   const dispatch = useDispatch();
   console.log('PRODUCT_ID', product_id);
 

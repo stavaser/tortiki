@@ -7,7 +7,6 @@ import ProductsService from '../services/products.service';
 export const getAllProducts = () => async (dispatch) => {
   try {
     const res = await ProductsService.getAll();
-
     dispatch({
       type: PRODUCTS_ALL_REQUESTED,
       payload: res.data,
