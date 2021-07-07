@@ -10,15 +10,8 @@ class SellerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     
 class Products(models.Model):
-    PRODUCT_TYPE_CHOICES = (
-        ('Торт', 'Торт'),
-        ('Пицца', 'Пицца'),
-        ('Суши', 'Суши'),
-    )
-
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
-    product_type = models.CharField(max_length=50, choices=PRODUCT_TYPE_CHOICES)
     price = models.PositiveSmallIntegerField()
     weight = models.PositiveSmallIntegerField(blank=True)
     description = models.TextField(max_length=350, blank=True)
@@ -29,6 +22,16 @@ class Products(models.Model):
     general_price = models.PositiveSmallIntegerField(blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     is_archived = models.BooleanField(default=False)
+
+class ProductType(models.Model):
+    PRODUCT_TYPE_CHOICES = (
+        ('Торт', 'Торт'),
+        ('Пицца', 'Пицца'),
+        ('Суши', 'Суши'),
+    )
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product_type = models.CharField(max_length=50, choices=PRODUCT_TYPE_CHOICES)
+
 
 def screenshots_path(instance, filename):
     return 'media/screenshots/user_{0}/{1}'.format(instance.lottery_participant.participant.id, filename)

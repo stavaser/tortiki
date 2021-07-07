@@ -66,6 +66,18 @@ class UserProfileViewSet(viewsets.ViewSet):
 #         serializer = UserSerializer(queryset, many=True)
 #         return Response(serializer.data)
 
+@permission_classes([IsAuthenticated])
+class ProductTypeViewSet(viewsets.ViewSet):
+    def list(self, request):
+        # /product_type/?product_type=торт
+        if request.GET.get('product_type'):                                  
+            product_type = request.GET.get('product_type')
+            queryset = produt.objects.filter(product_type=product_type)
+        # /products/?seller_id=1
+        else:
+            queryset = ProductType.objects.all()
+        serializer = ProductTypeSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 @permission_classes([IsAuthenticated])
 class ProductsViewSet(viewsets.ViewSet):
@@ -73,22 +85,22 @@ class ProductsViewSet(viewsets.ViewSet):
         # /products/?product_id=1
         if request.GET.get('product_id'):                                  
             product_id = request.GET.get('product_id')
-            queryset = Products.objects.filter(id=product_id)
+            queryset = ProductType.objects.filter(product__id=product_id)
         # /products/?seller_id=1
         elif request.GET.get('seller_id'):                               
             seller_id = request.GET.get('seller_id')            
-            queryset = Products.objects.filter(seller=seller_id)
+            queryset = ProductType.objects.filter(seller__id=seller_id)
         # /products/?delivery_local=True
         elif request.GET.get('delivery_local'):                               
             delivery_local = request.GET.get('delivery_local')            
-            queryset = Products.objects.filter(delivery_local=delivery_local)
+            queryset = ProductType.objects.filter(product__delivery_local=delivery_local)
         # /products/?delivery_general=True
         elif request.GET.get('delivery_general'):                               
             delivery_general = request.GET.get('delivery_general')            
             queryset = Products.objects.filter(delivery_general=delivery_general)
         else:
-            queryset = Products.objects.all()
-        serializer = ProductsSerializer(queryset.order_by("-date_added"), many=True)
+            queryset = ProductType.objects.all()
+        serializer = ProductTypeSerializer(queryset.order_by("-product__date_added"), many=True)
         return Response(serializer.data)
 
     def create(self, request):

@@ -9,6 +9,11 @@ urlpatterns = [
             # 'put': 'partial_update',
             # 'delete': 'destroy'
         })),
+    path("product_type/", ProductTypeViewSet.as_view(
+        {
+            'get': 'list',
+            # 'post': 'create',
+        })),
     path("products/", ProductsViewSet.as_view(
         {
             'get': 'list',

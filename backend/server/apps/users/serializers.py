@@ -77,10 +77,11 @@ class LotteryWinnerSerializer(serializers.ModelSerializer):
         model = LotteryWinner
         fields = '__all__'
     
-class ProductsTypeSerializer(serializers.ModelSerializer):
+class ProductTypeSerializer(serializers.ModelSerializer):
+    product = ProductsSerializer()
     class Meta:
-        model = Products
-        fields = ['product_type']
+        model = ProductType
+        fields = ['product_type', 'product']
 
 class ProductFavoriteSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
