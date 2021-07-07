@@ -4,13 +4,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { rootReducer } from './reducers/rootReducer';
 
-const initalState = {};
+// const initalState = {
+
+// };
 
 const middleware = [thunk];
 
 const store = createStore(
   rootReducer,
-  initalState,
+  //   initalState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 

@@ -1,46 +1,23 @@
 import {
-  Icon24Filter,
-  Icon24FavoriteOutline,
-  Icon16StarCircleFillYellow,
-} from '@vkontakte/icons';
-import {
   CardGrid,
-  CellButton,
-  ContentCard,
+  Div,
   Group,
-  Header,
   Panel,
   PanelHeader,
-  Banner,
-  Avatar,
-  Button,
-  CardScroll,
-  Card,
-  Spacing,
-  RichCell,
-  Div,
-  HorizontalScroll,
-  HorizontalCell,
-  SubnavigationBar,
-  SubnavigationButton,
-  Counter,
+  PanelHeaderBack,
   Tabs,
   TabsItem,
-  PanelHeaderBack,
 } from '@vkontakte/vkui';
-import { Link } from 'react-scroll';
-
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import cake from '../../assets/cake.jpeg';
 import cake2 from '../../assets/cake2.jpeg';
-import pfp from '../../assets/pfp.jpeg';
-
-import * as to from '../../navigation/products';
 import Gallery from '../../components/products/Gallery';
-import SellerCard from '../../components/products/SellerCard';
 import ProductCard from '../../components/products/ProductCard';
 import Reviews from '../../components/products/Reviews';
+import SellerCard from '../../components/products/SellerCard';
+import * as to from '../../navigation/products';
+
 const fileList = [cake, cake2, cake, cake2];
 
 const TAB_GALLERY = 'Галлерея';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Button,
@@ -21,9 +21,18 @@ import * as to from '../navigation/products';
 import SellerPanel from '../panels/products/SellerPanel';
 import FavoritesMain from '../panels/favorites/FavoritesMain';
 import { FAVORITES_MAIN } from '../navigation/favorites';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllProducts } from '../redux/actions/products.actions';
 const MODAL_NAME = 'filters';
 
 const ProductsView = ({ id, _activePanel }) => {
+  const products = useSelector((state) => state.products.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, []);
+
   const [activePanel, setActivePanel] = useState(to.PRODUCTS_MAIN);
   const [panelStack, setPanelStack] = useState([to.PRODUCTS_MAIN]);
 
@@ -35,10 +44,14 @@ const ProductsView = ({ id, _activePanel }) => {
 
   const [previewImage, setPreviewImage] = useState('');
   const [activeModal, setActiveModal] = useState(null);
+  const [product_id, set_product_id] = useState(null);
+
+  console.log(products);
 
   const go = (e) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
+    set_product_id(e.currentTarget.dataset.product_id);
     // const stack = e.target.dataset.nav || e.currentTarget.dataset.nav;
     // // if (target) {
     // //   panelStack.push(target);
@@ -148,6 +161,7 @@ const ProductsView = ({ id, _activePanel }) => {
         go={go}
         filtersCount={filtersCount}
         openModal={() => openModal(to.MODAL_CARD_FILTERS)}
+        data={{ products }}
       />
       <ProductsDetail id={to.PRODUCTS_DETAIL} go={go} />
       <AddProduct id={to.PRODUCTS_ADD} go={go} />

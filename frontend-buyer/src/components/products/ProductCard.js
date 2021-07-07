@@ -4,12 +4,24 @@ import React from 'react';
 import cake from '../../assets/cake.jpeg';
 import PropTypes from 'prop-types';
 import * as to from '../../navigation/products';
+import { useSelector, useDispatch } from 'react-redux';
+import { PRODUCT_ID_SET } from '../../redux/constants/products.constants';
 
-const ProductCard = ({ go, to, data }) => {
+const ProductCard = ({ go, to, data, product_id }) => {
+  const dispatch = useDispatch();
+  const onClick = (e) => {
+    dispatch({
+      type: PRODUCT_ID_SET,
+      payload: product_id,
+    });
+
+    go(e);
+  };
   return (
     <ContentCard
-      onClick={go}
+      onClick={(e) => onClick(e)}
       data-nav={to}
+      product_id={product_id}
       image={cake}
       subtitle={data.title}
       header={data.price}

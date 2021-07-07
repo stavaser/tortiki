@@ -28,7 +28,8 @@ import * as to from '../../navigation/products';
 import ProductCard from '../../components/products/ProductCard';
 
 const categories = ['Торты', 'Капкейки', 'Пицца', 'Суши'];
-const ProductsMain = ({ id, go, openModal, filtersCount }) => {
+const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
+  const { products } = data;
   const [category, setCategory] = useState(false);
 
   const selectCategory = (category) => {
@@ -91,7 +92,23 @@ const ProductsMain = ({ id, go, openModal, filtersCount }) => {
       {categories.map((item) => (
         <Group mode="plain" id={item} header={<Header>{item}</Header>}>
           <CardGrid size="m">
-            {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
+            {products.length > 1 &&
+              products.map((product) => {
+                return (
+                  <ProductCard
+                    go={go}
+                    to={to.PRODUCTS_DETAIL}
+                    product_id={product.id}
+                    data={{
+                      image: cake,
+                      title: product.title,
+                      price: product.price,
+                      weight: product.weight,
+                    }}
+                  />
+                );
+              })}
+            {/* {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
               <ProductCard
                 go={go}
                 to={to.PRODUCTS_DETAIL}
@@ -102,7 +119,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount }) => {
                   weight: '1200 гр',
                 }}
               />
-            ))}
+            ))} */}
           </CardGrid>
         </Group>
       ))}

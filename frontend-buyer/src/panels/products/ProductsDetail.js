@@ -1,15 +1,9 @@
 import {
-  Icon28ArchiveOutline,
-  Icon28EditOutline,
-  Icon16StarCircleFillYellow,
-  Icon36Like,
-  Icon36LikeOutline,
-  Icon16Done,
   Icon20TrashSmileOutline,
   Icon28FavoriteOutline,
+  Icon36Like,
+  Icon36LikeOutline,
 } from '@vkontakte/icons';
-
-import { Card } from '@vkontakte/vkui';
 import {
   Button,
   Div,
@@ -20,26 +14,35 @@ import {
   Panel,
   PanelHeader,
   PanelHeaderBack,
-  SimpleCell,
-  Title,
-  Banner,
-  Avatar,
-  RichCell,
-  Spacing,
   PanelHeaderButton,
-  PanelHeaderContent,
+  SimpleCell,
   Snackbar,
+  Title,
 } from '@vkontakte/vkui';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import cake from '../../assets/cake.jpeg';
-import pfp from '../../assets/pfp.jpeg';
 import SellerCard from '../../components/products/SellerCard';
 import * as to from '../../navigation/products';
+import { getProductInfo } from '../../redux/actions/products.actions';
 
 const ProductsDetail = ({ id, go, back, from }) => {
   const [liked, setLiked] = useState(from);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
+  // const autor = useSelector((state) =>
+  //   state.autors.find((autor) => autor.id === donateRequest.autorId)
+  // );
+  const product_id = useSelector((state) => state.products.product_id);
+  const product = useSelector((state) => state.products.info)[0] || [];
+  const dispatch = useDispatch();
+  console.log('PRODUCT_ID', product_id);
+
+  useEffect(() => {
+    dispatch(getProductInfo(product_id));
+  }, []);
+
+  console.log('product single', product);
 
   const snackBar = (
     <Snackbar
@@ -111,17 +114,17 @@ const ProductsDetail = ({ id, go, back, from }) => {
           style={{ marginTop: 16 }}
           aside={
             <Title level="1" weight="bold">
-              1200 ₽
+              {product.price} ₽
             </Title>
           }
           subtitle={
             <Title level="3" weight="regular">
-              1200 гр
+              {product.weight} гр
             </Title>
           }
         >
           <Title level="1" weight="semibold">
-            Торт 'красный бархат'
+            {product.title}
           </Title>
         </Header>
         {!from && (
@@ -133,26 +136,30 @@ const ProductsDetail = ({ id, go, back, from }) => {
       <Group>
         <Header mode="secondary">Информация о продукте</Header>
         <SimpleCell multiline>
-          <InfoRow header="Описание">
-            Домашний рецепт любимого торта. Три слоя бисквитных коржей: первый —
-            с какао, второй – с орехами, третий – с маком. Крем с вареной
-            сгущенкой и сливочным маслом. Состав: мука в/с, яйцо, масло
-            сливочное, молоко сгущенное вареное, сметана, сахар, какао, мак
-            пищевой, орех грецкий, ликер Бэйлиз.
-          </InfoRow>
+          <InfoRow header="Описание">{product.description}</InfoRow>
         </SimpleCell>
         <SimpleCell>
-          <InfoRow header="Состав">мука?</InfoRow>
+          <InfoRow header="Состав">{product.ingredients}</InfoRow>
         </SimpleCell>
       </Group>
-      <Group>
-        <SimpleCell>
-          <InfoRow header="Доставка на дом:">150 руб</InfoRow>
-        </SimpleCell>
-        <SimpleCell>
-          <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
-        </SimpleCell>
-      </Group>
+      {(product.delivery_local || product.delivery_general) && (
+        <Group>
+          {product.delivery_local && (
+            <SimpleCell>
+              <InfoRow header="Доставка на дом:">
+                {product.local_price} ₽
+              </InfoRow>
+            </SimpleCell>
+          )}
+          {product.delivery_general && (
+            <SimpleCell>
+              <InfoRow header="Доставка в другой поселок:">
+                {product.general_price}
+              </InfoRow>
+            </SimpleCell>
+          )}
+        </Group>
+      )}
       {!from && (
         <Group>
           <Div>

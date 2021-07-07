@@ -1,10 +1,9 @@
 import { View } from '@vkontakte/vkui';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as to from '../navigation/profile';
 import ProfileMain from '../panels/profile/ProfileMain';
 import { getUser } from '../redux/actions/user.actions';
-import store from '../redux/store';
-import { useSelector, useDispatch } from 'react-redux';
 
 const ProfileView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.PROFILE_MAIN);
@@ -13,7 +12,7 @@ const ProfileView = ({ id }) => {
   useEffect(() => {
     dispatch(getUser());
   }, []);
-
+  console.log('PROFILE VIEW', currentUser);
   const go = (e) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
