@@ -230,10 +230,11 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
             return Response(status=400)
 
         new_favorite = ProductFavorite()
-        new_favorite.product = product
         new_favorite.user = request.user
+        new_favorite.product = product
         new_favorite.save()
         return Response(status=201)
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     def destroy(self, request):
@@ -241,15 +242,25 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
         try:
             favorite = ProductFavorite.objects.get(user=request.user, 
                                                    product__id=product_id)
+=======
+
+    def destroy(self, request):
+        try:
+            favorite = ProductFavorite.objects.get(user=request.user, 
+                                     product__id=int(request.data['product_id']))
+>>>>>>> 0b485be5a47b5178c07759f07489f20702617201
         except ProductFavorite.DoesNotExist:
             return Response(status=403)
 
         favorite.delete()
         return Response(status=200)
 
+<<<<<<< HEAD
 =======
     
 >>>>>>> parent of 0b485be... added favorites add and remove
+=======
+>>>>>>> 0b485be5a47b5178c07759f07489f20702617201
 # @api_view(['GET', 'POST'])
 # def get_lottery_participants(request):
 #     if request.method == 'POST':
