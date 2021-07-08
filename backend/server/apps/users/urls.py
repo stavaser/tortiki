@@ -19,11 +19,10 @@ urlpatterns = [
             'get': 'list',
             'post': 'create',
         })),
-    path("products/favorites/", ProductFavoriteViewSet.as_view(
+    path("products/favorites", ProductFavoriteViewSet.as_view(
         {
             'get': 'list',
             'post': 'create',
-            'delete': 'destroy',
         })),
     path("lottery/", LotteryViewSet.as_view(
         {

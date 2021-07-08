@@ -102,5 +102,3 @@ class LotteryWinner(models.Model):
 class ProductFavorite(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    class Meta:
-        unique_together = (('product', 'user'),)

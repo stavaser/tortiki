@@ -230,10 +230,11 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
             return Response(status=400)
 
         new_favorite = ProductFavorite()
-        new_favorite.user = request.user
         new_favorite.product = product
+        new_favorite.user = request.user
         new_favorite.save()
         return Response(status=201)
+<<<<<<< HEAD
 
     def destroy(self, request):
         product_id = request.data['product_id']
@@ -246,6 +247,9 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
         favorite.delete()
         return Response(status=200)
 
+=======
+    
+>>>>>>> parent of 0b485be... added favorites add and remove
 # @api_view(['GET', 'POST'])
 # def get_lottery_participants(request):
 #     if request.method == 'POST':
