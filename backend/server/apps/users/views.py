@@ -82,24 +82,25 @@ class ProductTypeViewSet(viewsets.ViewSet):
 @permission_classes([IsAuthenticated])
 class ProductsViewSet(viewsets.ViewSet):
     def list(self, request):
+        product = ProductType.objects.filter(product__is_archived=False)
         # /products/?product_id=1
         if request.GET.get('product_id'):                                  
             product_id = request.GET.get('product_id')
-            queryset = ProductType.objects.filter(product__id=product_id)
+            queryset = product.filter(product__id=product_id)
         # /products/?seller_id=1
         elif request.GET.get('seller_id'):                               
             seller_id = request.GET.get('seller_id')            
-            queryset = ProductType.objects.filter(seller__id=seller_id)
+            queryset = product.filter(seller__id=seller_id)
         # /products/?delivery_local=True
         elif request.GET.get('delivery_local'):                               
             delivery_local = request.GET.get('delivery_local')            
-            queryset = ProductType.objects.filter(product__delivery_local=delivery_local)
+            queryset = product.filter(product__delivery_local=delivery_local)
         # /products/?delivery_general=True
         elif request.GET.get('delivery_general'):                               
             delivery_general = request.GET.get('delivery_general')            
-            queryset = Products.objects.filter(delivery_general=delivery_general)
+            queryset = product.filter(product__delivery_general=delivery_general)
         else:
-            queryset = ProductType.objects.all()
+            queryset = product
         serializer = ProductTypeSerializer(queryset.order_by("-product__date_added"), many=True)
         return Response(serializer.data)
 

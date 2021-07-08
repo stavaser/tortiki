@@ -20,7 +20,7 @@ class Products(models.Model):
     delivery_general = models.BooleanField(default=False)
     local_price = models.PositiveSmallIntegerField(blank=True)
     general_price = models.PositiveSmallIntegerField(blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now=True)
     is_archived = models.BooleanField(default=False)
 
 class ProductType(models.Model):

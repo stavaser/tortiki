@@ -4,6 +4,11 @@ from customUser.serializers import UserSerializer
 from rest_framework.validators import UniqueTogetherValidator
 from django.core.exceptions import ValidationError
 
+
+############################################################
+# Products
+############################################################ 
+
 class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
@@ -24,6 +29,38 @@ class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
         model = ProductsPictures
         fields = ['picture']
 
+class ProductPictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductsPictures
+        fields = ['picture']
+
+    def to_representation(self, obj):
+        representation = super().to_representation(obj)
+        return representation.pop('picture')
+
+class ProductTypeSerializer(serializers.ModelSerializer):
+    product = ProductsSerializer()
+    pictures = serializers.SerializerMethodField('get_product_pictures')
+
+    class Meta:
+        model = ProductType
+        fields = ['product_type', 'product', 'pictures']
+
+    def get_product_pictures(self, obj):
+        queryset = ProductsPictures.objects.filter(product__id=obj.product.id)
+        serializer = ProductPictureSerializer(queryset, many=True)
+        return serializer.data
+
+
+class ProductFavoriteSerializer(serializers.ModelSerializer):
+    product = ProductsSerializer()
+    class Meta:
+        model = ProductFavorite
+        fields = '__all__'
+
+############################################################
+# Lottery
+############################################################
 class ProductsLotterySerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
     class Meta:
@@ -32,7 +69,6 @@ class ProductsLotterySerializer(serializers.ModelSerializer):
         # ordering_fields = ('product__date_added', )
 
     def to_representation(self, obj):
-        """Move fields from profile to user representation."""
         representation = super().to_representation(obj)
         product_representation = representation.pop('product')
         for key in product_representation:
@@ -58,7 +94,7 @@ class LotteryParticipantsSerializer(serializers.ModelSerializer):
     #         representation[key] = user_representation[key]
 
     #     return representation
-    
+
 class LotteryParticipantsCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -75,16 +111,4 @@ class LotteryWinnerSerializer(serializers.ModelSerializer):
     winner = LotteryParticipantsSerializer()
     class Meta:
         model = LotteryWinner
-        fields = '__all__'
-    
-class ProductTypeSerializer(serializers.ModelSerializer):
-    product = ProductsSerializer()
-    class Meta:
-        model = ProductType
-        fields = ['product_type', 'product']
-
-class ProductFavoriteSerializer(serializers.ModelSerializer):
-    product = ProductsSerializer()
-    class Meta:
-        model = ProductFavorite
         fields = '__all__'
