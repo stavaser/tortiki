@@ -9,8 +9,25 @@ from django.core.exceptions import ValidationError
 # Products
 ############################################################ 
 
+class ProductPictureSerializer(serializers.ModelSerializer):
+    photo_url = serializers.SerializerMethodField('get_photo_url')
+    class Meta:
+        model = ProductsPictures
+        fields = ['picture', 'photo_url']
+
+    def to_representation(self, obj):
+        representation = super().to_representation(obj)
+        return representation.pop('picture')
+
+    def get_photo_url(self, obj):
+        request = self.context['request']
+        photo_url = obj.picture.url
+        return request.build_absolute_uri(photo_url)
+
 class ProductsSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField('is_favorite')
+    pictures = serializers.SerializerMethodField('get_product_pictures')
+    
     class Meta:
         model = Products
         fields = '__all__'
@@ -21,7 +38,12 @@ class ProductsSerializer(serializers.ModelSerializer):
             return ProductFavorite.objects.filter(user=request.user, product__id=obj.id).exists()
         else:
             return True
-            
+
+    def get_product_pictures(self, obj):
+        queryset = ProductsPictures.objects.filter(product__id=obj.id)
+        serializer = ProductPictureSerializer(queryset, many=True, context=self.context)
+        return serializer.data
+
 class ProductsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
@@ -35,28 +57,12 @@ class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
         model = ProductsPictures
         fields = ['picture']
 
-class ProductPictureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductsPictures
-        fields = ['picture']
-
-    def to_representation(self, obj):
-        representation = super().to_representation(obj)
-        return representation.pop('picture')
-
 class ProductTypeSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
-    pictures = serializers.SerializerMethodField('get_product_pictures')
 
     class Meta:
         model = ProductType
-        fields = ['product_type', 'product', 'pictures']
-
-    def get_product_pictures(self, obj):
-        queryset = ProductsPictures.objects.filter(product__id=obj.product.id)
-        serializer = ProductPictureSerializer(queryset, many=True)
-        return serializer.data
-
+        fields = ['product_type', 'product']
 
 class ProductFavoriteSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
