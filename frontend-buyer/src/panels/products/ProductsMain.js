@@ -38,21 +38,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
   return (
     <Panel id={id}>
       <PanelHeader>Продукты</PanelHeader>
-      <Group mode="plain" header={<Header>Популярное</Header>}>
-        <CardScroll size="m">
-          {[...Array.from({ length: 30 }, (v, i) => i)].map((i) => (
-            <Card size="l" mode="shadow" style={{ margin: '8px' }}>
-              <div style={{ height: 96, padding: '10px', display: 'flex' }}>
-                <Avatar size={96} mode="image" src={cake} />
-                <div style={{ marginLeft: '16px' }}>
-                  <p>Торт 'красный бархат'</p>
-                  <Button mode="outline">1200 ₽</Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </CardScroll>
-      </Group>
+
       <Group>
         <SubnavigationBar>
           <SubnavigationButton
@@ -90,7 +76,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
             ))}
         </SubnavigationBar>
       </Group>
-      {products.length > 1 &&
+      {products.length > 0 &&
         products.map((category) => (
           <Group
             mode="plain"

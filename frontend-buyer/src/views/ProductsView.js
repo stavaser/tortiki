@@ -24,6 +24,7 @@ import { FAVORITES_MAIN } from '../navigation/favorites';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllProducts } from '../redux/actions/products.actions';
+
 const MODAL_NAME = 'filters';
 
 const ProductsView = ({ id, _activePanel }) => {

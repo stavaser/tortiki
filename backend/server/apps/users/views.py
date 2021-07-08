@@ -216,25 +216,36 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
         # /products/favorites/?product_id=1
         if request.GET.get('product_id'):                                  
             product_id = request.GET.get('product_id')
-            queryset = ProductFavorite.objects.filter(product__id=product_id)
+            queryset = ProductFavorite.objects.filter(user=request.user, product__id=product_id)
         else:
-            queryset = ProductFavorite.objects.all()
+            queryset = ProductFavorite.objects.filter(user=request.user)
         serializer = ProductFavoriteSerializer(queryset, many=True)
         return Response(serializer.data) #Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):
-        product_id = int(request.data['product_id'])
+        product_id = request.data['product_id']
         try:
             product = Products.objects.get(id=product_id)
         except Products.DoesNotExist:
             return Response(status=400)
 
         new_favorite = ProductFavorite()
-        new_favorite.product = product
         new_favorite.user = request.user
+        new_favorite.product = product
         new_favorite.save()
         return Response(status=201)
-    
+
+    def destroy(self, request):
+        product_id = request.data['product_id']
+        try:
+            favorite = ProductFavorite.objects.get(user=request.user, 
+                                                   product__id=product_id)
+        except ProductFavorite.DoesNotExist:
+            return Response(status=403)
+
+        favorite.delete()
+        return Response(status=200)
+
 # @api_view(['GET', 'POST'])
 # def get_lottery_participants(request):
 #     if request.method == 'POST':

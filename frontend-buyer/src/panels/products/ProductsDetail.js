@@ -25,22 +25,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import cake from '../../assets/cake.jpeg';
 import SellerCard from '../../components/products/SellerCard';
 import * as to from '../../navigation/products';
-import { getProductInfo } from '../../redux/actions/products.actions';
+import {
+  getProductInfo,
+  onFavoriteClick,
+} from '../../redux/actions/products.actions';
+import { PRODUCT_LIKE_CLICKED } from '../../redux/constants/products.constants';
 
 const ProductsDetail = ({ id, go, back, from }) => {
-  const [liked, setLiked] = useState(from);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
 
   const product_id = useSelector((state) => state.products.product_id);
   const product = useSelector((state) => state.products.info) || [];
+  const liked = useSelector((state) => state.products.info.liked);
+
   const dispatch = useDispatch();
-  console.log('PRODUCT_ID', product_id);
 
   useEffect(() => {
     dispatch(getProductInfo(product_id));
   }, []);
-
-  console.log('product single', product);
 
   const snackBar = (
     <Snackbar
@@ -77,7 +79,7 @@ const ProductsDetail = ({ id, go, back, from }) => {
           <PanelHeaderButton
             onClick={() => {
               setSnackBarVisible(true);
-              setLiked(!liked);
+              dispatch(onFavoriteClick({ liked: !liked, product_id }));
             }}
           >
             {liked ? (
