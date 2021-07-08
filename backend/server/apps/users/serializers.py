@@ -16,16 +16,19 @@ class ProductsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def is_favorite(self, obj):
-        request = self.context['request']
-        return ProductFavorite.objects.filter(user=request.user).exists()
-        
+        if self.context and self.context['request']:
+            request = self.context['request']
+            return ProductFavorite.objects.filter(user=request.user, product__id=obj.id).exists()
+        else:
+            return True
+            
 class ProductsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        exclude = ['date_added']
+        exclude = ['date_added', 'seller']
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,7 +62,8 @@ class ProductFavoriteSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
     class Meta:
         model = ProductFavorite
-        fields = '__all__'
+        fields = ['product', 'user']
+
 
 ############################################################
 # Lottery
