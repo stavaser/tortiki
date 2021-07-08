@@ -62,20 +62,12 @@ class ProductFavoriteSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
     class Meta:
         model = ProductFavorite
-<<<<<<< HEAD
-<<<<<<< HEAD
         fields = ['product', 'user']
 
     def to_representation(self, obj):
         representation = super().to_representation(obj)
         return representation.pop('product')
-=======
-        fields = '__all__'
->>>>>>> parent of 0b485be... added favorites add and remove
-=======
-        fields = ['product', 'user']
 
->>>>>>> 0b485be5a47b5178c07759f07489f20702617201
 
 ############################################################
 # Lottery
