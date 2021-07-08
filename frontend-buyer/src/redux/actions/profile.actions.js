@@ -1,25 +1,31 @@
 import {
   LOGIN_REQUESTED,
+  LOGOUT,
   USER_INFO_REQUESTED,
-} from '../constants/user.constants';
-import UserService from '../services/user.service';
+} from '../constants/profile.constants';
+import UserService from '../services/profile.service';
 
 export const userLogin = (phone, password) => async (dispatch) => {
   try {
     const res = await UserService.login({ phone, password });
 
+    localStorage.setItem('token', `token ${res.data.auth_token}`);
+    // const user_info = await UserService.getUser();
     dispatch({
       type: LOGIN_REQUESTED,
-      payload: res.data,
+      payload: res.data.user,
     });
-    console.log(res.data);
-    localStorage.setItem('token', res.data.auth_token);
-    console.log(localStorage.getItem('token'));
 
-    return Promise.resolve(res.data);
+    return Promise.resolve(res.data.user);
   } catch (err) {
     return Promise.reject(err);
   }
+};
+
+export const userLogout = () => async (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+  });
 };
 
 export const getUser = () => async (dispatch) => {
@@ -30,6 +36,7 @@ export const getUser = () => async (dispatch) => {
       type: USER_INFO_REQUESTED,
       payload: res.data,
     });
+
     return Promise.resolve(res.data);
   } catch (err) {
     return Promise.reject(err);

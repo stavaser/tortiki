@@ -129,12 +129,6 @@ const ProductsView = ({ id, _activePanel }) => {
             <Checkbox>Есть доставка в другие регионы</Checkbox>
             <Checkbox>Еще что-то...</Checkbox>
           </FormItem>
-
-          {/* <FormItem>
-            <Button size="l" stretched onClick={applyFilters}>
-              Показать результаты
-            </Button>
-          </FormItem> */}
         </FormLayout>
       </ModalCard>
       <ModalCard

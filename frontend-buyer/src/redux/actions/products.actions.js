@@ -1,4 +1,7 @@
 import {
+  DELIVERY_BOTH,
+  DELIVERY_GENERAL_FILTER_SET,
+  DELIVERY_LOCAL_FILTER_SET,
   FAVORITES_REQUESTED,
   FAVORITE_ADDED,
   PRODUCTS_ALL_REQUESTED,
@@ -12,6 +15,47 @@ export const getAllProducts = () => async (dispatch) => {
     const res = await ProductsService.getAll();
     dispatch({
       type: PRODUCTS_ALL_REQUESTED,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const getLocalDelivery = () => async (dispatch) => {
+  try {
+    const res = await ProductsService.getLocalDelivery();
+    dispatch({
+      type: PRODUCTS_ALL_REQUESTED,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+export const getGeneralDelivery = () => async (dispatch) => {
+  try {
+    const res = await ProductsService.getGeneralDelivery();
+    dispatch({
+      type: DELIVERY_GENERAL_FILTER_SET,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+export const getDeliveryBoth = () => async (dispatch) => {
+  try {
+    const res = await ProductsService.getDeliveryBoth();
+    dispatch({
+      type: DELIVERY_BOTH,
       payload: res.data,
     });
 

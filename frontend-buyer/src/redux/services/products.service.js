@@ -16,6 +16,17 @@ class ProductsService {
   deleteFavorite(request) {
     return http.delete(`/api/products/favorites/`, { data: request });
   }
+  getLocalDelivery() {
+    return http.get(`/api/products/?delivery_local=${true}`);
+  }
+  getGeneralDelivery() {
+    return http.get(`/api/products/?delivery_general=${true}`);
+  }
+  getDeliveryBoth() {
+    return http.get(
+      `/api/products/?delivery_general=${true}&delivery_local=${true}`
+    );
+  }
 }
 
 export default new ProductsService();

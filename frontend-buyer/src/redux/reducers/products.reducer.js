@@ -1,6 +1,9 @@
 import {
+  DELIVERY_GENERAL_FILTER_SET,
+  DELIVERY_LOCAL_FILTER_SET,
   FAVORITES_REQUESTED,
   FAVORITE_ADDED,
+  FILTER_APPLIED,
   PRODUCTS_ALL_REQUESTED,
   PRODUCTS_INFO_REQUESTED,
   PRODUCT_ID_SET,
@@ -23,6 +26,9 @@ const initialState = {
   },
   product_id: null,
   favorites: {},
+  filters: {
+    count: 0,
+  },
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -46,6 +52,12 @@ const productsReducer = (state = initialState, action) => {
     case FAVORITES_REQUESTED:
       console.log(FAVORITES_REQUESTED, payload);
       return { ...state, favorites: payload };
+    // case DELIVERY_LOCAL_FILTER_SET:
+    //   return { ...state, filters: { ...state.filters, payload } };
+    case DELIVERY_GENERAL_FILTER_SET:
+      return { ...state, filters: { ...state.filters, payload } };
+    case FILTER_APPLIED:
+      return { ...state, filters: { ...state.filters, count: payload } };
     default:
       return state;
   }
