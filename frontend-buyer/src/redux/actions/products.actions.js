@@ -29,7 +29,6 @@ export const getProductInfo = (id) => async (dispatch) => {
       type: PRODUCTS_INFO_REQUESTED,
       payload: res.data,
     });
-    console.log('ACTION', res.data);
     return Promise.resolve(res.data);
   } catch (err) {
     return Promise.reject(err);

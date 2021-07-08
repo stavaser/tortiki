@@ -219,7 +219,7 @@ class ProductFavoriteViewSet(viewsets.ViewSet):
             queryset = ProductFavorite.objects.filter(user=request.user, product__id=product_id)
         else:
             queryset = ProductFavorite.objects.filter(user=request.user)
-        serializer = ProductFavoriteSerializer(queryset, many=True)
+        serializer = ProductFavoriteSerializer(queryset, many=True, context={'request':request})
         return Response(serializer.data) #Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):

@@ -74,7 +74,6 @@ class ProductFavoriteSerializer(serializers.ModelSerializer):
         representation = super().to_representation(obj)
         return representation.pop('product')
 
-
 ############################################################
 # Lottery
 ############################################################

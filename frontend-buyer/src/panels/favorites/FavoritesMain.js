@@ -20,6 +20,7 @@ import './style.css';
 
 const FavoritesMain = ({ id, go, data }) => {
   const { favorites } = data;
+  console.log(favorites);
   const dispatch = useDispatch();
 
   const onClick = (e, product_id) => {

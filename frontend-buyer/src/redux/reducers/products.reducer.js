@@ -44,6 +44,7 @@ const productsReducer = (state = initialState, action) => {
         },
       };
     case FAVORITES_REQUESTED:
+      console.log(FAVORITES_REQUESTED, payload);
       return { ...state, favorites: payload };
     default:
       return state;

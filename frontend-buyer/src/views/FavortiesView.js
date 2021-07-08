@@ -18,6 +18,7 @@ const FavoritesView = ({ id }) => {
   useEffect(() => {
     dispatch(getAllFavorites());
   }, []);
+  console.log('f view', favorites);
   const go = (e) => {
     const panel = e.target.dataset.nav || e.currentTarget.dataset.nav;
     if (panel) {
