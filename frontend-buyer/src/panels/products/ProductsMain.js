@@ -91,7 +91,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
                     to={to.PRODUCTS_DETAIL}
                     product_id={item.id}
                     data={{
-                      image: cake,
+                      image: item.pictures[0] || cake,
                       title: item.title,
                       price: item.price,
                       weight: item.weight,

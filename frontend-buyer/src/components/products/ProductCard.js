@@ -22,7 +22,7 @@ const ProductCard = ({ go, to, data, product_id }) => {
       onClick={(e) => onClick(e)}
       data-nav={to}
       product_id={product_id}
-      image={cake}
+      image={data.image}
       subtitle={data.title}
       header={data.price}
       caption={data.weight}

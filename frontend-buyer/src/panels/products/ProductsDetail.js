@@ -95,11 +95,14 @@ const ProductsDetail = ({ id, go, back, from }) => {
       <Group>
         <Gallery
           slideWidth="90%"
-          style={{ height: 150 }}
+          style={{ height: 250 }}
           bullets="dark"
           showArrows
         >
-          <img src={cake} style={{ objectFit: 'cover' }} />
+          {product.pictures &&
+            product.pictures.map((item) => {
+              return <img src={item} style={{ objectFit: 'cover' }} />;
+            })}
           <div style={{ backgroundColor: 'var(--destructive)' }} />
           <div
             style={{ backgroundColor: 'var(--button_commerce_background)' }}
