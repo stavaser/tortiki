@@ -10,19 +10,22 @@ from django.core.exceptions import ValidationError
 ############################################################ 
 
 class ProductsSerializer(serializers.ModelSerializer):
+    liked = serializers.SerializerMethodField('is_favorite')
     class Meta:
         model = Products
         fields = '__all__'
 
+    def is_favorite(self, obj):
+        request = self.context['request']
+        return ProductFavorite.objects.filter(user=request.user).exists()
+        
 class ProductsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        # model.date_added = serializers.DateTimeField() 
-        # fields = ['seller', 'title', 'product_type', 'price', 'weight', 'description', 
-        #     'ingredients', 'delivery_local', 'delivery_general', 'local_price',
-        #     'general_price'
-        # ]
         exclude = ['date_added']
+
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
 
 class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
     class Meta:

@@ -101,7 +101,7 @@ class ProductsViewSet(viewsets.ViewSet):
             queryset = product.filter(product__delivery_general=delivery_general)
         else:
             queryset = product
-        serializer = ProductTypeSerializer(queryset.order_by("-product__date_added"), many=True)
+        serializer = ProductTypeSerializer(queryset.order_by("-product__date_added"), many=True, context={'request': request})
         return Response(serializer.data)
 
     def create(self, request):
