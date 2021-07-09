@@ -1,5 +1,7 @@
 import {
+  Icon20TrashSmileOutline,
   Icon24Dismiss,
+  Icon28FavoriteOutline,
   Icon28Like,
   Icon28LikeOutline,
   Icon36Like,
@@ -28,11 +30,15 @@ import {
   Header,
   Gallery,
 } from '@vkontakte/vkui';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductInfo } from '../../redux/actions/products.actions';
+import {
+  getProductInfo,
+  onFavoriteClick,
+} from '../../redux/actions/products.actions';
 import { PRODUCT_INFO_MODAL_OPENED } from '../../redux/constants/products.constants';
 import SellerCard from '../../components/products/SellerCard';
+import { Snackbar } from '@vkontakte/vkui';
 const ProductsModal = ({ data }) => {
   const dispatch = useDispatch();
 
@@ -40,8 +46,9 @@ const ProductsModal = ({ data }) => {
   const product_id = useSelector((state) => state.products.product_id);
   const product = useSelector((state) => state.products.info) || [];
   const liked = useSelector((state) => state.products.info.liked);
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
 
-  console.log('activeModal', activeModal);
+  console.log('liked', liked);
 
   useEffect(() => {
     dispatch({
@@ -56,6 +63,26 @@ const ProductsModal = ({ data }) => {
       payload: { modal },
     });
   };
+
+  const snackBar = (
+    <Snackbar
+      duration={800}
+      onClose={() => setSnackBarVisible(false)}
+      before={
+        liked ? (
+          <Icon28FavoriteOutline fill="var(--accent)" />
+        ) : (
+          <Icon20TrashSmileOutline
+            fill="var(--accent)"
+            width={28}
+            height={28}
+          />
+        )
+      }
+    >
+      {liked ? 'Добавлено в избранные!' : 'Удалено из избранных!'}
+    </Snackbar>
+  );
   return (
     <ModalRoot activeModal={activeModal} onClose={() => onClick(null)}>
       <ModalPage
@@ -83,12 +110,7 @@ const ProductsModal = ({ data }) => {
             {product.pictures &&
               product.pictures.map((item) => {
                 console.log(item);
-                return (
-                  <img
-                    src={`http://127.0.0.1:8000/${item}`}
-                    style={{ objectFit: 'cover' }}
-                  />
-                );
+                return <img src={item} style={{ objectFit: 'cover' }} />;
               })}
             <div style={{ backgroundColor: 'var(--destructive)' }} />
             <div
@@ -124,8 +146,22 @@ const ProductsModal = ({ data }) => {
             <SellerCard />
           </Div>
           <Div style={{ display: 'flex' }}>
-            <Button size="m" mode="outline" style={{ marginRight: '8px' }}>
-              <Icon28LikeOutline />
+            <Button
+              size="m"
+              mode="secondary"
+              style={{
+                marginRight: '8px',
+              }}
+              onClick={() => {
+                setSnackBarVisible(true);
+                dispatch(onFavoriteClick({ liked: !liked, product_id }));
+              }}
+            >
+              {liked ? (
+                <Icon28Like style={{ color: 'red' }} />
+              ) : (
+                <Icon28LikeOutline style={{ color: 'grey' }} />
+              )}
             </Button>
 
             <Button size="m" stretched mode="commerce">
@@ -133,6 +169,7 @@ const ProductsModal = ({ data }) => {
             </Button>
           </Div>
         </Group>
+        {snackBarVisible && snackBar}
       </ModalPage>
     </ModalRoot>
   );
