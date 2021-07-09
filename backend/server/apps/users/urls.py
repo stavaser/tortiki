@@ -19,6 +19,9 @@ urlpatterns = [
             'get': 'list',
             'post': 'create',
         })),
+    path("products/<pk>", ProductsViewSet.as_view({
+            'get' : 'retrieve',
+    })),
     path("products/favorites/", ProductFavoriteViewSet.as_view(
         {
             'get': 'list',

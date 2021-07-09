@@ -24,6 +24,7 @@ import { FAVORITES_MAIN } from '../navigation/favorites';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllProducts } from '../redux/actions/products.actions';
+import ProductsModal from '../modals/products/ProductsModal';
 
 const MODAL_NAME = 'filters';
 
@@ -53,53 +54,18 @@ const ProductsView = ({ id, _activePanel }) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
     set_product_id(e.currentTarget.dataset.product_id);
-    // const stack = e.target.dataset.nav || e.currentTarget.dataset.nav;
-    // // if (target) {
-    // //   panelStack.push(target);
-    // // } else if (currentTarget) {
-    // //   panelStack.pop();
-    // // }
-    // panelStack.push(stack);
-    // setPanelStack(panelStack);
-    // setActivePanel(stack);
 
-    // console.log('STACK:', panelStack);
-
-    // console.log('target:', target);
-    // console.log('currentTarget:', currentTarget);
-    // console.log(e);
     if (target || currentTarget) {
       setActivePanel(target || currentTarget);
     }
   };
-  // const back = () => {
-  //   // setPanelStack(panelStack.pop());
-  //   setActivePanel(panelStack.pop());
-  // };
+
   const openModal = (name) => {
     setActiveModal(name);
   };
 
   const closeModal = () => {
     setActiveModal(null);
-  };
-
-  const onChangeFilterSize = (e) => {
-    const { value, checked } = e.currentTarget;
-    if (checked) {
-      setFilterSizes([...filterSizes, +value]);
-    } else {
-      setFilterSizes(filterSizes.filter((v) => v !== +value));
-    }
-  };
-
-  const onChangeFilterStyle = (e) => {
-    const { value, checked } = e.currentTarget;
-    if (checked) {
-      setFilterStyles([...filterStyles, value]);
-    } else {
-      setFilterStyles(filterStyles.filter((v) => v !== value));
-    }
   };
 
   const applyFilters = () => {
@@ -150,7 +116,7 @@ const ProductsView = ({ id, _activePanel }) => {
   };
 
   return (
-    <View activePanel={activePanel} id={id} modal={modal}>
+    <View id={id} activePanel={activePanel} modal={<ProductsModal />}>
       <ProductsMain
         id={to.PRODUCTS_MAIN}
         go={go}

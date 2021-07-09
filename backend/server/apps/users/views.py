@@ -75,33 +75,40 @@ class ProductTypeViewSet(viewsets.ViewSet):
             queryset = produt.objects.filter(product_type=product_type)
         # /products/?seller_id=1
         else:
-            queryset = ProductType.objects.all()
+            queryset = Category.objects.all()
         serializer = ProductTypeSerializer(queryset, many=True)
         return Response(serializer.data)
 
 @permission_classes([IsAuthenticated])
 class ProductsViewSet(viewsets.ViewSet):
     def list(self, request):
-        product = ProductType.objects.filter(product__is_archived=False)
+        product = Products.objects.filter(is_archived=False)
         # /products/?product_id=1
         if request.GET.get('product_id'):                                  
             product_id = request.GET.get('product_id')
-            queryset = product.filter(product__id=product_id)
+            queryset = product.filter(id=product_id)
+            serializer = ProductsSerializer(queryset, many=True, context={'request': request})
         # /products/?seller_id=1
         elif request.GET.get('seller_id'):                               
             seller_id = request.GET.get('seller_id')            
-            queryset = product.filter(seller__id=seller_id)
+            queryset = product.filter(id=seller_id)
         # /products/?delivery_local=True
         elif request.GET.get('delivery_local'):                               
             delivery_local = request.GET.get('delivery_local')            
-            queryset = product.filter(product__delivery_local=delivery_local)
+            queryset = product.filter(delivery_local=delivery_local)
         # /products/?delivery_general=True
         elif request.GET.get('delivery_general'):                               
             delivery_general = request.GET.get('delivery_general')            
-            queryset = product.filter(product__delivery_general=delivery_general)
+            queryset = product.filter(delivery_general=delivery_general)
         else:
-            queryset = product
-        serializer = ProductTypeSerializer(queryset.order_by("-product__date_added"), many=True, context={'request': request})
+            queryset = Category.objects.all()
+            serializer = ProductTypeSerializer(queryset, many=True, context={'request': request})
+        
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        product = get_object_or_404(Products, id=int(pk))
+        serializer = ProductsSerializer(product)
         return Response(serializer.data)
 
     def create(self, request):
