@@ -29,12 +29,13 @@ import ProductCard from '../../components/products/ProductCard';
 
 const categories = ['Торты', 'Капкейки', 'Пицца', 'Суши'];
 const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
-  const { products } = data;
   const [category, setCategory] = useState(false);
-
+  const { products } = data;
+  console.log(products);
   const selectCategory = (category) => {
     setCategory(category);
   };
+
   return (
     <Panel id={id}>
       <PanelHeader>Продукты</PanelHeader>
@@ -84,7 +85,7 @@ const ProductsMain = ({ id, go, openModal, filtersCount, data }) => {
             header={<Header>{category.product_type}</Header>}
           >
             <CardGrid size="m">
-              {[category.product].map((item) => {
+              {category.products.map((item) => {
                 return (
                   <ProductCard
                     go={go}

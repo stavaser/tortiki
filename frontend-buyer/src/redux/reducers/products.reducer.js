@@ -7,6 +7,7 @@ import {
   PRODUCTS_ALL_REQUESTED,
   PRODUCTS_INFO_REQUESTED,
   PRODUCT_ID_SET,
+  PRODUCT_INFO_MODAL_OPENED,
   PRODUCT_LIKE_CLICKED,
 } from '../constants/products.constants';
 
@@ -29,6 +30,7 @@ const initialState = {
   filters: {
     count: 0,
   },
+  modal: null,
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -58,6 +60,19 @@ const productsReducer = (state = initialState, action) => {
       return { ...state, filters: { ...state.filters, payload } };
     case FILTER_APPLIED:
       return { ...state, filters: { ...state.filters, count: payload } };
+    case PRODUCT_INFO_MODAL_OPENED:
+      console.log({
+        ...state,
+        modal: payload.modal,
+        product_id: payload.product_id,
+        info: payload.info,
+      });
+      return {
+        ...state,
+        modal: payload.modal,
+        product_id: payload.product_id,
+        info: { ...payload.info },
+      };
     default:
       return state;
   }

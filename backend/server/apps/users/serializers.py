@@ -10,19 +10,19 @@ from django.core.exceptions import ValidationError
 ############################################################ 
 
 class ProductPictureSerializer(serializers.ModelSerializer):
-    photo_url = serializers.SerializerMethodField('get_photo_url')
+    # photo_url = serializers.SerializerMethodField('get_photo_url')
     class Meta:
         model = ProductsPictures
-        fields = ['picture', 'photo_url']
+        fields = ['picture']
 
     def to_representation(self, obj):
         representation = super().to_representation(obj)
         return representation.pop('picture')
 
-    def get_photo_url(self, obj):
-        request = self.context['request']
-        photo_url = obj.picture.url
-        return request.build_absolute_uri(photo_url)
+    # def get_photo_url(self, obj):
+    #     request = self.context['request']
+    #     photo_url = obj.picture.url
+    #     return request.build_absolute_uri(photo_url)
 
 class ProductsSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField('is_favorite')
@@ -44,6 +44,11 @@ class ProductsSerializer(serializers.ModelSerializer):
         serializer = ProductPictureSerializer(queryset, many=True, context=self.context)
         return serializer.data
 
+    # def to_representation(self, obj):
+    #     representation = super().to_representation(obj)
+      
+    #     return representation
+
 class ProductsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
@@ -58,11 +63,12 @@ class ProductsPicturesCreateSerializer(serializers.ModelSerializer):
         fields = ['picture']
 
 class ProductTypeSerializer(serializers.ModelSerializer):
-    product = ProductsSerializer()
+    products = ProductsSerializer(many=True, read_only=True)
 
     class Meta:
-        model = ProductType
-        fields = ['product_type', 'product']
+        model = Category
+        fields = ['id', 'product_type', 'products']
+
 
 class ProductFavoriteSerializer(serializers.ModelSerializer):
     product = ProductsSerializer()

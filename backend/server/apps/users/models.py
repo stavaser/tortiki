@@ -9,8 +9,17 @@ from django.utils.translation import gettext_lazy as _
 class SellerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     
+class Category(models.Model):
+    PRODUCT_TYPE_CHOICES = (
+        ('Торт', 'Торт'),
+        ('Пицца', 'Пицца'),
+        ('Суши', 'Суши'),
+    )
+    product_type = models.CharField(max_length=50, choices=PRODUCT_TYPE_CHOICES)
+
 class Products(models.Model):
     seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE)
+    product_type = models.ForeignKey(Category, related_name="products", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     price = models.PositiveSmallIntegerField()
     weight = models.PositiveSmallIntegerField(blank=True)
@@ -23,14 +32,9 @@ class Products(models.Model):
     date_added = models.DateTimeField(auto_now=True)
     is_archived = models.BooleanField(default=False)
 
-class ProductType(models.Model):
-    PRODUCT_TYPE_CHOICES = (
-        ('Торт', 'Торт'),
-        ('Пицца', 'Пицца'),
-        ('Суши', 'Суши'),
-    )
+class ProductCategory(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    product_type = models.CharField(max_length=50, choices=PRODUCT_TYPE_CHOICES)
+    product_type = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 def screenshots_path(instance, filename):

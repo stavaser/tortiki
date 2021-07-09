@@ -79,9 +79,24 @@ const AuctionMain = ({ id, go, openModal, filtersCount }) => {
                 onClick={go}
                 data-nav={to.AUCTION_DETAIL}
                 image={cake2}
-                subtitle="Торт 'красный бархат'"
-                header="Ставка 100 руб"
-                caption="(4 из 10 мест свободно)"
+                text="Торт 'красный бархат'"
+                caption={
+                  <React.Fragment>
+                    4 из 10 свободно
+                    <div
+                      style={{
+                        marginTop: '16px',
+                        backgroundColor: 'rgba(0,0,0,0.08)',
+                        borderRadius: '5px',
+                        textAlign: 'center',
+                        padding: '8px',
+                        color: 'black',
+                      }}
+                    >
+                      100 ₽
+                    </div>
+                  </React.Fragment>
+                }
                 maxHeight={100}
               />
             ))}
