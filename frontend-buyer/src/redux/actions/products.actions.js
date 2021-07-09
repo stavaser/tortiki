@@ -6,6 +6,7 @@ import {
   FAVORITE_ADDED,
   PRODUCTS_ALL_REQUESTED,
   PRODUCTS_INFO_REQUESTED,
+  PRODUCT_INFO_MODAL_OPENED,
   PRODUCT_LIKE_CLICKED,
 } from '../constants/products.constants';
 import ProductsService from '../services/products.service';
@@ -68,7 +69,7 @@ export const getDeliveryBoth = () => async (dispatch) => {
 export const getProductInfo = (id) => async (dispatch) => {
   try {
     const res = await ProductsService.getInfo(id);
-
+    console.log('res data', res.data);
     dispatch({
       type: PRODUCTS_INFO_REQUESTED,
       payload: res.data,
@@ -78,6 +79,22 @@ export const getProductInfo = (id) => async (dispatch) => {
     return Promise.reject(err);
   }
 };
+
+export const openProductInfoModal =
+  ({ product_id, modal }) =>
+  async (dispatch) => {
+    try {
+      const res = await ProductsService.getInfo(product_id);
+      console.log('res data', modal);
+      dispatch({
+        type: PRODUCT_INFO_MODAL_OPENED,
+        payload: { info: res.data, modal, product_id },
+      });
+      return Promise.resolve(res.data);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
 
 export const getAllFavorites = () => async (dispatch) => {
   try {

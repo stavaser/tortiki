@@ -5,7 +5,7 @@ class ProductsService {
     return http.get(`/api/products/`);
   }
   getInfo(id) {
-    return http.get(`/api/products/?product_id=${id}`);
+    return http.get(`/api/products/${id}`);
   }
   getAllFavorites() {
     return http.get(`/api/products/favorites/`);
