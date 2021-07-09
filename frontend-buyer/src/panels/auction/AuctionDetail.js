@@ -21,6 +21,7 @@ import cake from '../../assets/cake.jpeg';
 import cake2 from '../../assets/cake2.jpeg';
 import conf2 from '../../assets/conf2.gif';
 import * as to from '../../navigation/auction';
+import { Caption } from '@vkontakte/vkui';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
@@ -55,17 +56,17 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           weight="semibold"
           style={{ marginTop: 16 }}
           aside={
-            <Title level="1" weight="bold">
-              100 руб
+            <Title level="2" weight="semibold">
+              100 ₽
             </Title>
           }
           subtitle={
-            <Title level="3" weight="regular">
-              1200 гр
-            </Title>
+            <Caption level="1" weight="regular">
+              4 из 10 свободно
+            </Caption>
           }
         >
-          <Title level="1" weight="semibold">
+          <Title level="2" weight="regular">
             Торт 'красный бархат'
           </Title>
         </Header>
@@ -127,7 +128,6 @@ const AuctionDetail = ({ id, go, modal_action }) => {
         </Div>
       </Group>
       <Group>
-        <Header mode="secondary">Информация о продукте</Header>
         <SimpleCell multiline>
           <InfoRow header="Описание">
             Домашний рецепт любимого торта. Три слоя бисквитных коржей: первый —
@@ -137,18 +137,8 @@ const AuctionDetail = ({ id, go, modal_action }) => {
             пищевой, орех грецкий, ликер Бэйлиз.
           </InfoRow>
         </SimpleCell>
-        <SimpleCell>
-          <InfoRow header="Состав">мука?</InfoRow>
-        </SimpleCell>
       </Group>
-      <Group>
-        <SimpleCell>
-          <InfoRow header="Доставка на дом:">150 руб</InfoRow>
-        </SimpleCell>
-        <SimpleCell>
-          <InfoRow header="Возможна доставка в другой поселок:">Да</InfoRow>
-        </SimpleCell>
-      </Group>
+
       <Div>
         <Button
           size="l"

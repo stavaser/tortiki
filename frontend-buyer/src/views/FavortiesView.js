@@ -10,6 +10,7 @@ import ProductsDetail from '../panels/products/ProductsDetail';
 import ProductsView from './ProductsView';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllFavorites } from '../redux/actions/products.actions';
+import ProductsModal from '../modals/products/ProductsModal';
 
 const FavoritesView = ({ id }) => {
   const [activePanel, setActivePanel] = useState(to.FAVORITES_MAIN);
@@ -27,7 +28,7 @@ const FavoritesView = ({ id }) => {
   };
 
   return (
-    <View id={id} activePanel={activePanel}>
+    <View id={id} activePanel={activePanel} modal={<ProductsModal />}>
       <FavoritesMain id={to.FAVORITES_MAIN} go={go} data={{ favorites }} />
       <ProductsDetail
         id={products.PRODUCTS_DETAIL}
