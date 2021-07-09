@@ -49,7 +49,6 @@ class UserProfileViewSet(viewsets.ViewSet):
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 
-
 # class SellerProfileViewSet(viewsets.ViewSet):
 #     def list(self, request):
 #         self.permission_classes = [IsAuthenticated,]
@@ -139,8 +138,13 @@ class LotteryViewSet(viewsets.ViewSet):
             queryset = ProductsLottery.objects.filter(id=lottery_id)
         else:
             queryset = ProductsLottery.objects.all()
-        serializer = ProductsLotterySerializer(queryset, many=True)
+        serializer = ProductsLotterySerializer(queryset, many=True, context={'request': request})
         return Response(serializer.to_representation(queryset.order_by('-date_end')))
+
+    def retrieve(self, request, pk=None):
+        lottery = get_object_or_404(ProductsLottery, product__id=int(pk))
+        serializer = ProductsLotterySerializer(lottery, context={'request': request})
+        return Response(serializer.data)
 
     def create(self, request):
         products = ProductsViewSet()
@@ -169,7 +173,7 @@ class LotteryParticipantsViewSet(viewsets.ViewSet):
             queryset = LotteryParticipants.objects.filter(participant__id=user_id)
         else:
             queryset = LotteryParticipants.objects.all()
-        serializer = LotteryParticipantsSerializer(queryset, many=True)
+        serializer = LotteryParticipantsSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)#Response(serializer.to_representation(queryset.order_by('-date_end')))
 
     def create(self, request):

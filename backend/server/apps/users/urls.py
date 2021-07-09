@@ -33,6 +33,9 @@ urlpatterns = [
             'get': 'list',
             'post': 'create',
         })),
+    path("lottery/<pk>", LotteryViewSet.as_view({
+            'get' : 'retrieve',
+    })),
     path("lottery/participants/", LotteryParticipantsViewSet.as_view(
         {
             'get': 'list',

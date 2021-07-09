@@ -83,12 +83,23 @@ class ProductFavoriteSerializer(serializers.ModelSerializer):
 ############################################################
 # Lottery
 ############################################################
+class LotteryParticipantsSerializer(serializers.ModelSerializer):
+    participant = UserSerializer()
+    class Meta:
+        model = LotteryParticipants
+        fields = '__all__'
+
 class ProductsLotterySerializer(serializers.ModelSerializer):
     product = ProductsSerializer()
+    taken = serializers.SerializerMethodField('get_num_taken')
+
     class Meta:
         model = ProductsLottery
-        fields = ['product', 'date_end', 'participants']
+        fields = ['product', 'date_end', 'participants', 'taken']
         # ordering_fields = ('product__date_added', )
+    
+    def get_num_taken(self, obj):
+        return LotteryParticipants.objects.filter(lottery__id=obj.id).count()
 
     def to_representation(self, obj):
         representation = super().to_representation(obj)
@@ -98,17 +109,19 @@ class ProductsLotterySerializer(serializers.ModelSerializer):
 
         return representation
 
+# class LotteryTypeSerializer(serializers.ModelSerializer):
+#     lottery = ProductsLotterySerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = Category
+#         fields = ['id', 'product_type', 'lottery']
+
 class ProductsLotteryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductsLottery
         fields = ['date_end', 'participants']
 
-class LotteryParticipantsSerializer(serializers.ModelSerializer):
-    participant = UserSerializer()
-    class Meta:
-        model = LotteryParticipants
-        fields = '__all__'
-    
+
     # def to_representation(self, obj):
     #     representation = super().to_representation(obj)
     #     user_representation = representation.pop('participant')

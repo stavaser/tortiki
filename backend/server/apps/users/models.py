@@ -70,8 +70,9 @@ class SellerGallery(models.Model):
 
 class LotteryParticipants(models.Model):
     lottery = models.ForeignKey(ProductsLottery, on_delete=models.CASCADE)
-    participant = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    participant = models.ForeignKey(CustomUser, related_name="participants", on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField()
+    time = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = (('lottery', 'number'),)
