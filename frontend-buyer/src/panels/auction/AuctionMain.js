@@ -1,85 +1,51 @@
-import { Icon24Add, Icon24Filter } from '@vkontakte/icons';
+import { Icon24Filter } from '@vkontakte/icons';
 import {
   CardGrid,
-  CellButton,
   ContentCard,
+  Counter,
   Group,
   Header,
   Panel,
   PanelHeader,
-  Banner,
-  Avatar,
-  Button,
-  CardScroll,
-  Card,
-  HorizontalScroll,
-  HorizontalCell,
   SubnavigationBar,
   SubnavigationButton,
-  Counter,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-scroll';
-
 import cake2 from '../../assets/cake2.jpeg';
 import * as to from '../../navigation/auction';
+import { getLotteryInfo } from '../../redux/actions/lottery.actions';
+import { LOTTERY_ID_SET } from '../../redux/constants/lottery.constants';
 
-const categories = ['Торты', 'Капкейки', 'Пицца', 'Суши'];
-
-const AuctionMain = ({ id, go, openModal, filtersCount }) => {
+const AuctionMain = ({ id, go, openModal, filtersCount, data }) => {
   const [category, setCategory] = useState(false);
-
+  const { lottery } = data;
+  const dispatch = useDispatch();
   const selectCategory = (category) => {
     setCategory(category);
+  };
+  const onClick = (e, lottery_id) => {
+    console.log(lottery_id);
+    dispatch({
+      type: LOTTERY_ID_SET,
+      payload: lottery_id,
+    });
+    go(e);
   };
   return (
     <Panel id={id}>
       <PanelHeader>Розыгрыши</PanelHeader>
-      <Group>
-        <SubnavigationBar>
-          <SubnavigationButton
-            before={<Icon24Filter />}
-            style={{ marginRight: '10px' }}
-            selected={filtersCount > 0}
-            expandable
-            after={
-              filtersCount > 0 && (
-                <Counter mode="primary" size="s">
-                  {filtersCount}
-                </Counter>
-              )
-            }
-            onClick={openModal}
-          >
-            Фильтры
-          </SubnavigationButton>
-          {categories.map((item) => (
-            <Link
-              to={item}
-              spy={true}
-              smooth={true}
-              offset={-50}
-              style={{ marginRight: '10px' }}
-            >
-              <SubnavigationButton
-                selected={item === category}
-                onClick={() => selectCategory(item)}
-              >
-                {item}
-              </SubnavigationButton>
-            </Link>
-          ))}
-        </SubnavigationBar>
-      </Group>
-      {categories.map((item) => (
-        <Group mode="plain" id={item} header={<Header>{item}</Header>}>
-          <CardGrid size="m">
-            {[...Array.from({ length: 6 }, (v, i) => i)].map((i) => (
+
+      <Group mode="plain" header={<Header>Все</Header>}>
+        <CardGrid size="m">
+          {lottery.length > 0 &&
+            lottery.map((item) => (
               <ContentCard
-                onClick={go}
+                onClick={(e) => onClick(e, item.id)}
                 data-nav={to.AUCTION_DETAIL}
-                image={cake2}
-                text="Торт 'красный бархат'"
+                image={item.pictures[0] || cake2}
+                text={item.title}
                 caption={
                   <React.Fragment>
                     4 из 10 свободно
@@ -93,16 +59,15 @@ const AuctionMain = ({ id, go, openModal, filtersCount }) => {
                         color: 'black',
                       }}
                     >
-                      100 ₽
+                      {item.price} ₽
                     </div>
                   </React.Fragment>
                 }
                 maxHeight={100}
               />
             ))}
-          </CardGrid>
-        </Group>
-      ))}
+        </CardGrid>
+      </Group>
     </Panel>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import './countdown_style.css';
 
@@ -29,13 +29,18 @@ const getTimeMinutes = (time) => ((time % hourSeconds) / minuteSeconds) | 0;
 const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 
-const Countdown = () => {
-  const stratTime = Date.now(); // use UNIX timestamp in seconds
-  const endTime = stratTime + 99990; // use UNIX timestamp in seconds
+const Countdown = ({ date_end, date_added }) => {
+  // const [startTime, setStartTime] = useState(0);
+  // const [endTime, setEndTime] = useState(0);
 
-  const remainingTime = endTime - stratTime;
+  const startTime = (Date.now() - Date.parse(date_added)) / 1000; // use UNIX timestamp in seconds
+  const endTime = (Date.parse(date_end) - Date.now()) / 1000; // use UNIX timestamp in seconds
+  console.log('date_end', date_end);
+  console.log('date_added', date_added);
+  const remainingTime = endTime - startTime;
   const days = Math.ceil(remainingTime / daySeconds);
   const daysDuration = days * daySeconds;
+  console.log('remainingTime', remainingTime);
 
   const getDeclinedWord = (number, list) => {
     if (number === 1) {

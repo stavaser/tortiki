@@ -15,25 +15,46 @@ import {
   Title,
   UsersStack,
 } from '@vkontakte/vkui';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Countdown from '../../components/Countdown';
 import cake from '../../assets/cake.jpeg';
 import cake2 from '../../assets/cake2.jpeg';
 import conf2 from '../../assets/conf2.gif';
 import * as to from '../../navigation/auction';
 import { Caption } from '@vkontakte/vkui';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLotteryInfo } from '../../redux/actions/lottery.actions';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
 const MODAL_PAGE_RESULTS = 'results';
 
 const AuctionDetail = ({ id, go, modal_action }) => {
+  const lottery = useSelector((state) => state.lottery.info) || [];
+  const lottery_id = useSelector((state) => state.lottery.lottery_id);
+  const [test, setTest] = useState(0);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getLotteryInfo(lottery_id));
+  }, []);
+
+  const onClick = (e) => {
+    setTest(test + 1);
+    dispatch(getLotteryInfo(lottery_id));
+    go(e);
+  };
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-nav={to.AUCTION_MAIN} />}
+        left={
+          <PanelHeaderBack
+            onClick={(e) => onClick(e)}
+            data-nav={to.AUCTION_MAIN}
+          />
+        }
       >
-        Подробнее
+        Подробнее {test}
       </PanelHeader>
       <Group>
         <Gallery
@@ -57,17 +78,18 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           style={{ marginTop: 16 }}
           aside={
             <Title level="2" weight="semibold">
-              100 ₽
+              {lottery.price} ₽
             </Title>
           }
           subtitle={
             <Caption level="1" weight="regular">
-              4 из 10 свободно
+              {lottery.participants - lottery.taken} из {lottery.participants}{' '}
+              свободно
             </Caption>
           }
         >
           <Title level="2" weight="regular">
-            Торт 'красный бархат'
+            {lottery.title}
           </Title>
         </Header>
       </Group>
@@ -75,8 +97,10 @@ const AuctionDetail = ({ id, go, modal_action }) => {
         header={<Header mode="secondary">До конца розыгрыша остается:</Header>}
       >
         <Div>
-          {/* TODO: adapt for iphone 5 screen */}
-          <Countdown />
+          <Countdown
+            date_end={lottery.date_end}
+            date_added={lottery.date_added}
+          />
         </Div>
       </Group>
       <Group>
@@ -129,13 +153,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
       </Group>
       <Group>
         <SimpleCell multiline>
-          <InfoRow header="Описание">
-            Домашний рецепт любимого торта. Три слоя бисквитных коржей: первый —
-            с какао, второй – с орехами, третий – с маком. Крем с вареной
-            сгущенкой и сливочным маслом. Состав: мука в/с, яйцо, масло
-            сливочное, молоко сгущенное вареное, сметана, сахар, какао, мак
-            пищевой, орех грецкий, ликер Бэйлиз.
-          </InfoRow>
+          <InfoRow header="Описание">{lottery.description}</InfoRow>
         </SimpleCell>
       </Group>
 

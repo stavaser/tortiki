@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuctionMain from '../panels/auction/AuctionMain';
 import AuctionDetail from '../panels/auction/AuctionDetail';
 import EditAuction from '../panels/auction/EditAuction';
@@ -29,6 +29,11 @@ import { Icon24Dismiss } from '@vkontakte/icons';
 
 import * as to from '../navigation/auction';
 import AuctionSignup from '../panels/auction/AuctionSignup';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  getAllLotteries,
+  getLotteryInfo,
+} from '../redux/actions/lottery.actions';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
@@ -41,6 +46,13 @@ const participants = [
 ];
 
 const AuctionView = ({ id }) => {
+  const lottery = useSelector((state) => state.lottery.list);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllLotteries());
+  }, []);
+
   const [activePanel, setActivePanel] = useState(to.AUCTION_MAIN);
   const [activeModal, setActiveModal] = useState(null);
 
@@ -53,9 +65,6 @@ const AuctionView = ({ id }) => {
   const go = (e) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
-    console.log('target:', target);
-    console.log('currentTarget:', currentTarget);
-    console.log(e);
     if (target || currentTarget) {
       setActivePanel(target || currentTarget);
     }
@@ -216,6 +225,7 @@ const AuctionView = ({ id }) => {
         go={go}
         openModal={openModal}
         filtersCount={filtersCount}
+        data={{ lottery }}
       />
       <AuctionDetail
         id={to.AUCTION_DETAIL}

@@ -26,8 +26,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllProducts } from '../redux/actions/products.actions';
 import ProductsModal from '../modals/products/ProductsModal';
 
-const MODAL_NAME = 'filters';
-
 const ProductsView = ({ id, _activePanel }) => {
   const products = useSelector((state) => state.products.list);
   const dispatch = useDispatch();
