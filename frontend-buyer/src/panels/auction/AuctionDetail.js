@@ -24,6 +24,10 @@ import * as to from '../../navigation/auction';
 import { Caption } from '@vkontakte/vkui';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLotteryInfo } from '../../redux/actions/lottery.actions';
+import {
+  LOTTERY_MODAL_CHANGED,
+  LOTTERY_PANEL_CHANGED,
+} from '../../redux/constants/navigation.constants';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
@@ -39,12 +43,17 @@ const AuctionDetail = ({ id, go, modal_action }) => {
     dispatch(getLotteryInfo(lottery_id));
   }, []);
 
+  const changePanel = (panel) => {
+    dispatch({
+      type: LOTTERY_PANEL_CHANGED,
+      payload: panel,
+    });
+  };
+
   return (
     <Panel id={id}>
       <PanelHeader
-        left={
-          <PanelHeaderBack onClick={(e) => go(e)} data-nav={to.AUCTION_MAIN} />
-        }
+        left={<PanelHeaderBack onClick={() => changePanel(to.AUCTION_MAIN)} />}
       >
         Подробнее
       </PanelHeader>
@@ -123,7 +132,14 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           <Header
             mode="secondary"
             aside={
-              <Link onClick={modal_action} data-nav={MODAL_PAGE_PARTICIPANTS}>
+              <Link
+                onClick={() =>
+                  dispatch({
+                    type: LOTTERY_MODAL_CHANGED,
+                    payload: MODAL_PAGE_PARTICIPANTS,
+                  })
+                }
+              >
                 Показать всех
               </Link>
             }
@@ -155,8 +171,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           size="l"
           stretched
           mode="commerce"
-          onClick={go}
-          data-nav={to.AUCTION_SIGNUP}
+          onClick={() => changePanel(to.AUCTION_SIGNUP)}
         >
           Участвовать
         </Button>

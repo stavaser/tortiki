@@ -12,9 +12,7 @@ import {
 import ProfileRootModal from '../modals/profile/ProfileRootModal';
 
 const ProfileView = ({ id }) => {
-  // const [activePanel, setActivePanel] = useState(to.PROFILE_MAIN);
   const activePanel = useSelector((state) => state.navigation.profile.panel);
-
   const currentUser = JSON.parse(localStorage.getItem('user')); //useSelector((state) => state.profile.user);
 
   const dispatch = useDispatch();
