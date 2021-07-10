@@ -16,7 +16,7 @@ export const userLogin = (phone, password) => async (dispatch) => {
       payload: res.data.user,
     });
 
-    return Promise.resolve(res.data.user);
+    return Promise.resolve(res.data);
   } catch (err) {
     return Promise.reject(err);
   }

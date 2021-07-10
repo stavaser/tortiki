@@ -8,16 +8,25 @@ import {
   PanelHeader,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { PROFILE } from '../../navigation/epic';
 import { userLogin } from '../../redux/actions/profile.actions';
+import { VIEW_CHANGED } from '../../redux/constants/navigation.constants';
 import store from '../../redux/store';
 
 const Login = ({ id, go }) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const submitForm = (e) => {
     e.preventDefault();
-    store.dispatch(userLogin(phone, password));
+
+    dispatch(userLogin(phone, password))
+      .then(() => {
+        dispatch({ type: VIEW_CHANGED, payload: PROFILE });
+      })
+      .catch((e) => console.log(e));
   };
 
   return (

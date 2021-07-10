@@ -29,7 +29,7 @@ const userReducer = (state = initialState, action) => {
       console.log('logging out');
       localStorage.removeItem('token', payload);
       localStorage.removeItem('user', payload);
-      return {};
+      return { profile: { modal: LOGOUT } };
     case MODAL_EDIT_PROFILE_OPENED:
       return { ...state, modal: payload };
     default:

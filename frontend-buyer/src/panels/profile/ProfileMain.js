@@ -18,9 +18,18 @@ import {
 } from '@vkontakte/vkui';
 import React from 'react';
 import pfp from '../../assets/pfp.jpeg';
-import { MODAL_EDIT_PROFILE_OPENED } from '../../redux/constants/profile.constants';
+import {
+  LOGOUT,
+  MODAL_EDIT_PROFILE_OPENED,
+} from '../../redux/constants/profile.constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '../../redux/actions/profile.actions';
+import {
+  PROFILE_MODAL_CHANGED,
+  PROFILE_MODAL_EDIT,
+  VIEW_CHANGED,
+} from '../../redux/constants/navigation.constants';
+import { AUTH } from '../../navigation/epic';
 
 const MODAL_CARD_PHOTO_PREVIEW = 'photo_preview';
 const ProfileMain = ({ id, go, data }) => {
@@ -31,7 +40,7 @@ const ProfileMain = ({ id, go, data }) => {
 
   const openModal = (name) => {
     dispatch({
-      type: MODAL_EDIT_PROFILE_OPENED,
+      type: PROFILE_MODAL_CHANGED,
       payload: name,
     });
   };
@@ -90,7 +99,11 @@ const ProfileMain = ({ id, go, data }) => {
           mode="danger"
           centered
           style={{ position: 'fixed', bottom: '50px' }}
-          onClick={() => dispatch(userLogout())}
+          onClick={() =>
+            dispatch(userLogout()).then(() => {
+              dispatch({ type: VIEW_CHANGED, payload: AUTH });
+            })
+          }
         >
           Выйти
         </CellButton>
