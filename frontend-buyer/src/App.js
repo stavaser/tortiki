@@ -14,8 +14,11 @@ import {
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useScreenSpinner } from './hooks/useScreenSpinner';
 import { AUCTION, FAVORITES, PRODUCTS, PROFILE, AUTH } from './navigation/epic';
+import { VIEW_CHANGED } from './redux/constants/navigation.constants';
+import { LOGOUT } from './redux/constants/profile.constants';
 import AuctionView from './views/AuctionView';
 import AuthView from './views/AuthView';
 import FavoritesView from './views/FavortiesView';
@@ -25,16 +28,27 @@ import ProfileView from './views/ProfileView';
 
 const App = () => {
   const { viewWidth } = useAdaptivity();
-  const [activeStory, setActiveStory] = useState(PRODUCTS);
-  const [popout, hidePopout] = useScreenSpinner();
-  useEffect(() => hidePopout(), []);
+  // const [activeStory, setActiveStory] = useState(PRODUCTS);
+  const activeStory = useSelector((state) => state.navigation.view);
 
   const onStoryChange = (e) => {
-    console.log(e.currentTarget.dataset.story);
-    setActiveStory(e.currentTarget.dataset.story);
+    if (localStorage.getItem('token')) {
+      dispatch({ type: VIEW_CHANGED, payload: e.currentTarget.dataset.story });
+    } else {
+      dispatch({ type: VIEW_CHANGED, payload: AUTH });
+    }
+    // console.log(e.currentTarget.dataset.story);
+    // setActiveStory(e.currentTarget.dataset.story);
   };
   const isDesktop = viewWidth >= ViewWidth.TABLET;
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: VIEW_CHANGED, payload: PRODUCTS });
+  }, []);
+
+  console.log('active view', activeStory);
   return (
     <ConfigProvider webviewType="internal">
       <AdaptivityProvider>
@@ -95,11 +109,11 @@ const App = () => {
                 <AuctionView id={AUCTION} />
 
                 <FavoritesView id={FAVORITES} />
-                {localStorage.getItem('token') ? (
-                  <ProfileView id={PROFILE} />
-                ) : (
-                  <AuthView id={PROFILE} />
-                )}
+                {/* {localStorage.getItem('token') ? ( */}
+                <ProfileView id={PROFILE} />
+                {/* ) : ( */}
+                <AuthView id={AUTH} />
+                {/* )} */}
               </Epic>
             </SplitCol>
           </SplitLayout>

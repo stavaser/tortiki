@@ -34,7 +34,9 @@ import {
   Snackbar,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as to from '../../navigation/auction';
+import { LOTTERY_PANEL_CHANGED } from '../../redux/constants/navigation.constants';
 import './style.css';
 
 const crossed = {
@@ -48,6 +50,7 @@ const buttonStyles = {
   flexGrow: 1,
 };
 const AuctionSignup = ({ id, go }) => {
+  const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
   const [finished, setFinished] = useState(false);
   const [hiddenSecondary, setHiddenSecondary] = useState(true);
@@ -56,7 +59,12 @@ const AuctionSignup = ({ id, go }) => {
   const [isTaken, setIsTaken] = useState(true);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
 
-  const products = ['торт', 'пицца'];
+  const changePanel = (panel) => {
+    dispatch({
+      type: LOTTERY_PANEL_CHANGED,
+      payload: panel,
+    });
+  };
 
   const handleChange = (e) => {
     let images = [];
@@ -96,7 +104,9 @@ const AuctionSignup = ({ id, go }) => {
   return (
     <Panel id={id}>
       <PanelHeader
-        left={<PanelHeaderBack onClick={go} data-nav={to.AUCTION_MAIN} />}
+        left={
+          <PanelHeaderBack onClick={() => changePanel(to.AUCTION_DETAIL)} />
+        }
       >
         Участвовать
       </PanelHeader>
@@ -111,7 +121,6 @@ const AuctionSignup = ({ id, go }) => {
             alignContent: 'space-between',
           }}
         >
-          {/* TODO: add a check of taken numbers in backend */}
           {[...Array.from({ length: 12 }, (v, i) => i + 1)].map((i) => (
             <Button
               className={`lottery-number ${i === 6 && 'crossed'} ${
@@ -209,14 +218,7 @@ const AuctionSignup = ({ id, go }) => {
             size="l"
             stretched
             mode="commerce"
-            // TODO: ля а как
-            // disabled={
-            //   (lotteryNumbers || !fileList) &&
-            //   (!lotteryNumbers || fileList) &&
-            //   (!lotteryNumbers || !fileList)
-            // }
-            // хуй
-            // disabled={lotteryNumbers.length === 0 || fileList.length === 0}
+            onClick={() => changePanel(to.AUCTION_DETAIL)}
           >
             Отправить
           </Button>

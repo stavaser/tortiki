@@ -1,38 +1,32 @@
-import { Icon24Filter } from '@vkontakte/icons';
 import {
   CardGrid,
   ContentCard,
-  Counter,
   Group,
   Header,
   Panel,
   PanelHeader,
-  SubnavigationBar,
-  SubnavigationButton,
 } from '@vkontakte/vkui';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-scroll';
 import cake2 from '../../assets/cake2.jpeg';
 import * as to from '../../navigation/auction';
 import { getLotteryInfo } from '../../redux/actions/lottery.actions';
 import { LOTTERY_ID_SET } from '../../redux/constants/lottery.constants';
+import { LOTTERY_PANEL_CHANGED } from '../../redux/constants/navigation.constants';
 
-const AuctionMain = ({ id, go, openModal, filtersCount, data }) => {
-  const [category, setCategory] = useState(false);
+const AuctionMain = ({ id, data }) => {
   const { lottery } = data;
   const dispatch = useDispatch();
-  const selectCategory = (category) => {
-    setCategory(category);
-  };
-  const onClick = (e, lottery_id) => {
-    console.log(lottery_id);
-    dispatch({
-      type: LOTTERY_ID_SET,
-      payload: lottery_id,
+
+  const changePanel = (panel, lottery_id) => {
+    dispatch(getLotteryInfo(lottery_id)).then(() => {
+      dispatch({
+        type: LOTTERY_PANEL_CHANGED,
+        payload: panel,
+      });
     });
-    go(e);
   };
+
   return (
     <Panel id={id}>
       <PanelHeader>Розыгрыши</PanelHeader>
@@ -42,8 +36,7 @@ const AuctionMain = ({ id, go, openModal, filtersCount, data }) => {
           {lottery.length > 0 &&
             lottery.map((item) => (
               <ContentCard
-                onClick={(e) => onClick(e, item.id)}
-                data-nav={to.AUCTION_DETAIL}
+                onClick={() => changePanel(to.AUCTION_DETAIL, item.id)}
                 image={item.pictures[0] || cake2}
                 text={item.title}
                 caption={

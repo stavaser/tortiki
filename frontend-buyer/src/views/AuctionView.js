@@ -34,6 +34,8 @@ import {
   getAllLotteries,
   getLotteryInfo,
 } from '../redux/actions/lottery.actions';
+import { LOTTERY_PANEL_CHANGED } from '../redux/constants/navigation.constants';
+import LotteryRootModal from '../modals/lottery/LotteryRootModal';
 
 const MODAL_PAGE_PARTICIPANTS = 'participants';
 const MODAL_PAGE_SCREENSHOT = 'screenshot';
@@ -47,13 +49,16 @@ const participants = [
 
 const AuctionView = ({ id }) => {
   const lottery = useSelector((state) => state.lottery.list);
-
+  const activePanel = useSelector((state) => state.navigation.lottery.panel);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getAllLotteries());
+    dispatch(getAllLotteries()).then(() =>
+      dispatch({ type: LOTTERY_PANEL_CHANGED, payload: to.AUCTION_MAIN })
+    );
   }, []);
 
-  const [activePanel, setActivePanel] = useState(to.AUCTION_MAIN);
+  // const [activePanel, setActivePanel] = useState(to.AUCTION_MAIN);
   const [activeModal, setActiveModal] = useState(null);
 
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
@@ -66,7 +71,7 @@ const AuctionView = ({ id }) => {
     const target = e.target.dataset.nav;
     const currentTarget = e.currentTarget.dataset.nav;
     if (target || currentTarget) {
-      setActivePanel(target || currentTarget);
+      // setActivePanel(target || currentTarget);
     }
   };
   const modal_action = (e) => {
@@ -219,7 +224,7 @@ const AuctionView = ({ id }) => {
     </ModalRoot>
   );
   return (
-    <View id={id} activePanel={activePanel} modal={modal}>
+    <View id={id} activePanel={activePanel} modal={<LotteryRootModal />}>
       <AuctionMain
         id={to.AUCTION_MAIN}
         go={go}
