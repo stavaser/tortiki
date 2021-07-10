@@ -32,29 +32,21 @@ const MODAL_PAGE_RESULTS = 'results';
 const AuctionDetail = ({ id, go, modal_action }) => {
   const lottery = useSelector((state) => state.lottery.info) || [];
   const lottery_id = useSelector((state) => state.lottery.lottery_id);
-  const [test, setTest] = useState(0);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getLotteryInfo(lottery_id));
   }, []);
 
-  const onClick = (e) => {
-    setTest(test + 1);
-    dispatch(getLotteryInfo(lottery_id));
-    go(e);
-  };
   return (
     <Panel id={id}>
       <PanelHeader
         left={
-          <PanelHeaderBack
-            onClick={(e) => onClick(e)}
-            data-nav={to.AUCTION_MAIN}
-          />
+          <PanelHeaderBack onClick={(e) => go(e)} data-nav={to.AUCTION_MAIN} />
         }
       >
-        Подробнее {test}
+        Подробнее
       </PanelHeader>
       <Group>
         <Gallery
@@ -100,6 +92,7 @@ const AuctionDetail = ({ id, go, modal_action }) => {
           <Countdown
             date_end={lottery.date_end}
             date_added={lottery.date_added}
+            key={lottery_id}
           />
         </Div>
       </Group>

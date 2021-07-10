@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import { useSelector } from 'react-redux';
 import './countdown_style.css';
 
 const minuteSeconds = 60;
@@ -15,31 +16,33 @@ const timerProps = {
 const dayDeclensions = ['День', 'Дня', 'Дней'];
 const hourDeclensions = ['Час', 'Часа', 'Часов'];
 
-const renderTime = (dimension, time) => {
-  return (
-    <div className="time-wrapper">
-      <div className="time">{time}</div>
-      <div>{dimension}</div>
-    </div>
-  );
-};
-
 const getTimeSeconds = (time) => (minuteSeconds - time) | 0;
 const getTimeMinutes = (time) => ((time % hourSeconds) / minuteSeconds) | 0;
 const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 
-const Countdown = ({ date_end, date_added }) => {
-  // const [startTime, setStartTime] = useState(0);
-  // const [endTime, setEndTime] = useState(0);
+const Countdown = ({ date_end, date_added, key }) => {
+  const renderTime = (dimension, time) => {
+    // console.log(time);
+    return (
+      <div className="time-wrapper">
+        <div className="time">{time}</div>
+        <div>{dimension}</div>
+      </div>
+    );
+  };
+  const counter = useSelector((state) => state.lottery.counter);
 
-  const startTime = (Date.now() - Date.parse(date_added)) / 1000; // use UNIX timestamp in seconds
-  const endTime = (Date.parse(date_end) - Date.now()) / 1000; // use UNIX timestamp in seconds
-  console.log('date_end', date_end);
-  console.log('date_added', date_added);
+  console.log('inside counter', key);
+
+  const startTime = (Date.now() - Date.parse(counter.date_added)) / 1000; // use UNIX timestamp in seconds
+  const endTime = (Date.parse(counter.date_end) - Date.now()) / 1000; // use UNIX timestamp in seconds
+
   const remainingTime = endTime - startTime;
+
   const days = Math.ceil(remainingTime / daySeconds);
   const daysDuration = days * daySeconds;
+
   console.log('remainingTime', remainingTime);
 
   const getDeclinedWord = (number, list) => {
@@ -59,19 +62,22 @@ const Countdown = ({ date_end, date_added }) => {
         colors={[['#7E2E84']]}
         duration={daysDuration}
         initialRemainingTime={remainingTime}
+        key={key}
       >
-        {({ elapsedTime }) =>
-          renderTime(
+        {({ elapsedTime }) => {
+          // console.log(elapsedTime); Date.now() / (1000 * daySeconds)
+          return renderTime(
             getDeclinedWord(
               getTimeDays(daysDuration - elapsedTime),
               dayDeclensions
             ),
             getTimeDays(daysDuration - elapsedTime)
-          )
-        }
+          );
+        }}
       </CountdownCircleTimer>
       <CountdownCircleTimer
         {...timerProps}
+        key={key}
         colors={[['#D14081']]}
         duration={daySeconds}
         initialRemainingTime={remainingTime % daySeconds}
@@ -79,18 +85,21 @@ const Countdown = ({ date_end, date_added }) => {
           remainingTime - totalElapsedTime > hourSeconds,
         ]}
       >
-        {({ elapsedTime }) =>
-          renderTime(
+        {({ elapsedTime }) => {
+          // console.log('fuck', elapsedTime);
+          // console.log('poop', endTime + startTime);
+          return renderTime(
             getDeclinedWord(
               getTimeHours(daySeconds - elapsedTime),
               hourDeclensions
             ),
             getTimeHours(daySeconds - elapsedTime)
-          )
-        }
+          );
+        }}
       </CountdownCircleTimer>
       <CountdownCircleTimer
         {...timerProps}
+        key={key}
         colors={[['#EF798A']]}
         duration={hourSeconds}
         initialRemainingTime={remainingTime % hourSeconds}
@@ -104,6 +113,7 @@ const Countdown = ({ date_end, date_added }) => {
       </CountdownCircleTimer>
       <CountdownCircleTimer
         {...timerProps}
+        key={key}
         colors={[['#218380']]}
         duration={minuteSeconds}
         initialRemainingTime={remainingTime % minuteSeconds}

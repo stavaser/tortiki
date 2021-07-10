@@ -1,4 +1,5 @@
 import {
+  COUNTER_OPENED,
   LOTTERY_ALL_REQUESTED,
   LOTTERY_ID_SET,
   LOTTERY_INFO_REQUESTED,
@@ -24,6 +25,10 @@ const initialState = {
     count: 0,
   },
   modal: null,
+  counter: {
+    date_added: null,
+    date_end: null,
+  },
 };
 
 const lotteryReducer = (state = initialState, action) => {
@@ -32,11 +37,20 @@ const lotteryReducer = (state = initialState, action) => {
     case LOTTERY_ALL_REQUESTED:
       return { ...state, list: payload };
     case LOTTERY_INFO_REQUESTED:
-      console.log(LOTTERY_INFO_REQUESTED, payload);
-      return { ...state, info: payload };
+      return {
+        ...state,
+        info: payload,
+        counter: {
+          date_added: payload.date_added,
+          date_end: payload.date_end,
+        },
+      };
     case LOTTERY_ID_SET:
       console.log(LOTTERY_ID_SET, payload);
       return { ...state, lottery_id: payload };
+    case COUNTER_OPENED:
+      console.log(COUNTER_OPENED, { payload });
+      return { ...state, counter: { payload } };
 
     default:
       return state;
